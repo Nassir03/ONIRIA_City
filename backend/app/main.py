@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import property_routes, search_routes
+from app.api import enquiry_routes, property_routes, search_routes
 from app.config import get_settings
 from app.database import db
 from app.utils.logger import configure_logging
@@ -49,6 +49,10 @@ app.add_middleware(
         f"{settings.api_prefix}/properties",
         f"{settings.api_prefix}/collections",
         f"{settings.api_prefix}/masterplan",
+        f"{settings.api_prefix}/enquiries",
+        f"{settings.api_prefix}/brochure-requests",
+        f"{settings.api_prefix}/consultations",
+        f"{settings.api_prefix}/site-visits",
     ),
 )
 
@@ -81,9 +85,16 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
     logger.info("request validation failed", extra={"path": request.url.path})
+    details = []
+    for error in exc.errors():
+        safe_error = dict(error)
+        ctx = safe_error.get("ctx")
+        if isinstance(ctx, dict) and "error" in ctx:
+            safe_error["ctx"] = {**ctx, "error": str(ctx["error"])}
+        details.append(safe_error)
     return JSONResponse(
         status_code=422,
-        content={"success": False, "error": {"code": "validation_error", "message": "Invalid request data", "details": exc.errors()}},
+        content={"success": False, "error": {"code": "validation_error", "message": "Invalid request data", "details": details}},
     )
 
 
@@ -115,3 +126,5 @@ async def healthcheck():
 
 app.include_router(property_routes.router, prefix=settings.api_prefix)
 app.include_router(search_routes.router, prefix=settings.api_prefix)
+app.include_router(enquiry_routes.router, prefix=settings.api_prefix)
+app.include_router(enquiry_routes.internal_router, prefix=settings.api_prefix)

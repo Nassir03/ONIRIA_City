@@ -52,6 +52,41 @@ curl.exe "http://127.0.0.1:7000/api/search?q=villa"
 curl.exe "http://127.0.0.1:7000/api/search?q=commercial&limit=5"
 ```
 
+Create and inspect an enquiry lead:
+
+```powershell
+$body = @{
+  enquiry_type = "property"
+  name = "Amina Hassan"
+  email = "amina@example.com"
+  phone = "+255 700 111 222"
+  message = "I would like villa details."
+  property_slug = "skyline-villa"
+  budget = "USD 500k-750k"
+  purchase_timeline = "1-3_months"
+  anonymous_session_id = "session-12345"
+  consent = $true
+  campaign = @{
+    utm_source = "google"
+    utm_medium = "cpc"
+    utm_campaign = "villa-launch"
+    landing_page = "/properties/skyline-villa"
+  }
+} | ConvertTo-Json -Depth 5
+
+Invoke-RestMethod -Uri http://127.0.0.1:7000/api/enquiries -Method Post -ContentType "application/json" -Body $body
+curl.exe http://127.0.0.1:7000/api/internal/leads
+curl.exe http://127.0.0.1:7000/api/internal/leads/1
+```
+
+Other enquiry endpoint paths use the same contact and consent fields:
+
+```powershell
+POST /api/brochure-requests
+POST /api/consultations
+POST /api/site-visits
+```
+
 Check validation with intentionally wrong values:
 
 ```powershell
