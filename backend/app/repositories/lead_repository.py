@@ -33,7 +33,7 @@ class LeadRepository:
 
     async def next_reference_sequence(self) -> int:
         if self.pool:
-            return await self.pool.fetchval("SELECT nextval('enquiry_reference_seq')")
+            return await self.pool.insert_and_get_id("INSERT INTO enquiry_reference_sequence () VALUES ()")
         self.store.reference_sequence += 1
         return self.store.reference_sequence
 
@@ -141,7 +141,7 @@ class LeadRepository:
                 SELECT id, name, email, phone, score, follow_up_status, property_interests,
                        collection_interests, last_activity_at, created_at
                 FROM leads
-                WHERE id = $1
+                WHERE id = %s
                 """,
                 lead_id,
             )
@@ -151,7 +151,7 @@ class LeadRepository:
                 """
                 SELECT reference_number, activity_type, summary, created_at, campaign
                 FROM lead_activities
-                WHERE lead_id = $1
+                WHERE lead_id = %s
                 ORDER BY created_at DESC
                 """,
                 lead_id,
@@ -179,10 +179,10 @@ class LeadRepository:
         return LeadDetail(**data)
 
     async def _find_or_create_lead_db(self, payload: EnquiryCreate) -> dict[str, Any]:
-        raise NotImplementedError("PostgreSQL lead persistence needs project schema migrations first")
+        raise NotImplementedError("MySQL lead persistence needs project schema migrations first")
 
     async def _save_enquiry_activity_db(self, **kwargs) -> dict[str, Any]:
-        raise NotImplementedError("PostgreSQL enquiry persistence needs project schema migrations first")
+        raise NotImplementedError("MySQL enquiry persistence needs project schema migrations first")
 
     def _activity_summary(self, payload: EnquiryCreate) -> str:
         interest = payload.property_slug or payload.collection_slug or "general ONIRIA City"

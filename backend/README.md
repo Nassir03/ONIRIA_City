@@ -6,7 +6,7 @@ This first implementation covers:
 
 - Application setup, CORS, logging, error handling, and rate limiting
 - Environment configuration
-- Optional PostgreSQL connection pool
+- Optional MySQL connection pool
 - Health endpoint
 - Public properties, collections, masterplan zones, and search APIs
 
@@ -26,7 +26,13 @@ Then open:
 - `http://127.0.0.1:7000/api/health`
 - `http://127.0.0.1:7000/docs`
 
-If `DATABASE_URL` is not set, the public content APIs use seeded demo data.
+If `DATABASE_URL` is not set, the public content and lead APIs use seeded/in-memory demo data.
+
+To connect MySQL later, set `DATABASE_URL` in `backend\.env`:
+
+```text
+DATABASE_URL=mysql://oniria_user:oniria_password@127.0.0.1:3306/oniria_city
+```
 
 ## Test locally
 

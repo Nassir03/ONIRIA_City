@@ -199,16 +199,20 @@ class PropertyRepository:
                    COUNT(*) OVER() AS total_count
             FROM public_properties
             WHERE status = 'published'
-              AND ($1::text IS NULL OR collection_slug = $1)
-              AND ($2::text IS NULL OR property_type = $2)
-              AND ($3::text IS NULL OR zone_slug = $3)
-              AND ($4::int IS NULL OR bedrooms = $4)
+              AND (%s IS NULL OR collection_slug = %s)
+              AND (%s IS NULL OR property_type = %s)
+              AND (%s IS NULL OR zone_slug = %s)
+              AND (%s IS NULL OR bedrooms = %s)
             ORDER BY sort_order, title
-            LIMIT $5 OFFSET $6
+            LIMIT %s OFFSET %s
             """,
             collection,
+            collection,
+            property_type,
             property_type,
             zone,
+            zone,
+            bedrooms,
             bedrooms,
             page_size,
             (page - 1) * page_size,
@@ -223,7 +227,7 @@ class PropertyRepository:
             SELECT id, slug, title, collection, zone, property_type, bedrooms, price_label, status,
                    hero_image, description, features, media, floor_plans
             FROM public_properties
-            WHERE slug = $1 AND status = 'published'
+            WHERE slug = %s AND status = 'published'
             """,
             slug,
         )
@@ -236,10 +240,11 @@ class PropertyRepository:
             SELECT type, title, slug, excerpt
             FROM public_search_index
             WHERE status = 'published'
-              AND search_vector @@ plainto_tsquery('english', $1)
-            ORDER BY ts_rank(search_vector, plainto_tsquery('english', $1)) DESC
-            LIMIT $2
+              AND MATCH(title, excerpt, content) AGAINST (%s IN NATURAL LANGUAGE MODE)
+            ORDER BY MATCH(title, excerpt, content) AGAINST (%s IN NATURAL LANGUAGE MODE) DESC
+            LIMIT %s
             """,
+            query,
             query,
             limit,
         )

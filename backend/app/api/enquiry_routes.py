@@ -21,7 +21,7 @@ internal_router = APIRouter(tags=["internal leads"])
 
 def get_lead_service() -> LeadService:
     return LeadService(
-        repository=LeadRepository(db.pool),
+        repository=LeadRepository(db if db.is_configured else None),
         campaign_service=CampaignService(),
         notification_service=NotificationService(),
     )

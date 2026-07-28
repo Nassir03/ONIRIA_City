@@ -11,7 +11,7 @@ router = APIRouter(tags=["public properties"])
 
 
 def get_property_service() -> PropertyService:
-    return PropertyService(PropertyRepository(db.pool))
+    return PropertyService(PropertyRepository(db if db.is_configured else None))
 
 
 @router.get("/properties")

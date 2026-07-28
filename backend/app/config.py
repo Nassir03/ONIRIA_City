@@ -1,14 +1,7 @@
 from functools import lru_cache
-from typing import Annotated
 
-from pydantic import AnyUrl, BeforeValidator, Field, field_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-
-def split_csv(value: str | list[str]) -> list[str]:
-    if isinstance(value, list):
-        return value
-    return [item.strip() for item in value.split(",") if item.strip()]
 
 
 class Settings(BaseSettings):
@@ -16,10 +9,8 @@ class Settings(BaseSettings):
     app_env: str = "local"
     app_debug: bool = False
     api_prefix: str = "/api"
-    cors_origins: Annotated[list[str], BeforeValidator(split_csv)] = Field(
-        default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000"]
-    )
-    database_url: AnyUrl | None = None
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    database_url: str | None = None
     database_min_size: int = 1
     database_max_size: int = 5
     log_level: str = "INFO"
@@ -37,6 +28,18 @@ class Settings(BaseSettings):
         if not value.startswith("/"):
             raise ValueError("API_PREFIX must start with /")
         return value.rstrip("/") or "/api"
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def empty_database_url_is_none(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = str(value).strip()
+        return value or None
+
+    @property
+    def cors_origin_list(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
     @field_validator("database_max_size")
     @classmethod
