@@ -1,0 +1,246 @@
+"use client";
+
+import { useState } from "react";
+import Header from "../components/Header";
+import PublicPageHero from "../components/PublicPageHero";
+import Footer from "../components/Footer";
+
+export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState({
+    type: "",
+    message: "",
+  });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (
+      !formData.fullName.trim() ||
+      !formData.email.trim() ||
+      !formData.message.trim()
+    ) {
+      setStatus({
+        type: "error",
+        message: "Please complete your name, email and message.",
+      });
+
+      return;
+    }
+
+    setStatus({
+      type: "success",
+      message:
+        "Thank you. Your message has been prepared successfully. Backend submission will be connected in the next stage.",
+    });
+
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    });
+  }
+
+  return (
+    <main>
+      <Header />
+
+      <PublicPageHero
+        eyebrow="CONTACT ONIRIA CITY"
+        title="Let Us Start a Conversation"
+        description="Speak with our team about properties, investment, site visits, commercial opportunities or general questions."
+        image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85"
+      />
+
+      <section className="contactPageSection" id="page-content">
+        <div className="contactPageIntroduction">
+          <div>
+            <p className="sectionLabel">CONTACT OUR TEAM</p>
+
+            <h2>We are here to help you explore ONIRIA City</h2>
+          </div>
+
+          <p>
+            Contact us for verified information about property collections,
+            availability, site visits, investment opportunities and commercial
+            spaces.
+          </p>
+        </div>
+
+        <div className="contactPageGrid">
+          <div className="contactInformation">
+            <article>
+              <span>01</span>
+              <h3>Visit</h3>
+              <p>
+                Fumba
+                <br />
+                Zanzibar, Tanzania
+              </p>
+            </article>
+
+            <article>
+              <span>02</span>
+              <h3>Email</h3>
+              <a href="mailto:hello@oniriacity.com">
+                hello@oniriacity.com
+              </a>
+            </article>
+
+            <article>
+              <span>03</span>
+              <h3>Telephone</h3>
+              <a href="tel:+255000000000">
+                +255 000 000 000
+              </a>
+            </article>
+
+            <article>
+              <span>04</span>
+              <h3>WhatsApp</h3>
+              <a
+                href="https://wa.me/255000000000"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Start a WhatsApp conversation
+              </a>
+            </article>
+          </div>
+
+          <form className="contactForm" onSubmit={handleSubmit}>
+            <div className="contactFormHeading">
+              <p className="sectionLabel">SEND A MESSAGE</p>
+              <h2>How can we help?</h2>
+            </div>
+
+            <div className="formGrid">
+              <div className="formField">
+                <label htmlFor="fullName">Full name *</label>
+
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                />
+              </div>
+
+              <div className="formField">
+                <label htmlFor="email">Email address *</label>
+
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email address"
+                />
+              </div>
+
+              <div className="formField">
+                <label htmlFor="phone">Phone number</label>
+
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+255"
+                />
+              </div>
+
+              <div className="formField">
+                <label htmlFor="subject">Subject</label>
+
+                <select
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                >
+                  <option value="">Select a subject</option>
+                  <option value="general">General question</option>
+                  <option value="property">Property information</option>
+                  <option value="investment">Investment</option>
+                  <option value="commercial">Commercial opportunity</option>
+                  <option value="site-visit">Site visit</option>
+                </select>
+              </div>
+
+              <div className="formField formFieldFull">
+                <label htmlFor="message">Message *</label>
+
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="7"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Tell us how we can help you"
+                />
+              </div>
+            </div>
+
+            {status.message && (
+              <div
+                className={`formStatus ${
+                  status.type === "success"
+                    ? "formStatusSuccess"
+                    : "formStatusError"
+                }`}
+              >
+                {status.message}
+              </div>
+            )}
+
+            <button type="submit" className="formSubmitButton">
+              Send message
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section className="contactMapSection">
+        <div className="contactMapPlaceholder">
+          <p className="sectionLabel">FUMBA, ZANZIBAR</p>
+
+          <h2>Discover the location of ONIRIA City</h2>
+
+          <p>
+            An interactive map can be connected here after the approved project
+            location and coordinates are provided.
+          </p>
+
+          <a href="/masterplan" className="textLink">
+            Explore the masterplan →
+          </a>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
+}
