@@ -1,21 +1,15 @@
 -- Migration 001: Database Setup Notes
 -- Created by Kelvin - Database & Knowledge Integration
 --
--- NOTE: This project uses MySQL 8.0.46, not PostgreSQL as originally specified
--- in the implementation plan. This decision was confirmed with the team.
+-- This project uses PostgreSQL 17.10, matching the official implementation plan.
 --
--- UUID generation: PostgreSQL uses extensions (uuid-ossp, pgcrypto) to generate
--- UUIDs. MySQL requires no such extension - UUIDs are generated per-table using
--- the native UUID() function as a DEFAULT value on CHAR(36) primary key columns.
--- See migrations 002+ for usage.
+-- UUID generation: PostgreSQL 13+ includes gen_random_uuid() natively.
+-- No extension (uuid-ossp, pgcrypto) is required on PostgreSQL 17.
+-- UUIDs are generated per-table using DEFAULT gen_random_uuid() on UUID
+-- primary key columns. See migrations 002+ for usage.
 --
--- Vector search (for ONIRIA AI knowledge retrieval): deferred decision.
--- PostgreSQL uses the pgvector extension for this. MySQL 8.0 has no native
--- vector type (introduced only in MySQL 9.0+, released late 2024).
--- Options under team discussion:
---   1. Upgrade this database to MySQL 9.x for native VECTOR type support
---   2. Compute similarity search in the Python backend instead of the database
---   3. Migrate the full schema to PostgreSQL with pgvector
--- To be resolved before Thursday's knowledge_documents / knowledge_chunks work.
+-- Vector search (for ONIRIA AI knowledge retrieval): PostgreSQL uses the
+-- pgvector extension for this. It will be enabled in migration 008
+-- (knowledge base) once that phase begins.
 --
 -- No SQL statements required for this migration.

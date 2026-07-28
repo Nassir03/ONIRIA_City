@@ -3,10 +3,10 @@
 -- Tables: anonymous_sessions, session_events
 
 CREATE TABLE anonymous_sessions (
-  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   session_token VARCHAR(255) UNIQUE NOT NULL,
   first_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   utm_source VARCHAR(255),
   utm_medium VARCHAR(255),
   utm_campaign VARCHAR(255),
@@ -17,13 +17,12 @@ CREATE TABLE anonymous_sessions (
 );
 
 CREATE TABLE session_events (
-  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  session_id CHAR(36) NOT NULL,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id UUID NOT NULL REFERENCES anonymous_sessions(id) ON DELETE CASCADE,
   event_type VARCHAR(100) NOT NULL,
   page_path VARCHAR(500),
-  metadata JSON,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (session_id) REFERENCES anonymous_sessions(id) ON DELETE CASCADE
+  metadata JSONB,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Indexes
