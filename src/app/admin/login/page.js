@@ -9,7 +9,7 @@ export default function AdminLoginPage() {
     <main className="adminLoginPage">
       <div>
         <p>ONIRIA CITY STAFF</p>
-        <h1>Private admin login</h1>
+        <h1>Staff Login</h1>
         <StaffLoginForm />
       </div>
     </main>

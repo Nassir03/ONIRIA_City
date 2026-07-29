@@ -21,7 +21,7 @@ def test_admin_dashboard_is_protected():
 
 def test_staff_email_must_be_valid_email_with_at_symbol():
     with pytest.raises(ValueError):
-        StaffCreateRequest(full_name="Admin User", email="admin.example.com", password="StrongPass1!", roles=["administrator"])
+        StaffCreateRequest(full_name="Admin User", email="admin.example.com", password="StrongPass12!", roles=["administrator"])
 
 
 @pytest.mark.parametrize(
@@ -40,4 +40,4 @@ def test_admin_password_requires_capital_small_number_symbol_and_length(password
 
 
 def test_admin_password_accepts_required_complexity():
-    validate_password_strength("StrongPass1!")
+    validate_password_strength("StrongPass12!")

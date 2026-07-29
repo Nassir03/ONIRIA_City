@@ -14,9 +14,11 @@ from app.api import (
     admin_dashboard_routes,
     admin_enquiry_routes,
     admin_lead_routes,
+    admin_recovery_routes,
     admin_staff_routes,
     ai_routes,
     enquiry_routes,
+    newsletter_routes,
     property_routes,
     search_routes,
     whatsapp_routes,
@@ -63,10 +65,16 @@ app.add_middleware(
         f"{settings.api_prefix}/masterplan",
         f"{settings.api_prefix}/enquiries",
         f"{settings.api_prefix}/brochure-requests",
+        f"{settings.api_prefix}/newsletter/subscribe",
+        f"{settings.api_prefix}/newsletter/unsubscribe",
         f"{settings.api_prefix}/consultations",
         f"{settings.api_prefix}/site-visits",
         f"{settings.api_prefix}/commercial-enquiries",
         f"{settings.api_prefix}/admin/login",
+        f"{settings.api_prefix}/admin/auth/forgot-password",
+        f"{settings.api_prefix}/admin/auth/validate-reset-token",
+        f"{settings.api_prefix}/admin/auth/reset-password",
+        f"{settings.api_prefix}/admin/auth/recovery-request",
         f"{settings.api_prefix}/ai",
         f"{settings.api_prefix}/webhooks/whatsapp",
     ),
@@ -144,6 +152,7 @@ app.include_router(property_routes.router, prefix=settings.api_prefix)
 app.include_router(search_routes.router, prefix=settings.api_prefix)
 app.include_router(enquiry_routes.router, prefix=settings.api_prefix)
 app.include_router(enquiry_routes.internal_router, prefix=settings.api_prefix)
+app.include_router(newsletter_routes.router, prefix=settings.api_prefix)
 app.include_router(ai_routes.router, prefix=settings.api_prefix)
 app.include_router(whatsapp_routes.router, prefix=settings.api_prefix)
 app.include_router(admin_auth_routes.router, prefix=settings.api_prefix)
@@ -152,3 +161,5 @@ app.include_router(admin_lead_routes.router, prefix=settings.api_prefix)
 app.include_router(admin_enquiry_routes.router, prefix=settings.api_prefix)
 app.include_router(admin_conversation_routes.router, prefix=settings.api_prefix)
 app.include_router(admin_staff_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_recovery_routes.router, prefix=settings.api_prefix)
+app.include_router(newsletter_routes.admin_router, prefix=settings.api_prefix)

@@ -5,6 +5,8 @@ ROLE_PERMISSIONS = {
         "leads:assign",
         "leads:update",
         "staff:manage",
+        "account_recovery:manage",
+        "newsletter:manage",
         "campaigns:view",
         "conversations:view",
     },
@@ -26,6 +28,7 @@ ROLE_PERMISSIONS = {
         "admin:dashboard",
         "campaigns:view",
         "leads:view_summary",
+        "newsletter:manage",
     },
     "knowledge_editor": {
         "admin:dashboard",

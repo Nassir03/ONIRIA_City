@@ -8,6 +8,20 @@ class AdminLoginRequest(BaseModel):
     password: str = Field(min_length=1, max_length=200)
 
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ValidateResetTokenRequest(BaseModel):
+    token: str = Field(min_length=20, max_length=256)
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=20, max_length=256)
+    new_password: str = Field(min_length=12, max_length=200)
+    confirm_password: str = Field(min_length=12, max_length=200)
+
+
 class AdminSessionStaff(BaseModel):
     id: int
     full_name: str
@@ -23,7 +37,7 @@ class AdminSessionResponse(BaseModel):
 class StaffCreateRequest(BaseModel):
     full_name: str = Field(min_length=2, max_length=160)
     email: EmailStr
-    password: str = Field(min_length=10, max_length=200)
+    password: str = Field(min_length=12, max_length=200)
     roles: list[str] = Field(default_factory=lambda: ["sales_agent"])
 
 

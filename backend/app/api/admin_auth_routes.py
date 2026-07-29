@@ -1,12 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from app.api.admin_dependencies import current_staff, require_database
+from app.config import get_settings
 from app.repositories.staff_repository import StaffRepository
-from app.schemas.admin_auth_schemas import AdminLoginRequest
+from app.schemas.account_recovery_schemas import RecoveryRequestCreate
+from app.schemas.admin_auth_schemas import AdminLoginRequest, ForgotPasswordRequest, ResetPasswordRequest, ValidateResetTokenRequest
 from app.security.password_hashing import verify_password
 from app.security.session_manager import SESSION_COOKIE_NAME, create_session_token, hash_session_token, session_expires_at
+from app.services.account_recovery_service import AccountRecoveryService
+from app.services.password_reset_service import PasswordResetService
+from app.utils.rate_limit import FixedWindowRateLimiter
 
 router = APIRouter(prefix="/admin", tags=["admin auth"])
+forgot_password_limiter = FixedWindowRateLimiter(max_attempts=5, window_seconds=15 * 60)
+reset_token_limiter = FixedWindowRateLimiter(max_attempts=12, window_seconds=15 * 60)
+recovery_request_limiter = FixedWindowRateLimiter(max_attempts=3, window_seconds=60 * 60)
 
 
 @router.post("/login")
@@ -62,3 +70,54 @@ async def session(staff=Depends(current_staff)):
             "expires_at": staff["expires_at"],
         },
     }
+
+
+@router.post("/auth/forgot-password")
+async def forgot_password(payload: ForgotPasswordRequest, request: Request, database=Depends(require_database)):
+    ip = request.client.host if request.client else "unknown"
+    if not forgot_password_limiter.allow(f"{ip}:{str(payload.email).lower()}"):
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many requests. Please try again later.")
+    service = PasswordResetService(database, get_settings())
+    result = await service.request_reset(
+        email=str(payload.email),
+        requested_ip=None if ip == "unknown" else ip,
+        requested_user_agent=request.headers.get("user-agent"),
+    )
+    return {"success": True, "data": result}
+
+
+@router.post("/auth/validate-reset-token")
+async def validate_reset_token(payload: ValidateResetTokenRequest, database=Depends(require_database)):
+    if not reset_token_limiter.allow(f"validate:{payload.token[:24]}"):
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many requests. Please try again later.")
+    valid = await PasswordResetService(database, get_settings()).validate_token(payload.token)
+    return {"success": True, "data": {"valid": valid}}
+
+
+@router.post("/auth/reset-password")
+async def reset_password(payload: ResetPasswordRequest, request: Request, database=Depends(require_database)):
+    ip = request.client.host if request.client else "unknown"
+    if not reset_token_limiter.allow(f"{ip}:{payload.token[:24]}"):
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many requests. Please try again later.")
+    service = PasswordResetService(database, get_settings())
+    try:
+        await service.reset_password(
+            token=payload.token,
+            new_password=payload.new_password,
+            confirm_password=payload.confirm_password,
+            ip=request.client.host if request.client else None,
+            user_agent=request.headers.get("user-agent"),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+    return {"success": True, "data": {"message": "Your password has been changed. Sign in with your new password."}}
+
+
+@router.post("/auth/recovery-request")
+async def recovery_request(payload: RecoveryRequestCreate, request: Request, database=Depends(require_database)):
+    ip = request.client.host if request.client else "unknown"
+    key = f"{ip}:{payload.phone}:{str(payload.known_email).lower() if payload.known_email else 'no-email'}"
+    if not recovery_request_limiter.allow(key):
+        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many requests. Please try again later.")
+    result = await AccountRecoveryService(database).create_request(payload)
+    return {"success": True, "data": result}

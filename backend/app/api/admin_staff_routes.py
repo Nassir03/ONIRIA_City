@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.admin_dependencies import require_database, require_permission
 from app.repositories.staff_repository import StaffRepository
+from app.repositories.password_reset_repository import PasswordResetRepository
 from app.schemas.admin_auth_schemas import StaffCreateRequest, StaffUpdateRequest
 from app.security.password_hashing import hash_password, validate_password_strength
 
@@ -41,7 +42,10 @@ async def update_staff(staff_id: int, payload: StaffUpdateRequest, database=Depe
 
 @router.post("/{staff_id}/disable")
 async def disable_staff(staff_id: int, database=Depends(require_database), staff=Depends(require_permission("staff:manage"))):
-    result = await StaffRepository(database).update_staff(staff_id, {"is_active": False})
+    staff_repo = StaffRepository(database)
+    result = await staff_repo.update_staff(staff_id, {"is_active": False})
     if not result:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Staff not found")
+    await staff_repo.revoke_staff_sessions(staff_id)
+    await PasswordResetRepository(database).revoke_unused_for_staff(staff_id)
     return {"success": True, "data": result}

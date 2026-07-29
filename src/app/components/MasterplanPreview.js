@@ -25,25 +25,6 @@ const masterplanHighlights = [
   },
 ];
 
-const projectStatistics = [
-  {
-    value: "3",
-    label: "Signature collections",
-  },
-  {
-    value: "1",
-    label: "Connected destination",
-  },
-  {
-    value: "24/7",
-    label: "Secure community",
-  },
-  {
-    value: "Fumba",
-    label: "Zanzibar location",
-  },
-];
-
 export default function MasterplanPreview() {
   return (
     <section className="masterplanSection" id="masterplan">
@@ -134,14 +115,6 @@ export default function MasterplanPreview() {
         ))}
       </div>
 
-      <div className="masterplanStatistics">
-        {projectStatistics.map((statistic) => (
-          <div className="masterplanStatistic" key={statistic.label}>
-            <strong>{statistic.value}</strong>
-            <span>{statistic.label}</span>
-          </div>
-        ))}
-      </div>
     </section>
   );
 }

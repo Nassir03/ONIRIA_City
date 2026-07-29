@@ -6,17 +6,19 @@ import { useRouter } from "next/navigation";
 import { adminApi } from "../../services/adminApi";
 
 const navItems = [
-  ["Dashboard", "/admin"],
-  ["Leads", "/admin/leads"],
-  ["Enquiries", "/admin/enquiries"],
-  ["Brochures", "/admin/brochure-requests"],
-  ["Consultations", "/admin/consultations"],
-  ["Site Visits", "/admin/site-visits"],
-  ["AI Conversations", "/admin/conversations"],
-  ["WhatsApp", "/admin/whatsapp"],
-  ["Campaigns", "/admin/campaigns"],
-  ["Follow-ups", "/admin/follow-ups"],
-  ["Staff", "/admin/staff"],
+  ["Dashboard", "/admin", null],
+  ["Leads", "/admin/leads", null],
+  ["Enquiries", "/admin/enquiries", null],
+  ["Brochures", "/admin/brochure-requests", null],
+  ["Consultations", "/admin/consultations", null],
+  ["Site Visits", "/admin/site-visits", null],
+  ["AI Conversations", "/admin/conversations", null],
+  ["WhatsApp", "/admin/whatsapp", null],
+  ["Campaigns", "/admin/campaigns", null],
+  ["Follow-ups", "/admin/follow-ups", null],
+  ["Subscribers", "/admin/subscribers", ["administrator", "marketing_staff"]],
+  ["Account Recovery", "/admin/account-recovery", ["administrator"]],
+  ["Staff", "/admin/staff", null],
 ];
 
 export default function AdminLayout({ title, children }) {
@@ -51,11 +53,13 @@ export default function AdminLayout({ title, children }) {
           ONIRIA CITY
         </Link>
         <nav>
-          {navItems.map(([label, href]) => (
-            <Link href={href} key={href}>
-              {label}
-            </Link>
-          ))}
+          {navItems
+            .filter(([, , roles]) => !roles || roles.some((role) => session.staff.roles?.includes(role)))
+            .map(([label, href]) => (
+              <Link href={href} key={href}>
+                {label}
+              </Link>
+            ))}
         </nav>
       </aside>
 

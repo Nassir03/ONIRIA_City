@@ -199,18 +199,6 @@ textarea {
   right: 32px;
 }
 
-.heroSlideStatus {
-  position: absolute;
-  right: 7vw;
-  bottom: 158px;
-  z-index: 12;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
 /* =========================================================
    PROPERTY SEARCH BAR
 ========================================================= */
@@ -218,11 +206,11 @@ textarea {
 .propertySearchBar {
   position: absolute;
   right: 50%;
-  bottom: 52px;
+  bottom: 80px;
   z-index: 40;
   width: min(82vw, 1350px);
   min-height: 70px;
-  border-radius: 36px;
+  border-radius: 30px;
   background-color: #ffffff;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
   transform: translateX(50%);
@@ -556,11 +544,11 @@ textarea {
   }
 
   .propertySearchBar {
-    bottom: 38px;
+    bottom: 50px;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: min(92vw, 900px);
+    width: min(90vw, 800px);
     min-height: 148px;
-    border-radius: 30px;
+    border-radius: 28px;
   }
 
   .propertySearchField {
@@ -577,11 +565,6 @@ textarea {
     min-height: 74px;
     border-radius: 0 0 30px 0;
     grid-column: 2 / -1;
-  }
-
-  .heroSlideStatus {
-    right: 48px;
-    bottom: 160px;
   }
 
   .introductionSection {
@@ -633,13 +616,6 @@ textarea {
     margin-top: 15px;
   }
 
-  .heroSlideStatus {
-    right: 24px;
-    bottom: 126px;
-    font-size: 11px;
-    letter-spacing: 3px;
-  }
-
   .heroArrow {
     top: auto;
     bottom: 120px;
@@ -663,7 +639,7 @@ textarea {
   .mobilePropertySearch {
     position: absolute;
     right: 18px;
-    bottom: 36px;
+    bottom: 52px;
     left: 18px;
     z-index: 40;
     min-height: 66px;
@@ -1116,42 +1092,6 @@ textarea {
 
 /* Statistics */
 
-.masterplanStatistics {
-  margin-top: 110px;
-  padding: 90px 40px;
-  background-color: #10221f;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  color: #ffffff;
-}
-
-.masterplanStatistic {
-  padding: 20px;
-  border-right: 1px solid rgba(255, 255, 255, 0.22);
-  text-align: center;
-}
-
-.masterplanStatistic:last-child {
-  border-right: 0;
-}
-
-.masterplanStatistic strong {
-  display: block;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(46px, 5vw, 72px);
-  font-weight: 400;
-}
-
-.masterplanStatistic span {
-  display: block;
-  margin-top: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
 /* =========================================================
    MASTERPLAN — TABLET
 ========================================================= */
@@ -1198,17 +1138,6 @@ textarea {
     border-bottom: 1px solid #dcd7ce;
   }
 
-  .masterplanStatistics {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .masterplanStatistic:nth-child(2) {
-    border-right: 0;
-  }
-
-  .masterplanStatistic:nth-child(-n + 2) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-  }
 }
 
 /* =========================================================
@@ -1289,22 +1218,6 @@ textarea {
     margin-bottom: 30px;
   }
 
-  .masterplanStatistics {
-    margin-top: 80px;
-    padding: 60px 20px;
-    grid-template-columns: 1fr;
-  }
-
-  .masterplanStatistic,
-  .masterplanStatistic:nth-child(2) {
-    padding: 36px 20px;
-    border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-  }
-
-  .masterplanStatistic:last-child {
-    border-bottom: 0;
-  }
 }
 
 /* =========================================================
@@ -6028,200 +5941,422 @@ textarea {
 
 .oniriaFooter {
   position: relative;
-  background-color: #0d211e;
-  color: #ffffff;
-  padding: 90px 40px 35px;
-}
-
-.oniriaFooterTop {
-  width: min(1380px, 100%);
-  margin: 0 auto;
-  padding-bottom: 75px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 90px;
+  background-color: #f5f2ec;
+  color: #14231f;
+  padding: 38px 40px 30px;
+  border-top: 1px solid #d7ccbb;
+  z-index: 1;
 }
 
 .oniriaFooterLogo {
   display: inline-block;
-  color: #ffffff;
-  font-size: 24px;
+  color: #14231f;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
+  text-decoration: none;
 }
 
-.oniriaFooterBrand p {
-  max-width: 430px;
-  margin: 28px 0 0;
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 15px;
-  line-height: 1.8;
-}
-
-.oniriaFooterLinks {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 45px;
-}
-
-.oniriaFooterLinks h3 {
-  margin: 0 0 24px;
-  color: #d1b57f;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.oniriaFooterLinks a {
-  width: fit-content;
-  margin-top: 13px;
-  color: rgba(255, 255, 255, 0.76);
-  display: block;
-  font-size: 13px;
-}
-
-.oniriaFooterLinks a:hover {
-  color: #ffffff;
-}
-
-.oniriaFooterSubscribe {
+.oniriaFooterTopRow {
   width: min(1380px, 100%);
   margin: 0 auto;
-  padding: 70px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  padding-bottom: 28px;
+  border-bottom: 1px solid #d7ccbb;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: end;
-  gap: 80px;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(420px, 0.75fr);
+  gap: 48px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.oniriaFooterSubscribe > div > p {
-  margin: 0 0 14px;
-  color: #d1b57f;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
-.oniriaFooterSubscribe h2 {
-  max-width: 650px;
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(38px, 5vw, 58px);
-  font-weight: 400;
-  line-height: 1.08;
-}
-
-.oniriaFooterSubscribe form {
-  min-height: 60px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  display: grid;
-  grid-template-columns: 1fr auto;
+.oniriaFooterBrandBlock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
   align-items: center;
 }
 
-.oniriaFooterSubscribe input {
-  min-width: 0;
-  min-height: 58px;
+.oniriaFooterBrandBlock::after {
+  content: "";
+  width: 1px;
+  height: 34px;
+  order: 1;
+  background-color: #d7ccbb;
+}
+
+.oniriaFooterSocials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  order: 2;
+}
+
+.oniriaFooterSocials a,
+.oniriaFooterSocialPlaceholder {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #c8baa5;
+  border-radius: 50%;
+  color: #14231f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.oniriaFooterSocials svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.oniriaFooterSocials svg path,
+.oniriaFooterSocials svg rect,
+.oniriaFooterSocials svg circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.oniriaFooterSocialPlaceholder {
+  cursor: default;
+  opacity: 0.48;
+}
+
+.oniriaFooterSocials a:hover {
+  background-color: #14231f;
+  color: #ffffff;
+}
+
+.oniriaFooterNewsletter {
+  display: grid;
+  gap: 10px;
+}
+
+.oniriaFooterNewsletter label {
+  display: block;
+  color: #14231f;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.oniriaFooterNewsletter p {
+  margin: 6px 0 0;
+  color: #6d6255;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.oniriaFooterNewsletterRow {
+  min-height: 56px;
   padding: 0;
+  border: 1px solid #d7ccbb;
+  background-color: #ffffff;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0;
+  align-items: center;
+}
+
+.oniriaFooterNewsletter input[type="email"] {
+  min-width: 0;
+  min-height: 56px;
+  padding: 0 18px;
   border: 0;
   outline: none;
-  background-color: transparent;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #14231f;
   font-size: 15px;
 }
 
-.oniriaFooterSubscribe input::placeholder {
-  color: rgba(255, 255, 255, 0.48);
+.oniriaFooterNewsletter input::placeholder {
+  color: #8b8174;
 }
 
-.oniriaFooterSubscribe button {
-  min-height: 52px;
-  padding: 13px 28px;
+.oniriaFooterNewsletter button {
+  min-height: 56px;
+  align-self: stretch;
+  padding: 0 28px;
   border: 0;
-  background-color: #d1b57f;
-  color: #10211e;
+  background-color: #4d5048;
+  color: #ffffff;
   cursor: pointer;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  letter-spacing: 1.6px;
 }
 
-.oniriaFooterBottom {
+.oniriaFooterNewsletter button:hover {
+  background-color: #31352f;
+}
+
+.oniriaFooterNewsletter button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.oniriaFooterConsent {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  color: #6d6255 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.oniriaFooterConsent input {
+  margin-top: 3px;
+}
+
+.oniriaFooterStatus {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #c8baa5;
+  font-size: 13px;
+}
+
+.oniriaFooterStatus.isSuccess {
+  border-color: #8db69b;
+  color: #1f6f48;
+}
+
+.oniriaFooterStatus.isError {
+  border-color: #cf9285;
+  color: #8b3122;
+}
+
+.oniriaFooterAccordions {
   width: min(1380px, 100%);
   margin: 0 auto;
-  padding-top: 30px;
-  padding-right: 180px;
+  padding: 30px 0;
+  border-bottom: 1px solid #d7ccbb;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.footerAccordionGroup {
+  min-width: 0;
+}
+
+.footerAccordionButton {
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #14231f;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-align: left;
+  text-transform: uppercase;
 }
 
-.oniriaFooterBottom p,
-.oniriaFooterBottom a {
+.footerAccordionButton:focus-visible,
+.oniriaFooter a:focus-visible,
+.oniriaFooterNewsletter input:focus-visible,
+.oniriaFooterNewsletter button:focus-visible {
+  outline: 2px solid #9a7a4a;
+  outline-offset: 4px;
+}
+
+.footerChevron {
+  font-size: 15px;
+  transition: transform 180ms ease;
+}
+
+.footerAccordionGroup.isOpen .footerChevron {
+  transform: rotate(180deg);
+}
+
+.footerAccordionPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 180ms ease;
+}
+
+.footerAccordionGroup.isOpen .footerAccordionPanel {
+  grid-template-rows: 1fr;
+}
+
+.footerAccordionPanel ul {
+  overflow: hidden;
   margin: 0;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  padding: 0;
+  list-style: none;
 }
 
-.oniriaFooterBottom > div {
+.footerAccordionPanel li {
+  margin-top: 11px;
+}
+
+.footerAccordionPanel a {
+  color: #5f574c;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.footerAccordionPanel a:hover {
+  color: #14231f;
+}
+
+.oniriaFooterLegal {
+  width: min(1380px, 100%);
+  margin: 0 auto;
+  padding-top: 22px;
+  padding-right: 176px;
   display: flex;
-  gap: 25px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.oniriaFooterBottom a:hover {
-  color: #ffffff;
+.oniriaFooterLegal p,
+.oniriaFooterLegal a {
+  margin: 0;
+  color: #6d6255;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.oniriaFooterLegal nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+
+.oniriaFooterLegal a:hover {
+  color: #14231f;
+}
+
+.sitemapSection,
+.legalContentSection {
+  padding: 90px 40px;
+  background-color: #f7f3ea;
+}
+
+.sitemapSection {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.sitemapSection article,
+.legalContentSection {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.sitemapSection h2,
+.legalContentSection h2 {
+  margin: 0 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.sitemapSection ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sitemapSection li {
+  margin-top: 10px;
+}
+
+.sitemapSection a {
+  color: #4f463c;
+}
+
+.legalContentSection p {
+  max-width: 820px;
+  color: #5f574c;
+  line-height: 1.8;
 }
 
 @media (max-width: 900px) {
-  .oniriaFooterTop,
-  .oniriaFooterSubscribe {
+  .oniriaFooterTopRow {
     grid-template-columns: 1fr;
-    gap: 55px;
+    gap: 38px;
   }
 
-  .oniriaFooterBottom {
+  .oniriaFooterAccordions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .oniriaFooterLegal {
     padding-right: 100px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sitemapSection {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 600px) {
   .oniriaFooter {
-    padding: 70px 20px 115px;
+    padding: 34px 20px 116px;
   }
 
-  .oniriaFooterLinks {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .oniriaFooterSubscribe form {
-    grid-template-columns: 1fr;
-    border-bottom: 0;
-    gap: 12px;
-  }
-
-  .oniriaFooterSubscribe input {
-    padding: 0 15px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .oniriaFooterSubscribe button {
-    width: 100%;
-  }
-
-  .oniriaFooterBottom {
-    padding-right: 0;
+  .oniriaFooterBrandBlock {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .oniriaFooterBottom > div {
+  .oniriaFooterBrandBlock::after {
+    display: none;
+  }
+
+  .oniriaFooterNewsletterRow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .oniriaFooterNewsletter input[type="email"] {
+    border: 1px solid #c8baa5;
+  }
+
+  .oniriaFooterNewsletter button {
+    width: 100%;
+  }
+
+  .oniriaFooterAccordions,
+  .sitemapSection {
+    grid-template-columns: 1fr;
+  }
+
+  .oniriaFooterLegal {
+    padding-right: 0;
+  }
+
+  .oniriaFooterLegal nav {
     flex-direction: column;
     gap: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footerAccordionPanel,
+  .footerChevron {
+    transition: none;
   }
 }
 /* =========================================================
@@ -6744,6 +6879,103 @@ textarea {
   color: #8b3122;
 }
 
+.adminSuccess {
+  padding: 16px;
+  border: 1px solid #8db69b;
+  background-color: #f1fbf4;
+  color: #1f6f48;
+  white-space: pre-line;
+}
+
+.adminAuthIntro {
+  max-width: 460px;
+  color: #6b6257;
+}
+
+.adminAuthLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.adminAuthLinks a {
+  color: #5f4630;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.adminAuthLinks a:hover {
+  text-decoration: underline;
+}
+
+.adminLoginForm select,
+.adminLoginForm textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d4cabb;
+  background-color: #fffdf8;
+  color: #15231f;
+  font-size: 14px;
+}
+
+.adminRecoveryForm {
+  width: min(640px, 100%);
+}
+
+.adminPasswordStrength {
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  color: #8b3122;
+  font-size: 13px;
+  list-style: none;
+}
+
+.adminPasswordStrength li::before {
+  content: "○ ";
+}
+
+.adminPasswordStrength .isMet {
+  color: #1f6f48;
+}
+
+.adminPasswordStrength .isMet::before {
+  content: "● ";
+}
+
+.adminRecoveryGrid {
+  display: grid;
+  gap: 18px;
+}
+
+.adminNoteField {
+  margin-top: 18px;
+  display: grid;
+  gap: 8px;
+  color: #615746;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.adminNoteField textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 10px 12px;
+  border: 1px solid #d4cabb;
+  background-color: #fffdf8;
+  color: #15231f;
+  font-size: 14px;
+  text-transform: none;
+}
+
 @media (max-width: 1100px) {
   .adminCards,
   .adminFilters {
@@ -6785,35 +7017,104 @@ textarea {
 
 .oniriaAIButton {
   right: 32px !important;
-  bottom: 222px !important;
+  bottom: 96px !important;
   z-index: 690 !important;
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
+  max-width: 60px !important;
+  max-height: 60px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+.oniriaAIButtonText {
+  display: none !important;
+}
+
+.oniriaAIButtonMark {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  flex: 0 0 44px !important;
 }
 
 .oniriaAIChat {
-  right: 32px !important;
-  bottom: 296px !important;
+  right: 24px !important;
+  bottom: 168px !important;
+  width: min(420px, calc(100vw - 32px)) !important;
+  height: min(620px, calc(100dvh - 190px)) !important;
+  max-height: calc(100dvh - 190px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.oniriaAIChatHeader,
+.oniriaAIChatNotice,
+.oniriaAIQuickQuestions,
+.oniriaAIInputArea,
+.oniriaAIChatFooter {
+  flex: 0 0 auto !important;
+}
+
+.oniriaAIMessages {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+}
+
+.oniriaAIQuickQuestions > div {
+  scrollbar-width: none;
+}
+
+.oniriaAIQuickQuestions > div::-webkit-scrollbar {
+  display: none;
+}
+
+.oniriaAIQuickQuestions button {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.oniriaAIInputArea {
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+}
+
+.oniriaAIInputArea textarea {
+  min-width: 0 !important;
 }
 
 .oniriaWhatsappFabV2 {
   right: 32px !important;
-  bottom: 150px !important;
+  bottom: 24px !important;
   z-index: 680 !important;
 }
 
 @media (max-width: 700px) {
   .oniriaAIButton {
     right: 15px !important;
-    bottom: 184px !important;
+    bottom: 88px !important;
   }
 
   .oniriaAIChat {
-    right: 8px !important;
-    bottom: 252px !important;
-    height: calc(100vh - 266px) !important;
+    right: 12px !important;
+    left: 12px !important;
+    bottom: 156px !important;
+    width: auto !important;
+    height: min(620px, calc(100dvh - 172px)) !important;
+    max-height: calc(100dvh - 172px) !important;
+    border-radius: 18px !important;
   }
 
   .oniriaWhatsappFabV2 {
     right: 15px !important;
-    bottom: 112px !important;
+    bottom: 16px !important;
   }
 }

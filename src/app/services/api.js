@@ -69,6 +69,18 @@ export function submitEnquiry(payload, endpoint = "/enquiries") {
   });
 }
 
+export function subscribeNewsletter(payload) {
+  return request("/newsletter/subscribe", {
+    method: "POST",
+    body: JSON.stringify({
+      ...getCampaignAttribution(),
+      anonymous_session_id: payload.anonymous_session_id || getAnonymousSessionId(),
+      source_page: payload.source_page || (typeof window === "undefined" ? null : window.location.pathname),
+      ...payload,
+    }),
+  });
+}
+
 export function askOniriaAI(payload) {
   return request("/ai/chat", {
     method: "POST",

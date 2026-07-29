@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     rate_limit_per_minute: int = 120
     whatsapp_verify_token: str = "oniria-demo-verify-token"
     whatsapp_app_secret: str | None = None
+    frontend_url: str = "http://localhost:3000"
+    mail_provider: str | None = None
+    mail_from: str | None = None
+    mail_from_name: str = "ONIRIA City"
 
     model_config = SettingsConfigDict(
         env_file=".env",

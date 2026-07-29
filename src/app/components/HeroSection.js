@@ -221,11 +221,6 @@ export default function HeroSection() {
         <p className="heroLocation">Fumba, Zanzibar</p>
       </div>
 
-      <div className="heroSlideStatus" aria-label="Current hero slide">
-        {String(currentSlide + 1).padStart(2, "0")} /{" "}
-        {String(slides.length).padStart(2, "0")}
-      </div>
-
       <button
         type="button"
         className="heroArrow heroArrowLeft"

@@ -35,3 +35,21 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         bucket.append(now)
         return await call_next(request)
+
+
+class FixedWindowRateLimiter:
+    def __init__(self, max_attempts: int, window_seconds: int) -> None:
+        self.max_attempts = max_attempts
+        self.window_seconds = window_seconds
+        self._attempts: dict[str, deque[float]] = defaultdict(deque)
+
+    def allow(self, key: str) -> bool:
+        now = time.monotonic()
+        window_start = now - self.window_seconds
+        bucket = self._attempts[key]
+        while bucket and bucket[0] < window_start:
+            bucket.popleft()
+        if len(bucket) >= self.max_attempts:
+            return False
+        bucket.append(now)
+        return True

@@ -5,28 +5,35 @@ export default function FinalSalesCTA() {
         className="finalSalesBackground"
         style={{
           backgroundImage:
-            "url('/media/oniria/v-avenue-commercial.png')",
+            "url('/media/oniria/villa-pool-rear.png')",
         }}
       >
         <div className="finalSalesOverlay" />
 
         <div className="finalSalesContent">
-          <p className="finalSalesLabel">YOUR PLACE IN ZANZIBAR</p>
+          <p className="finalSalesLabel">BEGIN YOUR</p>
 
-          <h2>Begin your ONIRIA journey</h2>
+          <h2>ONIRIA story</h2>
 
           <p className="finalSalesDescription">
-            Discover a new opportunity to live, invest and belong in a
-            thoughtfully designed community in Fumba, Zanzibar.
+            Explore a collection shaped around the way you want to live.
           </p>
 
           <div className="finalSalesActions">
-            <a href="/inquiries" className="finalSalesPrimaryButton">
-              Make an inquiry
+            <a href="/inquiries?type=brochure" className="finalSalesPrimaryButton">
+              Request brochure
             </a>
 
-            <a href="/contact" className="finalSalesSecondaryButton">
-              Contact our team
+            <a href="/inquiries" className="finalSalesPrimaryButton">
+              Register interest
+            </a>
+
+            <a href="/inquiries?type=site-visit" className="finalSalesSecondaryButton">
+              Arrange site visit
+            </a>
+
+            <a href="https://wa.me/255000000000" className="finalSalesSecondaryButton" target="_blank" rel="noopener noreferrer">
+              Continue on WhatsApp
             </a>
           </div>
 

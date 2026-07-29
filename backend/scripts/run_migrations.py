@@ -28,6 +28,8 @@ MYSQL_MIGRATION_FILES = (
     "012_indexes_constraints.sql",
     "013_views.sql",
     "014_audit_logs.sql",
+    "015_staff_account_recovery.sql",
+    "016_newsletter_subscriptions.sql",
 )
 
 

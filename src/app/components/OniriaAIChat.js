@@ -420,18 +420,12 @@ export default function OniriaAIChat() {
         className={`oniriaAIButton ${isOpen ? "oniriaAIButtonOpen" : ""}`}
         onClick={() => setIsOpen((current) => !current)}
         aria-label={isOpen ? "Close ONIRIA assistant" : "Open ONIRIA assistant"}
+        title={isOpen ? "Close ONIRIA assistant" : "Open ONIRIA assistant"}
       >
         {isOpen ? (
           <span className="oniriaAICloseIcon">×</span>
         ) : (
-          <>
-            <span className="oniriaAIButtonMark">O</span>
-
-            <span className="oniriaAIButtonText">
-              <strong>Ask ONIRIA</strong>
-              <small>AI assistant</small>
-            </span>
-          </>
+          <span className="oniriaAIButtonMark" aria-hidden="true">O</span>
         )}
       </button>
 

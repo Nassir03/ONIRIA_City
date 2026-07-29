@@ -88,6 +88,15 @@ class StaffRepository:
     async def revoke_session(self, token_hash: str) -> None:
         await self.pool.execute("UPDATE staff_sessions SET revoked_at = CURRENT_TIMESTAMP WHERE token_hash = %s", token_hash)
 
+    async def revoke_staff_sessions(self, staff_id: int) -> int:
+        return await self.pool.execute(
+            "UPDATE staff_sessions SET revoked_at = CURRENT_TIMESTAMP WHERE staff_user_id = %s AND revoked_at IS NULL",
+            staff_id,
+        )
+
+    async def update_password(self, staff_id: int, password_hash: str) -> None:
+        await self.pool.execute("UPDATE staff_users SET password_hash = %s WHERE id = %s", password_hash, staff_id)
+
     async def list_staff(self) -> list[dict[str, Any]]:
         rows = await self.pool.fetch("SELECT id, full_name, email, is_active, last_login_at, created_at FROM staff_users ORDER BY full_name")
         for row in rows:

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { adminApi } from "../../services/adminApi";
 
@@ -36,6 +37,11 @@ export default function StaffLoginForm() {
       </label>
       {error && <p className="adminError">{error}</p>}
       <button type="submit" disabled={loading}>{loading ? "Signing in..." : "Sign in"}</button>
+      <div className="adminAuthLinks">
+        <Link href="/admin/forgot-password">Forgot Password?</Link>
+        <Link href="/admin/forgot-email">Forgot Staff Email?</Link>
+        <Link href="/admin/forgot-email?reason=other">Contact Administrator</Link>
+      </div>
     </form>
   );
 }
