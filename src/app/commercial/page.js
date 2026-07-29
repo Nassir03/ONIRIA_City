@@ -1,0 +1,89 @@
+import PropertyCollectionPage from "../components/PropertyCollectionPage";
+
+export const metadata = {
+  title: "Commercial | ONIRIA City",
+  description:
+    "Explore commercial and retail opportunities at ONIRIA City.",
+};
+
+const commercialSpaces = [
+  {
+    title: "V Avenue Retail Space",
+    collection: "COMMERCIAL",
+    location: "V Avenue, ONIRIA City",
+    image:
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=1500&auto=format&fit=crop",
+    area: "Flexible layouts",
+    priceLabel: "Leasing",
+    price: "Enquire now",
+    status: "Opportunity",
+    description:
+      "A retail space positioned within the planned social, dining and commercial centre of ONIRIA City.",
+    link: "/commercial/retail-space",
+  },
+  {
+    title: "Restaurant and Café Space",
+    collection: "FOOD & BEVERAGE",
+    location: "V Avenue, ONIRIA City",
+    image:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=85&w=1500&auto=format&fit=crop",
+    area: "Flexible layouts",
+    priceLabel: "Leasing",
+    price: "Enquire now",
+    description:
+      "A hospitality opportunity designed for cafés, restaurants and social dining experiences.",
+    link: "/commercial/restaurant-space",
+  },
+  {
+    title: "Professional Office Space",
+    collection: "OFFICES",
+    location: "V Avenue, ONIRIA City",
+    image:
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=85&w=1500&auto=format&fit=crop",
+    area: "Flexible layouts",
+    priceLabel: "Leasing",
+    price: "Enquire now",
+    description:
+      "Modern office space for businesses seeking a well-designed address within a connected Zanzibar destination.",
+    link: "/commercial/office-space",
+  },
+];
+
+export default function CommercialPage() {
+  return (
+    <PropertyCollectionPage
+      hero={{
+        eyebrow: "COMMERCIAL OPPORTUNITIES",
+        title: "Build Your Business within ONIRIA City",
+        description:
+          "Retail, dining, office and service opportunities positioned within a growing residential and lifestyle destination.",
+        image:
+          "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=2000&auto=format&fit=crop",
+      }}
+      introduction={{
+        label: "V AVENUE BUSINESS",
+        title: "A destination for commerce, dining and connection",
+        description:
+          "Commercial spaces at ONIRIA are planned to support residents, visitors and businesses through a connected mixed-use environment.",
+      }}
+      features={[
+        {
+          title: "Resident demand",
+          description:
+            "Businesses benefit from proximity to the wider ONIRIA residential community.",
+        },
+        {
+          title: "Flexible spaces",
+          description:
+            "Layouts can support retail, dining, offices and selected professional services.",
+        },
+        {
+          title: "Destination setting",
+          description:
+            "V Avenue is planned as a social and commercial centre for ONIRIA City.",
+        },
+      ]}
+      properties={commercialSpaces}
+    />
+  );
+}
