@@ -11,6 +11,13 @@ class Settings(BaseSettings):
     api_prefix: str = "/api"
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
     database_url: str | None = None
+    mysql_host: str | None = None
+    mysql_port: int = 3306
+    mysql_database: str | None = None
+    mysql_user: str | None = None
+    mysql_password: str | None = None
+    mysql_pool_size: int = 10
+    mysql_max_overflow: int = 20
     database_min_size: int = 1
     database_max_size: int = 5
     log_level: str = "INFO"
@@ -42,6 +49,14 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @property
+    def effective_database_url(self) -> str | None:
+        if self.database_url:
+            return self.database_url
+        if all([self.mysql_host, self.mysql_database, self.mysql_user, self.mysql_password]):
+            return f"mysql://{self.mysql_user}:{self.mysql_password}@{self.mysql_host}:{self.mysql_port}/{self.mysql_database}"
+        return None
 
     @field_validator("database_max_size")
     @classmethod

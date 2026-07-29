@@ -30,6 +30,23 @@ export function getCampaignAttribution() {
   };
 }
 
+function enrichEnquiryPayload(payload) {
+  if (typeof window === "undefined") {
+    return payload;
+  }
+
+  return {
+    anonymous_session_id: payload.anonymous_session_id || getAnonymousSessionId(),
+    page_path: payload.page_path || window.location.pathname,
+    referral_url: payload.referral_url || document.referrer || null,
+    campaign: {
+      ...getCampaignAttribution(),
+      ...(payload.campaign || {}),
+    },
+    ...payload,
+  };
+}
+
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
@@ -48,7 +65,7 @@ async function request(path, options = {}) {
 export function submitEnquiry(payload, endpoint = "/enquiries") {
   return request(endpoint, {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify(enrichEnquiryPayload(payload)),
   });
 }
 

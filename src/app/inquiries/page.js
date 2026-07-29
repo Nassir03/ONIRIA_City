@@ -104,6 +104,7 @@ export default function InquiriesPage() {
       "site-visit": "/site-visits",
       consultation: "/consultations",
       brochure: "/brochure-requests",
+      commercial: "/commercial-enquiries",
     };
     return endpoints[value] || "/enquiries";
   }
@@ -136,9 +137,12 @@ export default function InquiriesPage() {
           name: formData.fullName,
           email: formData.email,
           phone: formData.phone,
+          country: formData.country || null,
           message: formData.message || "Website inquiry",
           collection_slug: formData.propertyCollection || null,
+          bedroom_preference: formData.bedrooms || null,
           budget: formData.budget || null,
+          preferred_contact_method: formData.preferredContact || null,
           anonymous_session_id: getAnonymousSessionId(),
           consent: formData.consent,
           campaign: getCampaignAttribution(),

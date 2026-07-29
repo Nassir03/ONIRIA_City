@@ -8,7 +8,19 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import ai_routes, enquiry_routes, property_routes, search_routes, whatsapp_routes
+from app.api import (
+    admin_auth_routes,
+    admin_conversation_routes,
+    admin_dashboard_routes,
+    admin_enquiry_routes,
+    admin_lead_routes,
+    admin_staff_routes,
+    ai_routes,
+    enquiry_routes,
+    property_routes,
+    search_routes,
+    whatsapp_routes,
+)
 from app.config import get_settings
 from app.database import db
 from app.utils.logger import configure_logging
@@ -37,7 +49,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -53,6 +65,8 @@ app.add_middleware(
         f"{settings.api_prefix}/brochure-requests",
         f"{settings.api_prefix}/consultations",
         f"{settings.api_prefix}/site-visits",
+        f"{settings.api_prefix}/commercial-enquiries",
+        f"{settings.api_prefix}/admin/login",
         f"{settings.api_prefix}/ai",
         f"{settings.api_prefix}/webhooks/whatsapp",
     ),
@@ -113,7 +127,7 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 async def healthcheck():
     database_connected = await db.healthcheck()
     database_status = "connected" if database_connected else "not_configured"
-    if settings.database_url and not database_connected:
+    if settings.effective_database_url and not database_connected:
         database_status = "unavailable"
     return {
         "success": True,
@@ -132,3 +146,9 @@ app.include_router(enquiry_routes.router, prefix=settings.api_prefix)
 app.include_router(enquiry_routes.internal_router, prefix=settings.api_prefix)
 app.include_router(ai_routes.router, prefix=settings.api_prefix)
 app.include_router(whatsapp_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_auth_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_dashboard_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_lead_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_enquiry_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_conversation_routes.router, prefix=settings.api_prefix)
+app.include_router(admin_staff_routes.router, prefix=settings.api_prefix)

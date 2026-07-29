@@ -19,6 +19,45 @@ services:
       retries: 10
       start_period: 20s
 
+  migrate:
+    image: mysql:8.4
+    container_name: oniria-city-migrate
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MYSQL_PWD: oniria_password
+    volumes:
+      - ./database:/database:ro
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        for file in \
+          /database/migrations/001_database_setup.sql \
+          /database/migrations/002_staff_security.sql \
+          /database/migrations/003_property_catalogue.sql \
+          /database/migrations/004_masterplan_amenities.sql \
+          /database/migrations/005_anonymous_sessions.sql \
+          /database/migrations/006_customers_leads.sql \
+          /database/migrations/007_enquiries_requests.sql \
+          /database/migrations/008_lead_operations.sql \
+          /database/migrations/009_campaigns.sql \
+          /database/migrations/010_conversations.sql \
+          /database/migrations/011_knowledge.sql \
+          /database/migrations/012_indexes_constraints.sql \
+          /database/migrations/013_views.sql \
+          /database/migrations/014_audit_logs.sql \
+          /database/seed/staff_roles.sql \
+          /database/seed/property_seed.sql \
+          /database/seed/masterplan_seed.sql
+        do
+          echo "Applying $$file"
+          mysql -hmysql -P3306 -uoniria_user < "$$file"
+        done
+    restart: "no"
+
   backend:
     build:
       context: ./backend
@@ -28,12 +67,17 @@ services:
       - ./backend/.env.example
     environment:
       DATABASE_URL: mysql://oniria_user:oniria_password@mysql:3306/oniria_city
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: oniria_city
+      MYSQL_USER: oniria_user
+      MYSQL_PASSWORD: oniria_password
       CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,http://localhost:7000,http://127.0.0.1:7000
     ports:
       - "7000:7000"
     depends_on:
-      mysql:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7000/api/health', timeout=5).read()"]

@@ -33,6 +33,7 @@ class CampaignAttribution(BaseModel):
     utm_term: str | None = Field(default=None, max_length=120)
     landing_page: str | None = Field(default=None, max_length=300)
     referrer: str | None = Field(default=None, max_length=300)
+    first_visit_at: str | None = Field(default=None, max_length=60)
 
 
 class EnquiryCreate(BaseModel):
@@ -40,16 +41,39 @@ class EnquiryCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
     email: str | None = Field(default=None, max_length=254)
     phone: str | None = Field(default=None, min_length=7, max_length=30)
+    country: str | None = Field(default=None, max_length=100)
+    preferred_language: str | None = Field(default=None, max_length=60)
+    preferred_contact_method: str | None = Field(default=None, max_length=60)
+    preferred_contact_time: str | None = Field(default=None, max_length=120)
     message: str | None = Field(default=None, max_length=2000)
     property_slug: str | None = Field(default=None, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
     collection_slug: str | None = Field(default=None, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    bedroom_preference: str | None = Field(default=None, max_length=80)
     budget: str | None = Field(default=None, max_length=80)
+    buying_purpose: str | None = Field(default=None, max_length=120)
     purchase_timeline: PurchaseTimeline | None = None
     anonymous_session_id: str | None = Field(default=None, min_length=8, max_length=120)
+    page_path: str | None = Field(default=None, max_length=300)
+    referral_url: str | None = Field(default=None, max_length=500)
     consent: bool
+    marketing_consent: bool = False
     campaign: CampaignAttribution = Field(default_factory=CampaignAttribution)
 
-    @field_validator("name", "phone", "message", "budget", "anonymous_session_id")
+    @field_validator(
+        "name",
+        "phone",
+        "country",
+        "preferred_language",
+        "preferred_contact_method",
+        "preferred_contact_time",
+        "message",
+        "bedroom_preference",
+        "budget",
+        "buying_purpose",
+        "anonymous_session_id",
+        "page_path",
+        "referral_url",
+    )
     @classmethod
     def strip_text(cls, value: str | None) -> str | None:
         if not isinstance(value, str):

@@ -6,6 +6,12 @@ import json
 from typing import Any
 
 from app.schemas.enquiry_schemas import CampaignAttribution, EnquiryCreate, LeadActivity, LeadDetail, LeadSummary
+from app.utils.reference_number import make_reference_number
+
+try:
+    import aiomysql
+except ModuleNotFoundError:
+    aiomysql = None
 
 
 class InMemoryLeadStore:
@@ -66,6 +72,52 @@ class LeadRepository:
         }
         self.store.leads[lead["id"]] = lead
         return lead
+
+    async def create_enquiry_record(
+        self,
+        *,
+        payload: EnquiryCreate,
+        score: int,
+        follow_up_status: str,
+        campaign: CampaignAttribution,
+        notification_status: str = "pending",
+    ) -> dict[str, Any]:
+        if self.pool:
+            return await self._create_enquiry_record_db(
+                payload=payload,
+                score=score,
+                follow_up_status=follow_up_status,
+                campaign=campaign,
+                notification_status=notification_status,
+            )
+
+        lead = await self.find_or_create_lead(payload)
+        sequence = await self.next_reference_sequence()
+        reference_number = make_reference_number(sequence)
+        enquiry = await self.save_enquiry_activity(
+            lead=lead,
+            payload=payload,
+            reference_number=reference_number,
+            score=score,
+            follow_up_status=follow_up_status,
+            campaign=campaign,
+            notification_status=notification_status,
+        )
+        return {"lead": lead, "enquiry": enquiry, "reference_number": reference_number}
+
+    async def update_notification_status(self, reference_number: str, notification_status: str) -> None:
+        if self.pool:
+            await self.pool.execute(
+                "UPDATE enquiries SET notification_status = %s WHERE reference_number = %s",
+                notification_status,
+                reference_number,
+            )
+            return
+
+        for enquiry in self.store.enquiries:
+            if enquiry["reference_number"] == reference_number:
+                enquiry["notification_status"] = notification_status
+                return
 
     async def save_enquiry_activity(
         self,
@@ -191,6 +243,7 @@ class LeadRepository:
     async def _find_or_create_lead_db(self, payload: EnquiryCreate) -> dict[str, Any]:
         email = str(payload.email).lower() if payload.email else None
         phone = payload.phone
+        customer_id = await self._find_or_create_customer_db(payload)
         existing = None
         if email:
             existing = await self.pool.fetchrow("SELECT * FROM leads WHERE email = %s LIMIT 1", email)
@@ -201,15 +254,297 @@ class LeadRepository:
 
         lead_id = await self.pool.insert_and_get_id(
             """
-            INSERT INTO leads (name, email, phone, score, follow_up_status, property_interests, collection_interests)
-            VALUES (%s, %s, %s, 0, 'new', JSON_ARRAY(), JSON_ARRAY())
+            INSERT INTO leads (
+                customer_id, name, email, phone, anonymous_session_id, property_interest,
+                bedroom_preference, budget_range, buying_purpose, purchase_timeframe,
+                source_platform, campaign_name, utm_source, utm_medium, utm_campaign,
+                utm_content, utm_term, landing_page, referral_url, score, lead_score,
+                follow_up_status, lead_status, property_interests, collection_interests
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0, 0, 'new', 'New', JSON_ARRAY(), JSON_ARRAY())
             """,
+            customer_id,
             payload.name,
             email,
             phone,
+            payload.anonymous_session_id,
+            payload.property_slug or payload.collection_slug,
+            payload.bedroom_preference,
+            payload.budget,
+            payload.buying_purpose,
+            payload.purchase_timeline.value if payload.purchase_timeline else None,
+            payload.campaign.utm_source,
+            payload.campaign.utm_campaign,
+            payload.campaign.utm_source,
+            payload.campaign.utm_medium,
+            payload.campaign.utm_campaign,
+            payload.campaign.utm_content,
+            payload.campaign.utm_term,
+            payload.page_path or payload.campaign.landing_page,
+            payload.referral_url or payload.campaign.referrer,
         )
         created = await self.pool.fetchrow("SELECT * FROM leads WHERE id = %s", lead_id)
         return self._normalize_db_lead(created)
+
+    async def _create_enquiry_record_db(
+        self,
+        *,
+        payload: EnquiryCreate,
+        score: int,
+        follow_up_status: str,
+        campaign: CampaignAttribution,
+        notification_status: str,
+    ) -> dict[str, Any]:
+        if aiomysql is None:
+            raise RuntimeError("aiomysql is required for MySQL enquiry records")
+
+        async with self.pool.transaction() as connection:
+            async with connection.cursor(aiomysql.DictCursor) as cursor:
+                await cursor.execute("INSERT INTO enquiry_reference_sequence () VALUES ()")
+                reference_number = make_reference_number(int(cursor.lastrowid))
+                lead = await self._find_or_create_lead_db_tx(cursor, payload)
+                enquiry = await self._save_enquiry_activity_db_tx(
+                    cursor=cursor,
+                    lead=lead,
+                    payload=payload,
+                    reference_number=reference_number,
+                    score=score,
+                    follow_up_status=follow_up_status,
+                    campaign=campaign,
+                    notification_status=notification_status,
+                )
+                return {"lead": lead, "enquiry": enquiry, "reference_number": reference_number}
+
+    async def _find_or_create_lead_db_tx(self, cursor: Any, payload: EnquiryCreate) -> dict[str, Any]:
+        email = str(payload.email).lower() if payload.email else None
+        phone = payload.phone
+        customer_id = await self._find_or_create_customer_db_tx(cursor, payload)
+        existing = None
+        if email:
+            await cursor.execute("SELECT * FROM leads WHERE email = %s LIMIT 1", (email,))
+            existing = await cursor.fetchone()
+        if not existing and phone:
+            await cursor.execute("SELECT * FROM leads WHERE phone = %s LIMIT 1", (phone,))
+            existing = await cursor.fetchone()
+        if existing:
+            return self._normalize_db_lead(existing)
+
+        await cursor.execute(
+            """
+            INSERT INTO leads (
+                customer_id, name, email, phone, anonymous_session_id, property_interest,
+                bedroom_preference, budget_range, buying_purpose, purchase_timeframe,
+                source_platform, campaign_name, utm_source, utm_medium, utm_campaign,
+                utm_content, utm_term, landing_page, referral_url, score, lead_score,
+                follow_up_status, lead_status, property_interests, collection_interests
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0, 0, 'new', 'New', JSON_ARRAY(), JSON_ARRAY())
+            """,
+            (
+                customer_id,
+                payload.name,
+                email,
+                phone,
+                payload.anonymous_session_id,
+                payload.property_slug or payload.collection_slug,
+                payload.bedroom_preference,
+                payload.budget,
+                payload.buying_purpose,
+                payload.purchase_timeline.value if payload.purchase_timeline else None,
+                payload.campaign.utm_source,
+                payload.campaign.utm_campaign,
+                payload.campaign.utm_source,
+                payload.campaign.utm_medium,
+                payload.campaign.utm_campaign,
+                payload.campaign.utm_content,
+                payload.campaign.utm_term,
+                payload.page_path or payload.campaign.landing_page,
+                payload.referral_url or payload.campaign.referrer,
+            ),
+        )
+        lead_id = int(cursor.lastrowid)
+        await cursor.execute("SELECT * FROM leads WHERE id = %s", (lead_id,))
+        return self._normalize_db_lead(await cursor.fetchone())
+
+    async def _find_or_create_customer_db_tx(self, cursor: Any, payload: EnquiryCreate) -> int | None:
+        email = str(payload.email).lower() if payload.email else None
+        phone = payload.phone
+        existing = None
+        if email:
+            await cursor.execute("SELECT id FROM customers WHERE email = %s LIMIT 1", (email,))
+            existing = await cursor.fetchone()
+        if not existing and phone:
+            await cursor.execute("SELECT id FROM customers WHERE phone = %s LIMIT 1", (phone,))
+            existing = await cursor.fetchone()
+        if existing:
+            await cursor.execute(
+                """
+                UPDATE customers
+                SET full_name = %s,
+                    phone = COALESCE(%s, phone),
+                    country = COALESCE(%s, country),
+                    preferred_language = COALESCE(%s, preferred_language),
+                    preferred_contact_method = COALESCE(%s, preferred_contact_method),
+                    marketing_consent = GREATEST(marketing_consent, %s),
+                    privacy_consent = %s
+                WHERE id = %s
+                """,
+                (
+                    payload.name,
+                    phone,
+                    payload.country,
+                    payload.preferred_language,
+                    payload.preferred_contact_method,
+                    1 if payload.marketing_consent else 0,
+                    1 if payload.consent else 0,
+                    existing["id"],
+                ),
+            )
+            return int(existing["id"])
+        await cursor.execute(
+            """
+            INSERT INTO customers (
+                full_name, email, phone, country, preferred_language,
+                preferred_contact_method, marketing_consent, privacy_consent
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                payload.name,
+                email,
+                phone,
+                payload.country,
+                payload.preferred_language,
+                payload.preferred_contact_method,
+                1 if payload.marketing_consent else 0,
+                1 if payload.consent else 0,
+            ),
+        )
+        return int(cursor.lastrowid)
+
+    async def _save_enquiry_activity_db_tx(
+        self,
+        *,
+        cursor: Any,
+        lead: dict[str, Any],
+        payload: EnquiryCreate,
+        reference_number: str,
+        score: int,
+        follow_up_status: str,
+        campaign: CampaignAttribution,
+        notification_status: str,
+    ) -> dict[str, Any]:
+        property_interests = list(lead.get("property_interests") or [])
+        collection_interests = list(lead.get("collection_interests") or [])
+        if payload.property_slug and payload.property_slug not in property_interests:
+            property_interests.append(payload.property_slug)
+        if payload.collection_slug and payload.collection_slug not in collection_interests:
+            collection_interests.append(payload.collection_slug)
+
+        await cursor.execute(
+            """
+            UPDATE leads
+            SET score = GREATEST(score, %s),
+                lead_score = GREATEST(lead_score, %s),
+                follow_up_status = %s,
+                lead_status = CASE WHEN lead_status = 'New' THEN 'New' ELSE lead_status END,
+                reference_number = COALESCE(reference_number, %s),
+                property_interests = %s,
+                collection_interests = %s,
+                property_interest = COALESCE(%s, property_interest),
+                bedroom_preference = COALESCE(%s, bedroom_preference),
+                budget_range = COALESCE(%s, budget_range),
+                buying_purpose = COALESCE(%s, buying_purpose),
+                purchase_timeframe = COALESCE(%s, purchase_timeframe),
+                source_platform = COALESCE(%s, source_platform),
+                campaign_name = COALESCE(%s, campaign_name),
+                utm_source = COALESCE(%s, utm_source),
+                utm_medium = COALESCE(%s, utm_medium),
+                utm_campaign = COALESCE(%s, utm_campaign),
+                utm_content = COALESCE(%s, utm_content),
+                utm_term = COALESCE(%s, utm_term),
+                landing_page = COALESCE(%s, landing_page),
+                referral_url = COALESCE(%s, referral_url),
+                last_activity_at = CURRENT_TIMESTAMP
+            WHERE id = %s
+            """,
+            (
+                score,
+                score,
+                follow_up_status,
+                reference_number,
+                json.dumps(property_interests),
+                json.dumps(collection_interests),
+                payload.property_slug or payload.collection_slug,
+                payload.bedroom_preference,
+                payload.budget,
+                payload.buying_purpose,
+                payload.purchase_timeline.value if payload.purchase_timeline else None,
+                campaign.utm_source,
+                campaign.utm_campaign,
+                campaign.utm_source,
+                campaign.utm_medium,
+                campaign.utm_campaign,
+                campaign.utm_content,
+                campaign.utm_term,
+                payload.page_path or campaign.landing_page,
+                payload.referral_url or campaign.referrer,
+                lead["id"],
+            ),
+        )
+        await cursor.execute(
+            """
+            INSERT INTO enquiries (
+                reference_number, lead_id, enquiry_type, message, preferred_contact_time, payload, score, follow_up_status, notification_status
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                reference_number,
+                lead["id"],
+                payload.enquiry_type.value,
+                payload.message,
+                payload.preferred_contact_time,
+                payload.model_dump_json(),
+                score,
+                follow_up_status,
+                notification_status,
+            ),
+        )
+        enquiry_id = int(cursor.lastrowid)
+        if payload.enquiry_type.value == "brochure":
+            await cursor.execute("INSERT INTO brochure_requests (lead_id, enquiry_id) VALUES (%s, %s)", (lead["id"], enquiry_id))
+        elif payload.enquiry_type.value == "consultation":
+            await cursor.execute(
+                "INSERT INTO consultations (lead_id, enquiry_id, preferred_date) VALUES (%s, %s, %s)",
+                (lead["id"], enquiry_id, getattr(payload, "preferred_date", None)),
+            )
+        elif payload.enquiry_type.value == "site_visit":
+            await cursor.execute(
+                "INSERT INTO site_visits (lead_id, enquiry_id, preferred_date, number_of_guests) VALUES (%s, %s, %s, %s)",
+                (lead["id"], enquiry_id, getattr(payload, "preferred_date", None), getattr(payload, "number_of_guests", None)),
+            )
+        await cursor.execute(
+            """
+            INSERT INTO lead_activities (lead_id, reference_number, activity_type, summary, campaign)
+            VALUES (%s, %s, %s, %s, %s)
+            """,
+            (
+                lead["id"],
+                reference_number,
+                payload.enquiry_type.value,
+                self._activity_summary(payload),
+                campaign.model_dump_json(),
+            ),
+        )
+        return {
+            "reference_number": reference_number,
+            "lead_id": lead["id"],
+            "enquiry_type": payload.enquiry_type.value,
+            "score": score,
+            "follow_up_status": follow_up_status,
+            "notification_status": notification_status,
+        }
 
     async def _save_enquiry_activity_db(self, **kwargs) -> dict[str, Any]:
         lead = kwargs["lead"]
@@ -227,39 +562,91 @@ class LeadRepository:
         if payload.collection_slug and payload.collection_slug not in collection_interests:
             collection_interests.append(payload.collection_slug)
 
-        await self.pool.fetchrow(
+        await self.pool.execute(
             """
             UPDATE leads
             SET score = GREATEST(score, %s),
+                lead_score = GREATEST(lead_score, %s),
                 follow_up_status = %s,
+                lead_status = CASE WHEN lead_status = 'New' THEN 'New' ELSE lead_status END,
+                reference_number = COALESCE(reference_number, %s),
                 property_interests = %s,
                 collection_interests = %s,
+                property_interest = COALESCE(%s, property_interest),
+                bedroom_preference = COALESCE(%s, bedroom_preference),
+                budget_range = COALESCE(%s, budget_range),
+                buying_purpose = COALESCE(%s, buying_purpose),
+                purchase_timeframe = COALESCE(%s, purchase_timeframe),
+                source_platform = COALESCE(%s, source_platform),
+                campaign_name = COALESCE(%s, campaign_name),
+                utm_source = COALESCE(%s, utm_source),
+                utm_medium = COALESCE(%s, utm_medium),
+                utm_campaign = COALESCE(%s, utm_campaign),
+                utm_content = COALESCE(%s, utm_content),
+                utm_term = COALESCE(%s, utm_term),
+                landing_page = COALESCE(%s, landing_page),
+                referral_url = COALESCE(%s, referral_url),
                 last_activity_at = CURRENT_TIMESTAMP
             WHERE id = %s
             """,
             score,
+            score,
             follow_up_status,
+            reference_number,
             json.dumps(property_interests),
             json.dumps(collection_interests),
+            payload.property_slug or payload.collection_slug,
+            payload.bedroom_preference,
+            payload.budget,
+            payload.buying_purpose,
+            payload.purchase_timeline.value if payload.purchase_timeline else None,
+            campaign.utm_source,
+            campaign.utm_campaign,
+            campaign.utm_source,
+            campaign.utm_medium,
+            campaign.utm_campaign,
+            campaign.utm_content,
+            campaign.utm_term,
+            payload.page_path or campaign.landing_page,
+            payload.referral_url or campaign.referrer,
             lead["id"],
         )
-        await self.pool.fetchrow(
+        enquiry_id = await self.pool.insert_and_get_id(
             """
             INSERT INTO enquiries (
-                reference_number, lead_id, enquiry_type, payload, score, follow_up_status, notification_status
+                reference_number, lead_id, enquiry_type, message, preferred_contact_time, payload, score, follow_up_status, notification_status
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             reference_number,
             lead["id"],
             payload.enquiry_type.value,
+            payload.message,
+            payload.preferred_contact_time,
             payload.model_dump_json(),
             score,
             follow_up_status,
             notification_status,
         )
+        if payload.enquiry_type.value == "brochure":
+            await self.pool.execute("INSERT INTO brochure_requests (lead_id, enquiry_id) VALUES (%s, %s)", lead["id"], enquiry_id)
+        elif payload.enquiry_type.value == "consultation":
+            await self.pool.execute(
+                "INSERT INTO consultations (lead_id, enquiry_id, preferred_date) VALUES (%s, %s, %s)",
+                lead["id"],
+                enquiry_id,
+                getattr(payload, "preferred_date", None),
+            )
+        elif payload.enquiry_type.value == "site_visit":
+            await self.pool.execute(
+                "INSERT INTO site_visits (lead_id, enquiry_id, preferred_date, number_of_guests) VALUES (%s, %s, %s, %s)",
+                lead["id"],
+                enquiry_id,
+                getattr(payload, "preferred_date", None),
+                getattr(payload, "number_of_guests", None),
+            )
         activity_summary = self._activity_summary(payload)
-        await self.pool.fetchrow(
+        await self.pool.execute(
             """
             INSERT INTO lead_activities (lead_id, reference_number, activity_type, summary, campaign)
             VALUES (%s, %s, %s, %s, %s)
@@ -278,6 +665,58 @@ class LeadRepository:
             "follow_up_status": follow_up_status,
             "notification_status": notification_status,
         }
+
+    async def _find_or_create_customer_db(self, payload: EnquiryCreate) -> int | None:
+        email = str(payload.email).lower() if payload.email else None
+        phone = payload.phone
+        existing = None
+        if email:
+            existing = await self.pool.fetchrow("SELECT id FROM customers WHERE email = %s LIMIT 1", email)
+        if not existing and phone:
+            existing = await self.pool.fetchrow("SELECT id FROM customers WHERE phone = %s LIMIT 1", phone)
+        if existing:
+            await self.pool.execute(
+                """
+                UPDATE customers
+                SET full_name = %s,
+                    phone = COALESCE(%s, phone),
+                    country = COALESCE(%s, country),
+                    preferred_language = COALESCE(%s, preferred_language),
+                    preferred_contact_method = COALESCE(%s, preferred_contact_method),
+                    marketing_consent = GREATEST(marketing_consent, %s),
+                    privacy_consent = %s
+                WHERE id = %s
+                """,
+                payload.name,
+                phone,
+                payload.country,
+                payload.preferred_language,
+                payload.preferred_contact_method,
+                1 if payload.marketing_consent else 0,
+                1 if payload.consent else 0,
+                existing["id"],
+            )
+            return int(existing["id"])
+        try:
+            return await self.pool.insert_and_get_id(
+                """
+                INSERT INTO customers (
+                    full_name, email, phone, country, preferred_language,
+                    preferred_contact_method, marketing_consent, privacy_consent
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                payload.name,
+                email,
+                phone,
+                payload.country,
+                payload.preferred_language,
+                payload.preferred_contact_method,
+                1 if payload.marketing_consent else 0,
+                1 if payload.consent else 0,
+            )
+        except Exception:
+            return None
 
     def _normalize_db_lead(self, row: dict[str, Any] | None) -> dict[str, Any]:
         if row is None:

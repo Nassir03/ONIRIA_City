@@ -42,10 +42,11 @@ def test_general_enquiry_creates_lead_reference_activity_and_campaign():
     assert body["lead_score"] >= 70
     assert body["follow_up_status"] == "priority_follow_up"
 
-    detail = client.get("/api/internal/leads/1").json()["data"]
-    assert detail["email"] == "amina@example.com"
-    assert detail["property_interests"] == ["skyline-villa"]
-    assert detail["activities"][0]["campaign"]["utm_source"] == "google"
+    lead = store.leads[1]
+    assert lead["email"] == "amina@example.com"
+    assert lead["property_interests"] == ["skyline-villa"]
+    assert store.activities[0]["campaign"].utm_source == "google"
+    assert store.enquiries[0]["notification_status"] == "logged"
 
 
 def test_brochure_request_reuses_existing_lead_by_email():
@@ -57,8 +58,7 @@ def test_brochure_request_reuses_existing_lead_by_email():
     assert second["lead_id"] == first["lead_id"]
     assert second["reference_number"] != first["reference_number"]
 
-    lead = client.get("/api/internal/leads/1").json()["data"]
-    assert len(lead["activities"]) == 2
+    assert len([activity for activity in store.activities if activity["lead_id"] == 1]) == 2
 
 
 def test_consultation_and_site_visit_have_high_follow_up_status():
@@ -76,11 +76,10 @@ def test_consultation_and_site_visit_have_high_follow_up_status():
     assert site_visit["follow_up_status"] == "priority_follow_up"
 
 
-def test_internal_lead_list_returns_demo_leads():
+def test_internal_lead_list_is_not_public_without_staff_database_session():
     client.post("/api/enquiries", json=valid_payload())
     response = client.get("/api/internal/leads")
-    assert response.status_code == 200
-    assert response.json()["data"][0]["name"] == "Amina Hassan"
+    assert response.status_code in {401, 503}
 
 
 def test_rejects_missing_contact_or_consent():

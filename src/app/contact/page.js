@@ -52,16 +52,20 @@ export default function ContactPage() {
 
     setIsSubmitting(true);
     try {
-      const result = await submitEnquiry({
-        enquiry_type: formData.subject === "commercial" ? "commercial" : "general",
-        name: formData.fullName,
-        email: formData.email,
-        phone: formData.phone || null,
-        message: formData.message,
-        anonymous_session_id: getAnonymousSessionId(),
-        consent: true,
-        campaign: getCampaignAttribution(),
-      });
+      const isCommercial = formData.subject === "commercial";
+      const result = await submitEnquiry(
+        {
+          enquiry_type: isCommercial ? "commercial" : "general",
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone || null,
+          message: formData.message,
+          anonymous_session_id: getAnonymousSessionId(),
+          consent: true,
+          campaign: getCampaignAttribution(),
+        },
+        isCommercial ? "/commercial-enquiries" : "/enquiries"
+      );
       setStatus({
         type: "success",
         message: `${result.message} Reference: ${result.reference_number}`,

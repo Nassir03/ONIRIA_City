@@ -2,7 +2,6 @@ from app.repositories.lead_repository import LeadRepository
 from app.schemas.enquiry_schemas import EnquiryCreate, EnquiryResponse, LeadDetail, LeadSummary
 from app.services.campaign_service import CampaignService
 from app.services.notification_service import NotificationService
-from app.utils.reference_number import make_reference_number
 
 
 class LeadService:
@@ -17,27 +16,25 @@ class LeadService:
         self.notification_service = notification_service
 
     async def process_enquiry(self, payload: EnquiryCreate) -> EnquiryResponse:
-        lead = await self.repository.find_or_create_lead(payload)
         score = self.calculate_score(payload)
         follow_up_status = self.follow_up_status(score)
-        sequence = await self.repository.next_reference_sequence()
-        reference_number = make_reference_number(sequence)
         campaign = self.campaign_service.attribution_from_payload(payload)
+        record = await self.repository.create_enquiry_record(
+            payload=payload,
+            score=score,
+            follow_up_status=follow_up_status,
+            campaign=campaign,
+            notification_status="pending",
+        )
+        lead = record["lead"]
+        reference_number = record["reference_number"]
         notification_status = await self.notification_service.notify_sales_team(
             payload=payload,
             reference_number=reference_number,
             lead_id=lead["id"],
             score=score,
         )
-        await self.repository.save_enquiry_activity(
-            lead=lead,
-            payload=payload,
-            reference_number=reference_number,
-            score=score,
-            follow_up_status=follow_up_status,
-            campaign=campaign,
-            notification_status=notification_status,
-        )
+        await self.repository.update_notification_status(reference_number, notification_status)
         return EnquiryResponse(
             reference_number=reference_number,
             lead_id=lead["id"],
@@ -60,17 +57,19 @@ class LeadService:
             score += 10
         if payload.budget:
             score += 15
-        if payload.purchase_timeline in {"immediately", "1-3_months"}:
+        timeline = payload.purchase_timeline.value if payload.purchase_timeline else None
+        if timeline in {"immediately", "1-3_months"}:
             score += 25
-        elif payload.purchase_timeline == "3-6_months":
+        elif timeline == "3-6_months":
             score += 15
-        if payload.enquiry_type == "brochure":
+        enquiry_type = payload.enquiry_type.value
+        if enquiry_type == "brochure":
             score += 10
-        elif payload.enquiry_type == "consultation":
+        elif enquiry_type == "consultation":
             score += 25
-        elif payload.enquiry_type == "site_visit":
+        elif enquiry_type == "site_visit":
             score += 35
-        elif payload.enquiry_type == "commercial":
+        elif enquiry_type == "commercial":
             score += 20
         return min(score, 100)
 

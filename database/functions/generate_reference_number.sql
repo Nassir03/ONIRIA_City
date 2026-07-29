@@ -1,0 +1,2 @@
+-- Reference generation is implemented atomically through enquiry_reference_sequence.
+-- Format: ON-YYYYMMDD-NNNNN. See backend/app/utils/reference_number.py.

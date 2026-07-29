@@ -24,20 +24,21 @@ class Database:
         return self.pool is not None
 
     async def connect(self, settings: Settings) -> None:
-        if not settings.database_url:
+        database_url = settings.effective_database_url
+        if not database_url:
             logger.warning("DATABASE_URL is not configured; using seeded public content data")
             return
         if aiomysql is None:
             raise RuntimeError("aiomysql is required when DATABASE_URL is configured")
 
-        parsed_url = self._parse_mysql_url(str(settings.database_url))
+        parsed_url = self._parse_mysql_url(str(database_url))
         last_error: Exception | None = None
         for attempt in range(1, 11):
             try:
                 self.pool = await aiomysql.create_pool(
                     **parsed_url,
                     minsize=settings.database_min_size,
-                    maxsize=settings.database_max_size,
+                    maxsize=max(settings.database_max_size, settings.mysql_pool_size),
                     autocommit=True,
                     charset="utf8mb4",
                 )
@@ -96,6 +97,14 @@ class Database:
                 await cursor.execute(query, params)
                 return int(cursor.lastrowid)
 
+    async def execute(self, query: str, *params: Any) -> int:
+        if not self.pool:
+            raise RuntimeError("Database pool is not configured")
+        async with self.pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                return await cursor.execute(query, params)
+
+    @asynccontextmanager
     async def transaction(self) -> AsyncIterator[Any]:
         if not self.pool:
             raise RuntimeError("Database pool is not configured")
