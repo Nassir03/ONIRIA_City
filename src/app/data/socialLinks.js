@@ -43,21 +43,11 @@ function YouTubeIcon() {
   );
 }
 
-function WhatsAppIcon() {
-  return (
-    <SocialIcon>
-      <path d="M5.1 19.1 6.2 15a7 7 0 1 1 2.8 2.7l-3.9 1.4Z" />
-      <path d="M9.4 8.6c-0.2-0.5-0.4-0.5-0.7-0.5H8.1c-0.2 0-0.6 0.1-0.9 0.4-0.3 0.4-1.1 1.1-1.1 2.6s1.1 3 1.2 3.2c0.2 0.2 2.2 3.4 5.3 4.6 2.6 1 3.1 0.8 3.7 0.8 0.6-0.1 1.8-0.8 2.1-1.5 0.3-0.7 0.3-1.3 0.2-1.5-0.1-0.1-0.3-0.2-0.7-0.4l-2-1c-0.3-0.1-0.6-0.2-0.8 0.2l-0.8 1c-0.2 0.3-0.4 0.3-0.8 0.1-0.4-0.2-1.5-0.6-2.9-1.8-1.1-1-1.8-2.1-2-2.5-0.2-0.4 0-0.6 0.2-0.8l0.5-0.6c0.2-0.2 0.2-0.4 0.3-0.6 0.1-0.2 0.1-0.4 0-0.6l-0.9-2Z" />
-    </SocialIcon>
-  );
-}
-
 const defaultSocialUrls = {
   instagram: "https://www.instagram.com/oniriacity/",
   facebook: "https://www.facebook.com/oniriacity",
   linkedin: "https://www.linkedin.com/company/oniria-city",
   youtube: "https://www.youtube.com/@oniriacity",
-  whatsapp: "https://wa.me/255000000000",
 };
 
 export const socialLinks = [
@@ -80,11 +70,6 @@ export const socialLinks = [
     name: "YouTube",
     href: process.env.NEXT_PUBLIC_YOUTUBE_URL || process.env.NEXT_PUBLIC_ONIRIA_YOUTUBE_URL || defaultSocialUrls.youtube,
     Icon: YouTubeIcon,
-  },
-  {
-    name: "WhatsApp",
-    href: process.env.NEXT_PUBLIC_WHATSAPP_URL || process.env.NEXT_PUBLIC_ONIRIA_WHATSAPP_URL || defaultSocialUrls.whatsapp,
-    Icon: WhatsAppIcon,
   },
 ];
 

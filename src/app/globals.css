@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "react-phone-number-input/style.css";
 
 /* =========================================================
    GLOBAL SETTINGS
@@ -4061,6 +4062,87 @@ textarea {
 .formField input::placeholder,
 .formField textarea::placeholder {
   color: #969696;
+}
+
+.internationalPhoneField {
+  min-width: 0;
+}
+
+.internationalPhoneInput.PhoneInput {
+  width: 100%;
+  min-height: 52px;
+  border-bottom: 1px solid #bdb5a8;
+  background-color: transparent;
+  color: #111111;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.25s ease;
+}
+
+.internationalPhoneInput.PhoneInput:hover {
+  border-color: #8f8374;
+}
+
+.internationalPhoneInput.PhoneInput:focus-within {
+  border-color: #987b4f;
+}
+
+.internationalPhoneField.hasError .internationalPhoneInput.PhoneInput {
+  border-color: #9b352b;
+}
+
+.internationalPhoneInput .PhoneInputCountry {
+  min-height: 52px;
+  margin: 0;
+  padding-right: 12px;
+  border-right: 1px solid rgba(35, 35, 35, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.internationalPhoneInput .PhoneInputCountrySelect {
+  cursor: pointer;
+}
+
+.internationalPhoneInput .PhoneInputCountrySelectArrow {
+  width: 7px;
+  height: 7px;
+  margin-left: 3px;
+  border-color: #5f574c;
+  opacity: 1;
+}
+
+.internationalPhoneInput .PhoneInputCountryIcon {
+  width: 26px;
+  height: 18px;
+  overflow: hidden;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.12);
+}
+
+.internationalPhoneInput .PhoneInputInput {
+  min-width: 0;
+  min-height: 52px;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  color: #111111;
+  flex: 1 1 auto;
+  font-size: 15px;
+}
+
+.internationalPhoneInput .PhoneInputInput::placeholder {
+  color: #969696;
+}
+
+.formInlineError {
+  margin: 9px 0 0;
+  color: #7f3028;
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .formSubmitButton {

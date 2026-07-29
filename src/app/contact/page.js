@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { isValidPhoneNumber } from "react-phone-number-input";
 import Header from "../components/Header";
+import InternationalPhoneInput from "../components/InternationalPhoneInput";
 import PublicPageHero from "../components/PublicPageHero";
 import Footer from "../components/Footer";
 import {
@@ -23,6 +25,7 @@ export default function ContactPage() {
     type: "",
     message: "",
   });
+  const [phoneError, setPhoneError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleChange(event) {
@@ -36,6 +39,7 @@ export default function ContactPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setPhoneError("");
 
     if (
       !formData.fullName.trim() ||
@@ -47,6 +51,11 @@ export default function ContactPage() {
         message: "Please complete your name, email and message.",
       });
 
+      return;
+    }
+
+    if (formData.phone && !isValidPhoneNumber(formData.phone)) {
+      setPhoneError("Please enter a valid phone number.");
       return;
     }
 
@@ -190,13 +199,19 @@ export default function ContactPage() {
               <div className="formField">
                 <label htmlFor="phone">Phone number</label>
 
-                <input
+                <InternationalPhoneInput
                   id="phone"
-                  name="phone"
-                  type="tel"
                   value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+255"
+                  onChange={(phone) => {
+                    setFormData((current) => ({
+                      ...current,
+                      phone,
+                    }));
+                    if (!phone || isValidPhoneNumber(phone)) {
+                      setPhoneError("");
+                    }
+                  }}
+                  error={phoneError}
                 />
               </div>
 
