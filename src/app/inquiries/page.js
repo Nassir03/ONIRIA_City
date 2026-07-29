@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Header from "../components/Header";
 import PublicPageHero from "../components/PublicPageHero";
 import Footer from "../components/Footer";
+import {
+  getAnonymousSessionId,
+  getCampaignAttribution,
+  submitEnquiry,
+} from "../services/api";
 
 const initialFormData = {
   fullName: "",
@@ -35,40 +40,36 @@ const allowedCollections = [
   "commercial",
 ];
 
+function getInitialFormData() {
+  if (typeof window === "undefined") {
+    return initialFormData;
+  }
+  const searchParams = new URLSearchParams(window.location.search);
+  const inquiryType = searchParams.get("type");
+  const collection = searchParams.get("collection");
+  const property = searchParams.get("property");
+
+  return {
+    ...initialFormData,
+    inquiryType: allowedInquiryTypes.includes(inquiryType) ? inquiryType : "",
+    propertyCollection: allowedCollections.includes(collection) ? collection : "",
+    message: property
+      ? `I would like more information about ${property
+          .replaceAll("-", " ")
+          .replace(/\b\w/g, (letter) => letter.toUpperCase())}.`
+      : "",
+  };
+}
+
 export default function InquiriesPage() {
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(getInitialFormData);
 
   const [status, setStatus] = useState({
     type: "",
     message: "",
     reference: "",
   });
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    const inquiryType = searchParams.get("type");
-    const collection = searchParams.get("collection");
-    const property = searchParams.get("property");
-
-    setFormData((current) => ({
-      ...current,
-
-      inquiryType: allowedInquiryTypes.includes(inquiryType)
-        ? inquiryType
-        : current.inquiryType,
-
-      propertyCollection: allowedCollections.includes(collection)
-        ? collection
-        : current.propertyCollection,
-
-      message: property
-        ? `I would like more information about ${property
-            .replaceAll("-", " ")
-            .replace(/\b\w/g, (letter) => letter.toUpperCase())}.`
-        : current.message,
-    }));
-  }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -87,21 +88,27 @@ export default function InquiriesPage() {
     }
   }
 
-  function createReferenceNumber() {
-    const date = new Date();
-
-    const datePart = [
-      date.getFullYear(),
-      String(date.getMonth() + 1).padStart(2, "0"),
-      String(date.getDate()).padStart(2, "0"),
-    ].join("");
-
-    const randomPart = Math.floor(10000 + Math.random() * 90000);
-
-    return `ON-${datePart}-${randomPart}`;
+  function mapInquiryType(value) {
+    const types = {
+      "property-information": "property",
+      "site-visit": "site_visit",
+      consultation: "consultation",
+      brochure: "brochure",
+      commercial: "commercial",
+    };
+    return types[value] || "general";
   }
 
-  function handleSubmit(event) {
+  function endpointFor(value) {
+    const endpoints = {
+      "site-visit": "/site-visits",
+      consultation: "/consultations",
+      brochure: "/brochure-requests",
+    };
+    return endpoints[value] || "/enquiries";
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (
@@ -121,16 +128,42 @@ export default function InquiriesPage() {
       return;
     }
 
-    const reference = createReferenceNumber();
+    setIsSubmitting(true);
+    try {
+      const result = await submitEnquiry(
+        {
+          enquiry_type: mapInquiryType(formData.inquiryType),
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message || "Website inquiry",
+          collection_slug: formData.propertyCollection || null,
+          budget: formData.budget || null,
+          anonymous_session_id: getAnonymousSessionId(),
+          consent: formData.consent,
+          campaign: getCampaignAttribution(),
+          preferred_date: formData.preferredDate || null,
+          number_of_guests: formData.inquiryType === "site-visit" ? 1 : null,
+        },
+        endpointFor(formData.inquiryType)
+      );
 
-    setStatus({
-      type: "success",
-      message:
-        "Thank you. Your ONIRIA inquiry has been recorded successfully in this prototype.",
-      reference,
-    });
+      setStatus({
+        type: "success",
+        message: result.message,
+        reference: result.reference_number,
+      });
 
-    setFormData(initialFormData);
+      setFormData(initialFormData);
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message: error.message,
+        reference: "",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -141,7 +174,7 @@ export default function InquiriesPage() {
         eyebrow="REGISTER YOUR INTEREST"
         title="Begin Your ONIRIA Journey"
         description="Tell us what you are interested in and our team will guide you through the next step."
-        image="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2000&q=85"
+        image="/media/oniria/villa-gated-entry.png"
       />
 
       <section className="inquiryPageSection" id="page-content">
@@ -522,8 +555,12 @@ export default function InquiriesPage() {
               </div>
             )}
 
-            <button type="submit" className="formSubmitButton">
-              Submit inquiry
+            <button
+              type="submit"
+              className="formSubmitButton"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Submit inquiry"}
             </button>
           </form>
         </div>

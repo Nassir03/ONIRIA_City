@@ -12,7 +12,7 @@ const villas = [
     collection: "ONIRIA VILLAS",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-front-entry.png",
     bedrooms: "4 bedrooms",
     bathrooms: "4 bathrooms",
     area: "320 m²",
@@ -28,7 +28,7 @@ const villas = [
     collection: "ONIRIA VILLAS",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-gated-entry.png",
     bedrooms: "3 bedrooms",
     bathrooms: "3 bathrooms",
     area: "245 m²",
@@ -43,7 +43,7 @@ const villas = [
     collection: "ONIRIA VILLAS",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-parking-garden.png",
     bedrooms: "3 bedrooms",
     bathrooms: "3 bathrooms",
     area: "260 m²",
@@ -64,7 +64,7 @@ export default function VillasPage() {
         description:
           "Generous villas combining contemporary design, gardens, privacy and a strong connection to Zanzibar’s tropical environment.",
         image:
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/residence-roundabout.png",
       }}
       introduction={{
         label: "THE VILLA COLLECTION",

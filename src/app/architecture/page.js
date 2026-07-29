@@ -15,7 +15,7 @@ export default function ArchitecturePage() {
         description:
           "Architecture shaped by tropical climate, natural materials, modern comfort and the character of Zanzibar.",
         image:
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/residence-aerial-masterplan.png",
       }}
       introduction={{
         label: "DESIGN PHILOSOPHY",
@@ -29,7 +29,7 @@ export default function ArchitecturePage() {
           description:
             "Homes are designed for natural light, airflow and a strong relationship between indoor and outdoor living.",
           image:
-            "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/v-avenue-commercial.png",
           points: [
             "Large windows and shaded openings",
             "Natural ventilation",
@@ -42,7 +42,7 @@ export default function ArchitecturePage() {
           description:
             "Warm finishes, stone, timber and soft neutral colours create interiors that feel elegant, calm and connected to Zanzibar.",
           image:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
           points: [
             "Warm natural textures",
             "Stone-inspired surfaces",
@@ -55,7 +55,7 @@ export default function ArchitecturePage() {
           description:
             "Each home balances beauty with practical layouts, privacy, storage and flexible areas for families and guests.",
           image:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
           points: [
             "Open-plan living spaces",
             "Private bedrooms",
@@ -68,7 +68,7 @@ export default function ArchitecturePage() {
           description:
             "Buildings, landscapes and public spaces share a unified design language while allowing each collection to maintain its own character.",
           image:
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
           points: [
             "Coordinated architectural language",
             "Integrated landscape design",

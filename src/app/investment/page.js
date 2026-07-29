@@ -15,7 +15,7 @@ export default function InvestmentPage() {
         description:
           "Own a home or property within a carefully planned destination designed for long-term value, lifestyle and growth.",
         image:
-          "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/residence-parking-garden.png",
       }}
       introduction={{
         label: "A STRATEGIC DESTINATION",
@@ -29,7 +29,7 @@ export default function InvestmentPage() {
           description:
             "Zanzibar continues to attract residents, investors, businesses and visitors seeking distinctive property and lifestyle opportunities.",
           image:
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
           points: [
             "International lifestyle appeal",
             "Strong tourism identity",
@@ -42,7 +42,7 @@ export default function InvestmentPage() {
           description:
             "ONIRIA offers villas, residences, apartments and commercial spaces for different ownership and investment goals.",
           image:
-            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-aerial-masterplan.png",
           points: [
             "Private villas",
             "Modern residences",
@@ -59,7 +59,7 @@ export default function InvestmentPage() {
           description:
             "The mixed-use masterplan supports value by combining homes, services, nature, amenities and public spaces.",
           image:
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/v-avenue-commercial.png",
           points: [
             "Integrated masterplan",
             "Quality amenities",
@@ -72,7 +72,7 @@ export default function InvestmentPage() {
           description:
             "The ONIRIA sales team will support prospective buyers through property selection, availability, payment information and next steps.",
           image:
-            "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
           points: [
             "Property consultation",
             "Availability guidance",

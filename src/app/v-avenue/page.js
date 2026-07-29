@@ -14,7 +14,7 @@ const opportunities = [
     description:
       "A contemporary apartment positioned close to dining, retail, services and community activity.",
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/residence-parking-garden.png",
     href: "/v-avenue/apartment",
   },
   {
@@ -23,7 +23,7 @@ const opportunities = [
     description:
       "A flexible retail opportunity for businesses seeking visibility within a growing residential community.",
     image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/residence-roundabout.png",
     href: "/commercial/retail-space",
   },
   {
@@ -32,7 +32,7 @@ const opportunities = [
     description:
       "A hospitality space intended for cafés, restaurants and selected dining concepts.",
     image:
-      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/residence-aerial-masterplan.png",
     href: "/commercial/restaurant-space",
   },
   {
@@ -41,7 +41,7 @@ const opportunities = [
     description:
       "A modern business address for companies and professional service providers.",
     image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/v-avenue-commercial.png",
     href: "/commercial/office-space",
   },
 ];
@@ -55,7 +55,7 @@ export default function VAvenuePage() {
         className="propertyCollectionHero"
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2000&q=85")',
+            'url("/media/oniria/villa-pool-rear.png")',
         }}
       >
         <div className="propertyCollectionHeroOverlay" />

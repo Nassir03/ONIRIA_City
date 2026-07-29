@@ -6,7 +6,7 @@ export const propertyDetails = {
       location: "Fumba, Zanzibar",
       eyebrow: "GARDEN VILLA",
       heroImage:
-        "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=85&w=2000&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
       overviewTitle:
         "A peaceful family home connected to private gardens",
       description:
@@ -37,27 +37,27 @@ export const propertyDetails = {
         {
           title: "Garden villa exterior",
           url:
-            "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=85&w=1800&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
         },
         {
           title: "Open living space",
           url:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
         },
         {
           title: "Private bedroom",
           url:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
         },
         {
           title: "Garden and terrace",
           url:
-            "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
         },
         {
           title: "Natural interior details",
           url:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
         },
       ],
       features: [
@@ -83,7 +83,7 @@ export const propertyDetails = {
         },
       ],
       layoutImage:
-        "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=85&w=1600&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
       layoutTitle: "A practical home with room to grow",
       layoutDescription:
         "The Garden Villa provides comfortable shared spaces, three private bedrooms and direct access to landscaped outdoor areas.",
@@ -103,7 +103,7 @@ export const propertyDetails = {
       location: "Fumba, Zanzibar",
       eyebrow: "COURTYARD VILLA",
       heroImage:
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=2000&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
       overviewTitle:
         "A private home arranged around light, landscape and calm",
       description:
@@ -134,27 +134,27 @@ export const propertyDetails = {
         {
           title: "Courtyard villa exterior",
           url:
-            "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1800&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
         },
         {
           title: "Central courtyard",
           url:
-            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
         },
         {
           title: "Living and dining",
           url:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
         },
         {
           title: "Private bedroom",
           url:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
         },
         {
           title: "Warm natural finishes",
           url:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
         },
       ],
       features: [
@@ -180,7 +180,7 @@ export const propertyDetails = {
         },
       ],
       layoutImage:
-        "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=85&w=1600&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
       layoutTitle: "Living spaces centred around a private courtyard",
       layoutDescription:
         "The layout places the courtyard between the main living areas and private rooms, creating a peaceful centre within the home.",
@@ -202,7 +202,7 @@ export const propertyDetails = {
       location: "Fumba, Zanzibar",
       eyebrow: "GARDEN RESIDENCE",
       heroImage:
-        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=2000&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
       overviewTitle:
         "A spacious residence overlooking landscaped community spaces",
       description:
@@ -233,27 +233,27 @@ export const propertyDetails = {
         {
           title: "Garden residence",
           url:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1800&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
         },
         {
           title: "Main living area",
           url:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
         },
         {
           title: "Dining and kitchen",
           url:
-            "https://images.unsplash.com/photo-1600585152915-d208bec867a1?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
         },
         {
           title: "Primary bedroom",
           url:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
         },
         {
           title: "Landscaped views",
           url:
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
         },
       ],
       features: [
@@ -279,7 +279,7 @@ export const propertyDetails = {
         },
       ],
       layoutImage:
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=85&w=1600&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
       layoutTitle: "Generous spaces within a connected residence",
       layoutDescription:
         "The layout provides clear separation between social areas, family bedrooms and practical service spaces.",
@@ -299,7 +299,7 @@ export const propertyDetails = {
       location: "Fumba, Zanzibar",
       eyebrow: "ISLAND RESIDENCE",
       heroImage:
-        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=2000&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
       overviewTitle:
         "A refined two-bedroom home for modern island living",
       description:
@@ -330,27 +330,27 @@ export const propertyDetails = {
         {
           title: "Island residence",
           url:
-            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=1800&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
         },
         {
           title: "Open living room",
           url:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
         },
         {
           title: "Modern kitchen",
           url:
-            "https://images.unsplash.com/photo-1600585152915-d208bec867a1?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
         },
         {
           title: "Peaceful bedroom",
           url:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
         },
         {
           title: "Island-inspired details",
           url:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
         },
       ],
       features: [
@@ -376,7 +376,7 @@ export const propertyDetails = {
         },
       ],
       layoutImage:
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=85&w=1600&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
       layoutTitle: "A balanced two-bedroom residence",
       layoutDescription:
         "The residence combines private bedrooms with a central social area and practical kitchen and storage spaces.",
@@ -396,7 +396,7 @@ export const propertyDetails = {
       location: "Fumba, Zanzibar",
       eyebrow: "STUDIO RESIDENCE",
       heroImage:
-        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=2000&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
       overviewTitle:
         "A compact and elegant home designed for flexibility",
       description:
@@ -427,27 +427,27 @@ export const propertyDetails = {
         {
           title: "Studio residence",
           url:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1800&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
         },
         {
           title: "Compact living area",
           url:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
         },
         {
           title: "Modern kitchen",
           url:
-            "https://images.unsplash.com/photo-1600585152915-d208bec867a1?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
         },
         {
           title: "Private bedroom",
           url:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
         },
         {
           title: "Refined finishes",
           url:
-            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
         },
       ],
       features: [
@@ -473,7 +473,7 @@ export const propertyDetails = {
         },
       ],
       layoutImage:
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=85&w=1600&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
       layoutTitle: "Everything needed within one efficient home",
       layoutDescription:
         "The layout separates the bedroom while keeping the living, dining and kitchen spaces connected.",
@@ -495,7 +495,7 @@ export const propertyDetails = {
       location: "V Avenue, ONIRIA City",
       eyebrow: "V AVENUE APARTMENT",
       heroImage:
-        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=2000&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
       overviewTitle:
         "A contemporary apartment within the social heart of ONIRIA",
       description:
@@ -526,27 +526,27 @@ export const propertyDetails = {
         {
           title: "V Avenue apartment",
           url:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1800&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
         },
         {
           title: "Open living area",
           url:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
         },
         {
           title: "Modern dining space",
           url:
-            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
         },
         {
           title: "Private bedroom",
           url:
-            "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
         },
         {
           title: "V Avenue lifestyle",
           url:
-            "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
         },
       ],
       features: [
@@ -572,7 +572,7 @@ export const propertyDetails = {
         },
       ],
       layoutImage:
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=85&w=1600&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
       layoutTitle: "Connected living within V Avenue",
       layoutDescription:
         "The layout provides two bedrooms, shared living areas and practical storage within a convenient mixed-use setting.",
@@ -595,7 +595,7 @@ export const propertyDetails = {
     eyebrow: "RETAIL OPPORTUNITY",
 
     heroImage:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2000&q=85",
+      "/media/oniria/v-avenue-commercial.png",
 
     overviewTitle:
       "A flexible retail opportunity within a growing community",
@@ -630,27 +630,27 @@ export const propertyDetails = {
       {
         title: "Retail frontage",
         url:
-          "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1800&q=85",
+          "/media/oniria/villa-pool-rear.png",
       },
       {
         title: "Flexible retail interior",
         url:
-          "https://images.unsplash.com/photo-1555529771-35a38a852e61?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/villa-front-entry.png",
       },
       {
         title: "Customer experience",
         url:
-          "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/villa-gated-entry.png",
       },
       {
         title: "V Avenue setting",
         url:
-          "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/residence-parking-garden.png",
       },
       {
         title: "Commercial destination",
         url:
-          "https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/residence-roundabout.png",
       },
     ],
 
@@ -678,7 +678,7 @@ export const propertyDetails = {
     ],
 
     layoutImage:
-      "https://images.unsplash.com/photo-1555529771-35a38a852e61?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/residence-aerial-masterplan.png",
 
     layoutTitle:
       "A commercial space that can adapt to your business",
@@ -703,7 +703,7 @@ export const propertyDetails = {
     eyebrow: "DINING OPPORTUNITY",
 
     heroImage:
-      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2000&q=85",
+      "/media/oniria/v-avenue-commercial.png",
 
     overviewTitle:
       "A hospitality space for memorable dining experiences",
@@ -738,27 +738,27 @@ export const propertyDetails = {
       {
         title: "Restaurant atmosphere",
         url:
-          "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1800&q=85",
+          "/media/oniria/villa-pool-rear.png",
       },
       {
         title: "Dining interior",
         url:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/villa-front-entry.png",
       },
       {
         title: "Café experience",
         url:
-          "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/villa-gated-entry.png",
       },
       {
         title: "Social dining",
         url:
-          "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/residence-parking-garden.png",
       },
       {
         title: "Evening hospitality",
         url:
-          "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/residence-roundabout.png",
       },
     ],
 
@@ -786,7 +786,7 @@ export const propertyDetails = {
     ],
 
     layoutImage:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/residence-aerial-masterplan.png",
 
     layoutTitle:
       "A flexible foundation for your hospitality concept",
@@ -811,7 +811,7 @@ export const propertyDetails = {
     eyebrow: "OFFICE OPPORTUNITY",
 
     heroImage:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2000&q=85",
+      "/media/oniria/v-avenue-commercial.png",
 
     overviewTitle:
       "A modern business address within ONIRIA City",
@@ -846,27 +846,27 @@ export const propertyDetails = {
       {
         title: "Modern office",
         url:
-          "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=85",
+          "/media/oniria/villa-pool-rear.png",
       },
       {
         title: "Collaborative workspace",
         url:
-          "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/villa-front-entry.png",
       },
       {
         title: "Private meeting room",
         url:
-          "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/villa-gated-entry.png",
       },
       {
         title: "Professional reception",
         url:
-          "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/residence-parking-garden.png",
       },
       {
         title: "Flexible office layout",
         url:
-          "https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1600&q=85",
+          "/media/oniria/residence-roundabout.png",
       },
     ],
 
@@ -894,7 +894,7 @@ export const propertyDetails = {
     ],
 
     layoutImage:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=85",
+      "/media/oniria/residence-aerial-masterplan.png",
 
     layoutTitle:
       "A workspace adapted to modern business needs",

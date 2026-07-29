@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from app.schemas.property_schemas import CollectionPublic, MasterplanZone, PropertyDetail, PropertySummary, SearchResult
@@ -16,10 +17,10 @@ SEEDED_PROPERTIES: list[dict[str, Any]] = [
         "bedrooms": 5,
         "price_label": "Available on request",
         "status": "published",
-        "hero_image": "/media/properties/skyline-villa.jpg",
+        "hero_image": "/media/oniria/villa-pool-rear.png",
         "description": "A private family villa with elevated views, generous outdoor living, and direct access to ONIRIA City lifestyle amenities.",
         "features": ["Private garden", "Pool deck", "Family lounge", "Staff quarters"],
-        "media": [{"type": "image", "url": "/media/properties/skyline-villa.jpg", "alt": "Skyline Villa exterior"}],
+        "media": [{"type": "image", "url": "/media/oniria/villa-pool-rear.png", "alt": "Skyline Villa pool and rear facade"}],
         "floor_plans": [{"name": "Five-bedroom villa", "bedrooms": 5, "size_sqm": 520, "url": "/media/floorplans/skyline-villa.pdf"}],
     },
     {
@@ -32,10 +33,10 @@ SEEDED_PROPERTIES: list[dict[str, Any]] = [
         "bedrooms": 3,
         "price_label": "Available on request",
         "status": "published",
-        "hero_image": "/media/properties/avenue-residence.jpg",
+        "hero_image": "/media/oniria/residence-roundabout.png",
         "description": "A refined apartment residence designed for walkable access to retail, dining, wellness, and business services.",
         "features": ["Balcony", "Concierge", "Secure parking", "Shared wellness amenities"],
-        "media": [{"type": "image", "url": "/media/properties/avenue-residence.jpg", "alt": "Avenue Residence living room"}],
+        "media": [{"type": "image", "url": "/media/oniria/residence-roundabout.png", "alt": "ONIRIA residences and landscaped roundabout"}],
         "floor_plans": [{"name": "Three-bedroom residence", "bedrooms": 3, "size_sqm": 210, "url": "/media/floorplans/avenue-residence.pdf"}],
     },
     {
@@ -48,10 +49,10 @@ SEEDED_PROPERTIES: list[dict[str, Any]] = [
         "bedrooms": None,
         "price_label": "Leasing enquiries open",
         "status": "published",
-        "hero_image": "/media/properties/v-avenue-retail-suite.jpg",
+        "hero_image": "/media/oniria/v-avenue-commercial.png",
         "description": "A public-facing commercial suite positioned within ONIRIA City's retail and hospitality corridor.",
         "features": ["High-street frontage", "Flexible fit-out", "Service access", "Pedestrian traffic"],
-        "media": [{"type": "image", "url": "/media/properties/v-avenue-retail-suite.jpg", "alt": "V Avenue retail frontage"}],
+        "media": [{"type": "image", "url": "/media/oniria/v-avenue-commercial.png", "alt": "V Avenue commercial frontage"}],
         "floor_plans": [{"name": "Commercial shell", "bedrooms": None, "size_sqm": 140, "url": "/media/floorplans/v-avenue-retail-suite.pdf"}],
     },
 ]
@@ -162,7 +163,7 @@ class PropertyRepository:
                 ORDER BY sort_order, title
                 """
             )
-            return [MasterplanZone(**dict(row)) for row in rows]
+            return [MasterplanZone(**self._normalize_json_fields(dict(row), ("related_collections",))) for row in rows]
         return [MasterplanZone(**item) for item in SEEDED_ZONES]
 
     async def search(self, query: str, limit: int) -> list[SearchResult]:
@@ -231,7 +232,7 @@ class PropertyRepository:
             """,
             slug,
         )
-        return PropertyDetail(**dict(row)) if row else None
+        return PropertyDetail(**self._normalize_json_fields(dict(row), ("features", "media", "floor_plans"))) if row else None
 
     async def _search_db(self, query: str, limit: int) -> list[SearchResult]:
         assert self.pool is not None
@@ -249,3 +250,15 @@ class PropertyRepository:
             limit,
         )
         return [SearchResult(**dict(row)) for row in rows]
+
+    def _normalize_json_fields(self, row: dict[str, Any], fields: tuple[str, ...]) -> dict[str, Any]:
+        for field in fields:
+            value = row.get(field)
+            if isinstance(value, (bytes, bytearray)):
+                value = value.decode("utf-8")
+            if isinstance(value, str):
+                try:
+                    row[field] = json.loads(value)
+                except json.JSONDecodeError:
+                    row[field] = []
+        return row

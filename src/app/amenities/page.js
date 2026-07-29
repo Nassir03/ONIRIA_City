@@ -15,7 +15,7 @@ export default function AmenitiesPage() {
         description:
           "Wellness, recreation, nature, dining and everyday convenience brought together within one connected destination.",
         image:
-          "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/villa-pool-rear.png",
       }}
       introduction={{
         label: "EVERYDAY COMFORT",
@@ -29,7 +29,7 @@ export default function AmenitiesPage() {
           description:
             "Dedicated spaces support healthy routines, relaxation and physical activity throughout the community.",
           image:
-            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
           points: [
             "Fitness facilities",
             "Swimming areas",
@@ -42,7 +42,7 @@ export default function AmenitiesPage() {
           description:
             "Children, families and residents of all ages can enjoy safe, welcoming spaces for play, activity and connection.",
           image:
-            "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
           points: [
             "Children’s play areas",
             "Community parks",
@@ -55,7 +55,7 @@ export default function AmenitiesPage() {
           description:
             "V Avenue brings restaurants, cafés, shops and useful services within easy reach of residents and visitors.",
           image:
-            "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
           points: [
             "Restaurants and cafés",
             "Retail shops",
@@ -72,7 +72,7 @@ export default function AmenitiesPage() {
           description:
             "Landscaped gardens and shaded outdoor spaces create a peaceful setting for walking, rest and community life.",
           image:
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
           points: [
             "Landscaped gardens",
             "Shaded pathways",

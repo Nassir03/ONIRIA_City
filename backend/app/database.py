@@ -1,4 +1,5 @@
 import logging
+import asyncio
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -30,12 +31,23 @@ class Database:
             raise RuntimeError("aiomysql is required when DATABASE_URL is configured")
 
         parsed_url = self._parse_mysql_url(str(settings.database_url))
-        self.pool = await aiomysql.create_pool(
-            **parsed_url,
-            min_size=settings.database_min_size,
-            max_size=settings.database_max_size,
-            autocommit=True,
-        )
+        last_error: Exception | None = None
+        for attempt in range(1, 11):
+            try:
+                self.pool = await aiomysql.create_pool(
+                    **parsed_url,
+                    minsize=settings.database_min_size,
+                    maxsize=settings.database_max_size,
+                    autocommit=True,
+                    charset="utf8mb4",
+                )
+                break
+            except Exception as exc:
+                last_error = exc
+                logger.warning("MySQL connection attempt %s failed", attempt)
+                await asyncio.sleep(2)
+        if not self.pool:
+            raise RuntimeError("Could not connect to MySQL") from last_error
         logger.info("MySQL connection pool established")
 
     async def disconnect(self) -> None:

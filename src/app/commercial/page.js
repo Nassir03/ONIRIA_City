@@ -12,7 +12,7 @@ const commercialSpaces = [
     collection: "COMMERCIAL",
     location: "V Avenue, ONIRIA City",
     image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-parking-garden.png",
     area: "Flexible layouts",
     priceLabel: "Leasing",
     price: "Enquire now",
@@ -26,7 +26,7 @@ const commercialSpaces = [
     collection: "FOOD & BEVERAGE",
     location: "V Avenue, ONIRIA City",
     image:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-roundabout.png",
     area: "Flexible layouts",
     priceLabel: "Leasing",
     price: "Enquire now",
@@ -39,7 +39,7 @@ const commercialSpaces = [
     collection: "OFFICES",
     location: "V Avenue, ONIRIA City",
     image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-aerial-masterplan.png",
     area: "Flexible layouts",
     priceLabel: "Leasing",
     price: "Enquire now",
@@ -58,7 +58,7 @@ export default function CommercialPage() {
         description:
           "Retail, dining, office and service opportunities positioned within a growing residential and lifestyle destination.",
         image:
-          "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/v-avenue-commercial.png",
       }}
       introduction={{
         label: "V AVENUE BUSINESS",

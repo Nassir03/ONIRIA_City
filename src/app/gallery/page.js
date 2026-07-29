@@ -14,56 +14,56 @@ const galleryImages = [
     title: "ONIRIA City",
     category: "THE DESTINATION",
     image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
     size: "large",
   },
   {
     title: "Private Villas",
     category: "ARCHITECTURE",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-front-entry.png",
     size: "normal",
   },
   {
     title: "Refined Living Spaces",
     category: "INTERIORS",
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-gated-entry.png",
     size: "normal",
   },
   {
     title: "Private Comfort",
     category: "BEDROOMS",
     image:
-      "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-parking-garden.png",
     size: "normal",
   },
   {
     title: "The Indian Ocean",
     category: "ZANZIBAR",
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-roundabout.png",
     size: "large",
   },
   {
     title: "Evenings in Zanzibar",
     category: "SUNSET",
     image:
-      "https://images.unsplash.com/photo-1472120435266-53107fd0c44a?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-aerial-masterplan.png",
     size: "normal",
   },
   {
     title: "A New Morning",
     category: "SUNRISE",
     image:
-      "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/v-avenue-commercial.png",
     size: "normal",
   },
   {
     title: "Tropical Landscapes",
     category: "NATURE",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
     size: "normal",
   },
 ];
@@ -77,7 +77,7 @@ export default function GalleryPage() {
         eyebrow="ONIRIA GALLERY"
         title="See the Vision Come to Life"
         description="Explore the architecture, interiors, landscape and island lifestyle that shape ONIRIA City."
-        image="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=85&w=2000&auto=format&fit=crop"
+        image="/media/oniria/villa-front-entry.png"
       />
 
       <section className="galleryIntroduction" id="page-content">
@@ -86,9 +86,8 @@ export default function GalleryPage() {
         <h2>A visual journey through the destination</h2>
 
         <p>
-          These images currently present the intended architectural and
-          lifestyle direction. They should later be replaced with approved
-          ONIRIA renders and photography.
+          These ONIRIA renders present the architectural, residential,
+          commercial and landscape direction for the destination.
         </p>
       </section>
 

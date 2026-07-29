@@ -12,7 +12,7 @@ const properties = [
     collection: "ONIRIA VILLAS",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
     bedrooms: "4 bedrooms",
     bathrooms: "4 bathrooms",
     area: "320 m²",
@@ -28,7 +28,7 @@ const properties = [
     collection: "ONIRIA VILLAS",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/villa-front-entry.png",
     bedrooms: "3 bedrooms",
     bathrooms: "3 bathrooms",
     area: "245 m²",
@@ -43,7 +43,7 @@ const properties = [
     collection: "ONIRIA RESIDENCES",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-parking-garden.png",
     bedrooms: "3 bedrooms",
     bathrooms: "3 bathrooms",
     area: "210 m²",
@@ -59,7 +59,7 @@ const properties = [
     collection: "ONIRIA RESIDENCES",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-roundabout.png",
     bedrooms: "2 bedrooms",
     bathrooms: "2 bathrooms",
     area: "145 m²",
@@ -74,7 +74,7 @@ const properties = [
     collection: "V AVENUE",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/residence-aerial-masterplan.png",
     bedrooms: "2 bedrooms",
     bathrooms: "2 bathrooms",
     area: "130 m²",
@@ -89,7 +89,7 @@ const properties = [
     collection: "COMMERCIAL",
     location: "Fumba, Zanzibar",
     image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=1500&auto=format&fit=crop",
+      "/media/oniria/v-avenue-commercial.png",
     area: "Flexible layouts",
     priceLabel: "Leasing",
     price: "Enquire now",
@@ -108,7 +108,7 @@ export default function PropertiesPage() {
         description:
           "Explore private villas, modern residences, apartments and commercial opportunities in Fumba, Zanzibar.",
         image:
-          "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/villa-gated-entry.png",
       }}
       introduction={{
         label: "PROPERTY COLLECTIONS",

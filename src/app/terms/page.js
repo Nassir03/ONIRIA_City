@@ -17,7 +17,7 @@ export default function TermsPage() {
         eyebrow="LEGAL INFORMATION"
         title="Terms and Conditions"
         description="These terms describe the general conditions for accessing and using the ONIRIA City website prototype."
-        image="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2000&q=85"
+        image="/media/oniria/villa-gated-entry.png"
       />
 
       <section className="legalPageSection" id="page-content">

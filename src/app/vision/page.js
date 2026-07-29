@@ -15,7 +15,7 @@ export default function VisionPage() {
         description:
           "A destination where thoughtful architecture, nature and community create a more meaningful way of life.",
         image:
-          "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/residence-aerial-masterplan.png",
       }}
       introduction={{
         label: "OUR PURPOSE",
@@ -29,7 +29,7 @@ export default function VisionPage() {
           description:
             "Every part of ONIRIA City is planned to support comfortable living, meaningful connections and a strong sense of belonging.",
           image:
-            "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/v-avenue-commercial.png",
           points: [
             "Walkable neighbourhoods",
             "Welcoming shared spaces",
@@ -42,7 +42,7 @@ export default function VisionPage() {
           description:
             "The destination draws inspiration from Zanzibar’s climate, coastline, natural textures, culture and relaxed rhythm of life.",
           image:
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
           points: [
             "Tropical landscaping",
             "Indoor and outdoor living",
@@ -55,7 +55,7 @@ export default function VisionPage() {
           description:
             "ONIRIA combines modern infrastructure, responsible planning and investment potential to create lasting value for residents and the wider community.",
           image:
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
           points: [
             "Long-term community planning",
             "Mixed residential and commercial use",

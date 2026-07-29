@@ -106,7 +106,7 @@ export default function FAQsPage() {
         eyebrow="FREQUENTLY ASKED QUESTIONS"
         title="How Can We Help?"
         description="Find answers about ONIRIA City, its properties, lifestyle and purchasing journey."
-        image="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=85&w=2000&auto=format&fit=crop"
+        image="/media/oniria/v-avenue-commercial.png"
       />
 
       <section className="faqIntroduction" id="page-content">

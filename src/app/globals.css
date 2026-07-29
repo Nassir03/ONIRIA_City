@@ -4052,7 +4052,7 @@ textarea {
   padding: 60px;
   background:
     linear-gradient(rgba(9, 28, 25, 0.86), rgba(9, 28, 25, 0.86)),
-    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85");
+    url("/media/oniria/villa-gated-entry.png");
   background-position: center;
   background-size: cover;
   display: flex;

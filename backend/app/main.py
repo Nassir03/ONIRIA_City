@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import enquiry_routes, property_routes, search_routes
+from app.api import ai_routes, enquiry_routes, property_routes, search_routes, whatsapp_routes
 from app.config import get_settings
 from app.database import db
 from app.utils.logger import configure_logging
@@ -53,6 +53,8 @@ app.add_middleware(
         f"{settings.api_prefix}/brochure-requests",
         f"{settings.api_prefix}/consultations",
         f"{settings.api_prefix}/site-visits",
+        f"{settings.api_prefix}/ai",
+        f"{settings.api_prefix}/webhooks/whatsapp",
     ),
 )
 
@@ -128,3 +130,5 @@ app.include_router(property_routes.router, prefix=settings.api_prefix)
 app.include_router(search_routes.router, prefix=settings.api_prefix)
 app.include_router(enquiry_routes.router, prefix=settings.api_prefix)
 app.include_router(enquiry_routes.internal_router, prefix=settings.api_prefix)
+app.include_router(ai_routes.router, prefix=settings.api_prefix)
+app.include_router(whatsapp_routes.router, prefix=settings.api_prefix)

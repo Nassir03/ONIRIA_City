@@ -4,21 +4,21 @@ const lifestyleItems = [
     description:
       "Enjoy the calm rhythm of Zanzibar with refreshing sea views, coastal experiences and beautiful sunsets.",
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=85&w=1400&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
   },
   {
     title: "Wellness and Nature",
     description:
       "Walk through landscaped spaces, relax in peaceful surroundings and reconnect with nature every day.",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=85&w=1400&auto=format&fit=crop",
+      "/media/oniria/villa-front-entry.png",
   },
   {
     title: "Community and Belonging",
     description:
       "Shared spaces, family-friendly areas and social destinations create a welcoming place for every generation.",
     image:
-      "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?q=85&w=1400&auto=format&fit=crop",
+      "/media/oniria/villa-gated-entry.png",
   },
 ];
 
@@ -50,7 +50,7 @@ export default function LifestylePreview() {
           className="lifestylePreviewHeroImage"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1519046904884-53103b34b206?q=85&w=2000&auto=format&fit=crop')",
+              "url('/media/oniria/residence-parking-garden.png')",
           }}
         >
           <div className="lifestylePreviewHeroOverlay" />

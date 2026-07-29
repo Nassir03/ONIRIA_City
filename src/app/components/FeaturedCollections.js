@@ -5,7 +5,7 @@ const collections = [
     description:
       "Elegant private villas designed for comfort, privacy and modern island living.",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
     link: "/villas",
   },
   {
@@ -14,7 +14,7 @@ const collections = [
     description:
       "Contemporary homes combining thoughtful design, natural light and community.",
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1200&auto=format&fit=crop",
+      "/media/oniria/residence-roundabout.png",
     link: "/residences",
   },
   {
@@ -23,7 +23,7 @@ const collections = [
     description:
       "A vibrant destination for shops, restaurants, services and everyday experiences.",
     image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
+      "/media/oniria/v-avenue-commercial.png",
     link: "/v-avenue",
   },
 ];

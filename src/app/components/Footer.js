@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Footer() {
   function handleSubscribe(event) {
     event.preventDefault();
@@ -22,9 +24,9 @@ export default function Footer() {
     <footer className="oniriaFooter">
       <div className="oniriaFooterTop">
         <div className="oniriaFooterBrand">
-          <a href="/" className="oniriaFooterLogo">
+          <Link href="/" className="oniriaFooterLogo">
             ONIRIA CITY
-          </a>
+          </Link>
 
           <p>
             A new destination for modern living, lifestyle, investment and
@@ -36,31 +38,31 @@ export default function Footer() {
           <div>
             <h3>Discover</h3>
 
-            <a href="/vision">Vision</a>
-            <a href="/masterplan">Masterplan</a>
-            <a href="/lifestyle">Lifestyle</a>
-            <a href="/architecture">Architecture</a>
-            <a href="/amenities">Amenities</a>
+            <Link href="/vision">Vision</Link>
+            <Link href="/masterplan">Masterplan</Link>
+            <Link href="/lifestyle">Lifestyle</Link>
+            <Link href="/architecture">Architecture</Link>
+            <Link href="/amenities">Amenities</Link>
           </div>
 
           <div>
             <h3>Properties</h3>
 
-            <a href="/properties">All properties</a>
-            <a href="/villas">Villas</a>
-            <a href="/residences">Residences</a>
-            <a href="/v-avenue">V Avenue</a>
-            <a href="/commercial">Commercial</a>
+            <Link href="/properties">All properties</Link>
+            <Link href="/villas">Villas</Link>
+            <Link href="/residences">Residences</Link>
+            <Link href="/v-avenue">V Avenue</Link>
+            <Link href="/commercial">Commercial</Link>
           </div>
 
           <div>
             <h3>Information</h3>
 
-            <a href="/investment">Investment</a>
-            <a href="/gallery">Gallery</a>
-            <a href="/journal">Journal</a>
-            <a href="/faqs">FAQs</a>
-            <a href="/contact">Contact</a>
+            <Link href="/investment">Investment</Link>
+            <Link href="/gallery">Gallery</Link>
+            <Link href="/journal">Journal</Link>
+            <Link href="/faqs">FAQs</Link>
+            <Link href="/contact">Contact</Link>
           </div>
         </div>
       </div>
@@ -93,8 +95,8 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} ONIRIA City. All rights reserved.</p>
 
         <div>
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms and Conditions</a>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms and Conditions</Link>
         </div>
       </div>
     </footer>

@@ -71,7 +71,7 @@ export default function MasterplanPreview() {
           className="masterplanImage"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=85&w=2000&auto=format&fit=crop')",
+              "url('/media/oniria/residence-roundabout.png')",
           }}
         >
           <div className="masterplanImageOverlay" />

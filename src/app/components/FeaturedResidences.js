@@ -3,7 +3,7 @@ const residences = [
     title: "Signature Villa",
     type: "ONIRIA VILLAS",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=1400&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
     bedrooms: "4 Bedrooms",
     area: "320 m²",
     price: "Price on request",
@@ -15,7 +15,7 @@ const residences = [
     title: "Garden Residence",
     type: "ONIRIA RESIDENCES",
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1400&auto=format&fit=crop",
+      "/media/oniria/residence-roundabout.png",
     bedrooms: "3 Bedrooms",
     area: "210 m²",
     price: "Price on request",
@@ -27,7 +27,7 @@ const residences = [
     title: "V Avenue Apartment",
     type: "V AVENUE",
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1400&auto=format&fit=crop",
+      "/media/oniria/v-avenue-commercial.png",
     bedrooms: "2 Bedrooms",
     area: "145 m²",
     price: "Price on request",

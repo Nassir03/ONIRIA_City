@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime, timezone
+import json
 from typing import Any
 
 from app.schemas.enquiry_schemas import CampaignAttribution, EnquiryCreate, LeadActivity, LeadDetail, LeadSummary
@@ -156,8 +157,17 @@ class LeadRepository:
                 """,
                 lead_id,
             )
-            data = dict(row)
-            data["activities"] = [LeadActivity(**dict(activity)) for activity in activities]
+            data = self._normalize_db_lead(row)
+            data["activities"] = [
+                LeadActivity(
+                    reference_number=activity["reference_number"],
+                    activity_type=activity["activity_type"],
+                    summary=activity["summary"],
+                    created_at=activity["created_at"],
+                    campaign=CampaignAttribution(**self._json_dict(activity.get("campaign"))),
+                )
+                for activity in activities
+            ]
             return LeadDetail(**data)
 
         lead = self.store.leads.get(lead_id)
@@ -179,10 +189,133 @@ class LeadRepository:
         return LeadDetail(**data)
 
     async def _find_or_create_lead_db(self, payload: EnquiryCreate) -> dict[str, Any]:
-        raise NotImplementedError("MySQL lead persistence needs project schema migrations first")
+        email = str(payload.email).lower() if payload.email else None
+        phone = payload.phone
+        existing = None
+        if email:
+            existing = await self.pool.fetchrow("SELECT * FROM leads WHERE email = %s LIMIT 1", email)
+        if not existing and phone:
+            existing = await self.pool.fetchrow("SELECT * FROM leads WHERE phone = %s LIMIT 1", phone)
+        if existing:
+            return self._normalize_db_lead(existing)
+
+        lead_id = await self.pool.insert_and_get_id(
+            """
+            INSERT INTO leads (name, email, phone, score, follow_up_status, property_interests, collection_interests)
+            VALUES (%s, %s, %s, 0, 'new', JSON_ARRAY(), JSON_ARRAY())
+            """,
+            payload.name,
+            email,
+            phone,
+        )
+        created = await self.pool.fetchrow("SELECT * FROM leads WHERE id = %s", lead_id)
+        return self._normalize_db_lead(created)
 
     async def _save_enquiry_activity_db(self, **kwargs) -> dict[str, Any]:
-        raise NotImplementedError("MySQL enquiry persistence needs project schema migrations first")
+        lead = kwargs["lead"]
+        payload: EnquiryCreate = kwargs["payload"]
+        reference_number = kwargs["reference_number"]
+        score = kwargs["score"]
+        follow_up_status = kwargs["follow_up_status"]
+        campaign: CampaignAttribution = kwargs["campaign"]
+        notification_status = kwargs["notification_status"]
+
+        property_interests = list(lead.get("property_interests") or [])
+        collection_interests = list(lead.get("collection_interests") or [])
+        if payload.property_slug and payload.property_slug not in property_interests:
+            property_interests.append(payload.property_slug)
+        if payload.collection_slug and payload.collection_slug not in collection_interests:
+            collection_interests.append(payload.collection_slug)
+
+        await self.pool.fetchrow(
+            """
+            UPDATE leads
+            SET score = GREATEST(score, %s),
+                follow_up_status = %s,
+                property_interests = %s,
+                collection_interests = %s,
+                last_activity_at = CURRENT_TIMESTAMP
+            WHERE id = %s
+            """,
+            score,
+            follow_up_status,
+            json.dumps(property_interests),
+            json.dumps(collection_interests),
+            lead["id"],
+        )
+        await self.pool.fetchrow(
+            """
+            INSERT INTO enquiries (
+                reference_number, lead_id, enquiry_type, payload, score, follow_up_status, notification_status
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """,
+            reference_number,
+            lead["id"],
+            payload.enquiry_type.value,
+            payload.model_dump_json(),
+            score,
+            follow_up_status,
+            notification_status,
+        )
+        activity_summary = self._activity_summary(payload)
+        await self.pool.fetchrow(
+            """
+            INSERT INTO lead_activities (lead_id, reference_number, activity_type, summary, campaign)
+            VALUES (%s, %s, %s, %s, %s)
+            """,
+            lead["id"],
+            reference_number,
+            payload.enquiry_type.value,
+            activity_summary,
+            campaign.model_dump_json(),
+        )
+        return {
+            "reference_number": reference_number,
+            "lead_id": lead["id"],
+            "enquiry_type": payload.enquiry_type.value,
+            "score": score,
+            "follow_up_status": follow_up_status,
+            "notification_status": notification_status,
+        }
+
+    def _normalize_db_lead(self, row: dict[str, Any] | None) -> dict[str, Any]:
+        if row is None:
+            raise RuntimeError("Lead row was not found after database write")
+        data = dict(row)
+        data["property_interests"] = self._json_list(data.get("property_interests"))
+        data["collection_interests"] = self._json_list(data.get("collection_interests"))
+        return data
+
+    def _json_list(self, value: Any) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return value
+        if isinstance(value, (bytes, bytearray)):
+            value = value.decode("utf-8")
+        if isinstance(value, str):
+            try:
+                parsed = json.loads(value)
+                return parsed if isinstance(parsed, list) else []
+            except json.JSONDecodeError:
+                return []
+        return []
+
+    def _json_dict(self, value: Any) -> dict[str, Any]:
+        if value is None:
+            return {}
+        if isinstance(value, dict):
+            return value
+        if isinstance(value, (bytes, bytearray)):
+            value = value.decode("utf-8")
+        if isinstance(value, str):
+            try:
+                parsed = json.loads(value)
+                return parsed if isinstance(parsed, dict) else {}
+            except json.JSONDecodeError:
+                return {}
+        return {}
 
     def _activity_summary(self, payload: EnquiryCreate) -> str:
         interest = payload.property_slug or payload.collection_slug or "general ONIRIA City"

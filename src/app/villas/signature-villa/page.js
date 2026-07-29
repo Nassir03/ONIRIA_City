@@ -12,7 +12,7 @@ const property = {
   location: "Fumba, Zanzibar",
   eyebrow: "SIGNATURE VILLA",
   heroImage:
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2000&auto=format&fit=crop",
+    "/media/oniria/villa-front-entry.png",
   overviewTitle: "A generous private home shaped around family life",
   description:
     "The Signature Villa brings together spacious interiors, private outdoor areas, tropical landscaping and refined finishes. It is designed for owners seeking privacy, flexibility and a strong connection to Zanzibar’s relaxed environment.",
@@ -42,27 +42,27 @@ const property = {
     {
       title: "Villa exterior",
       url:
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=1800&auto=format&fit=crop",
+        "/media/oniria/villa-gated-entry.png",
     },
     {
       title: "Main living room",
       url:
-        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=1500&auto=format&fit=crop",
+        "/media/oniria/residence-parking-garden.png",
     },
     {
       title: "Private bedroom",
       url:
-        "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=1500&auto=format&fit=crop",
+        "/media/oniria/residence-roundabout.png",
     },
     {
       title: "Outdoor living",
       url:
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=85&w=1500&auto=format&fit=crop",
+        "/media/oniria/residence-aerial-masterplan.png",
     },
     {
       title: "Refined interior details",
       url:
-        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+        "/media/oniria/v-avenue-commercial.png",
     },
   ],
   features: [
@@ -88,7 +88,7 @@ const property = {
     },
   ],
   layoutImage:
-    "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=85&w=1600&auto=format&fit=crop",
+    "/media/oniria/villa-pool-rear.png",
   layoutTitle: "Spaces created for everyday comfort",
   layoutDescription:
     "The villa layout balances shared family areas with private rooms, outdoor spaces and practical circulation.",

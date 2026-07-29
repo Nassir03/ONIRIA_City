@@ -15,7 +15,7 @@ export default function MasterplanPage() {
         description:
           "Villas, residences, commerce, nature and community spaces arranged as one complete destination.",
         image:
-          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/v-avenue-commercial.png",
       }}
       introduction={{
         label: "THE BIG PICTURE",
@@ -29,7 +29,7 @@ export default function MasterplanPage() {
           description:
             "Private villa neighbourhoods offer generous homes, gardens, quiet surroundings and a close relationship with nature.",
           image:
-            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-pool-rear.png",
           points: [
             "Private residential plots",
             "Landscaped surroundings",
@@ -46,7 +46,7 @@ export default function MasterplanPage() {
           description:
             "Modern residences provide accessible community living with natural light, efficient layouts and shared amenities.",
           image:
-            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-front-entry.png",
           points: [
             "One to four-bedroom options",
             "Modern communal facilities",
@@ -63,7 +63,7 @@ export default function MasterplanPage() {
           description:
             "A vibrant mixed-use avenue provides shops, dining, offices, services and places for the community to meet.",
           image:
-            "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
           points: [
             "Retail and dining",
             "Commercial opportunities",
@@ -80,7 +80,7 @@ export default function MasterplanPage() {
           description:
             "Parks, walking paths and wellness spaces create room for relaxation, movement and social connection.",
           image:
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
           points: [
             "Community park",
             "Walking and cycling paths",

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const slides = [
   {
     image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=85&w=2000&auto=format&fit=crop",
+      "/media/oniria/villa-pool-rear.png",
     eyebrow: "WELCOME TO ONIRIA CITY",
     title: "A New Destination in Fumba",
     subtitle:
@@ -13,7 +13,7 @@ const slides = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=85&w=2000&auto=format&fit=crop",
+      "/media/oniria/villa-front-entry.png",
     eyebrow: "ONIRIA VILLAS",
     title: "Contemporary Homes Inspired by Zanzibar",
     subtitle:
@@ -21,41 +21,41 @@ const slides = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=85&w=2000&auto=format&fit=crop",
-    eyebrow: "ELEGANT INTERIORS",
-    title: "Rooms Designed for Modern Living",
+      "/media/oniria/villa-gated-entry.png",
+    eyebrow: "PRIVATE VILLAS",
+    title: "A Gated Arrival Framed by Greenery",
     subtitle:
       "Bright living spaces, refined finishes and comfortable interiors created for families, residents and international buyers.",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1615874694520-474822394e73?q=85&w=2000&auto=format&fit=crop",
-    eyebrow: "PRIVATE COMFORT",
-    title: "Peaceful Bedrooms and Refined Details",
+      "/media/oniria/residence-parking-garden.png",
+    eyebrow: "ONIRIA RESIDENCES",
+    title: "Modern Residences in a Garden Setting",
     subtitle:
       "Relax in calm private rooms shaped by natural light, warm textures and the peaceful character of island living.",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=85&w=2000&auto=format&fit=crop",
-    eyebrow: "THE INDIAN OCEAN",
-    title: "Live Close to Zanzibar’s Turquoise Sea",
+      "/media/oniria/residence-roundabout.png",
+    eyebrow: "CONNECTED COMMUNITY",
+    title: "Palm-Lined Streets and Shared Landscapes",
     subtitle:
       "Enjoy refreshing ocean views, coastal experiences and the relaxed rhythm of island life from ONIRIA City.",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1472120435266-53107fd0c44a?q=85&w=2000&auto=format&fit=crop",
-    eyebrow: "ZANZIBAR SUNSET",
-    title: "Evenings Painted in Gold",
+      "/media/oniria/residence-aerial-masterplan.png",
+    eyebrow: "MASTERPLAN VIEW",
+    title: "A Residential Plan Built Around Landscape",
     subtitle:
       "Experience unforgettable sunsets where warm skies meet the Indian Ocean and every evening feels extraordinary.",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=85&w=2000&auto=format&fit=crop",
-    eyebrow: "A NEW MORNING",
-    title: "Wake Up to the Beauty of Sunrise",
+      "/media/oniria/v-avenue-commercial.png",
+    eyebrow: "V AVENUE",
+    title: "A Commercial Frontage for Everyday Life",
     subtitle:
       "Begin each day with soft morning light, peaceful surroundings and the promise of a better way of living.",
   },
@@ -63,10 +63,6 @@ const slides = [
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [propertyType, setPropertyType] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
-  const [priceRange, setPriceRange] = useState("");
-  const [collection, setCollection] = useState("");
 
   useEffect(() => {
     const slider = setInterval(() => {
@@ -92,34 +88,6 @@ export default function HeroSection() {
 
   function goToSlide(index) {
     setCurrentSlide(index);
-  }
-
-  function handleSearch(event) {
-    event.preventDefault();
-
-    const searchParameters = new URLSearchParams();
-
-    if (propertyType) {
-      searchParameters.set("type", propertyType);
-    }
-
-    if (bedrooms) {
-      searchParameters.set("bedrooms", bedrooms);
-    }
-
-    if (priceRange) {
-      searchParameters.set("price", priceRange);
-    }
-
-    if (collection) {
-      searchParameters.set("collection", collection);
-    }
-
-    const queryString = searchParameters.toString();
-
-    window.location.href = queryString
-      ? `/properties?${queryString}`
-      : "/properties";
   }
 
   const activeSlide = slides[currentSlide];
@@ -191,75 +159,6 @@ export default function HeroSection() {
           />
         ))}
       </div>
-
-      <form className="propertySearchBar" onSubmit={handleSearch}>
-        <div className="propertySearchField">
-          <label htmlFor="property-type">Property type</label>
-
-          <select
-            id="property-type"
-            value={propertyType}
-            onChange={(event) => setPropertyType(event.target.value)}
-          >
-            <option value="">All properties</option>
-            <option value="villa">Villa</option>
-            <option value="residence">Residence</option>
-            <option value="apartment">Apartment</option>
-            <option value="commercial">Commercial space</option>
-          </select>
-        </div>
-
-        <div className="propertySearchField">
-          <label htmlFor="bedrooms">Bedrooms</label>
-
-          <select
-            id="bedrooms"
-            value={bedrooms}
-            onChange={(event) => setBedrooms(event.target.value)}
-          >
-            <option value="">Any bedrooms</option>
-            <option value="1">1 bedroom</option>
-            <option value="2">2 bedrooms</option>
-            <option value="3">3 bedrooms</option>
-            <option value="4">4 bedrooms</option>
-            <option value="5">5+ bedrooms</option>
-          </select>
-        </div>
-
-        <div className="propertySearchField">
-          <label htmlFor="price-range">Price range</label>
-
-          <select
-            id="price-range"
-            value={priceRange}
-            onChange={(event) => setPriceRange(event.target.value)}
-          >
-            <option value="">Any price</option>
-            <option value="entry">Entry collection</option>
-            <option value="premium">Premium collection</option>
-            <option value="signature">Signature collection</option>
-          </select>
-        </div>
-
-        <div className="propertySearchField">
-          <label htmlFor="collection">Community</label>
-
-          <select
-            id="collection"
-            value={collection}
-            onChange={(event) => setCollection(event.target.value)}
-          >
-            <option value="">All communities</option>
-            <option value="oniria-villas">ONIRIA Villas</option>
-            <option value="oniria-residences">ONIRIA Residences</option>
-            <option value="v-avenue">V Avenue</option>
-          </select>
-        </div>
-
-        <button type="submit" className="propertySearchButton">
-          Search properties
-        </button>
-      </form>
 
       <a
         href="#introduction"

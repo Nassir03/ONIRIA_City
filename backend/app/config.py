@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     database_max_size: int = 5
     log_level: str = "INFO"
     rate_limit_per_minute: int = 120
+    whatsapp_verify_token: str = "oniria-demo-verify-token"
+    whatsapp_app_secret: str | None = None
 
     model_config = SettingsConfigDict(
         env_file=".env",

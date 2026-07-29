@@ -15,7 +15,7 @@ export default function LifestylePage() {
         description:
           "Ocean experiences, tropical nature, wellness, dining and community brought together in one destination.",
         image:
-          "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=85&w=2000&auto=format&fit=crop",
+          "/media/oniria/villa-front-entry.png",
       }}
       introduction={{
         label: "LIVE DIFFERENTLY",
@@ -29,7 +29,7 @@ export default function LifestylePage() {
           description:
             "Tropical landscaping, shaded paths and outdoor spaces allow residents to remain close to nature.",
           image:
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/villa-gated-entry.png",
           points: [
             "Tropical gardens",
             "Green walking routes",
@@ -42,7 +42,7 @@ export default function LifestylePage() {
           description:
             "Spaces for movement, relaxation and restoration support healthier daily routines.",
           image:
-            "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-parking-garden.png",
           points: [
             "Fitness and activity spaces",
             "Swimming and relaxation",
@@ -55,7 +55,7 @@ export default function LifestylePage() {
           description:
             "Restaurants, cafés and welcoming public spaces make it easy to meet, celebrate and share experiences.",
           image:
-            "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-roundabout.png",
           points: [
             "Island-inspired dining",
             "Cafés and social spaces",
@@ -68,7 +68,7 @@ export default function LifestylePage() {
           description:
             "Zanzibar’s sea, sunrise and sunset become part of the wider ONIRIA lifestyle.",
           image:
-            "https://images.unsplash.com/photo-1472120435266-53107fd0c44a?q=85&w=1500&auto=format&fit=crop",
+            "/media/oniria/residence-aerial-masterplan.png",
           points: [
             "Coastal experiences",
             "Sunrise and sunset moments",

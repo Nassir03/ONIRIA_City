@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { askOniriaAI, getAnonymousSessionId } from "../services/api";
 
 const quickQuestions = [
   "What properties are available?",
@@ -355,7 +356,7 @@ export default function OniriaAIChat() {
     };
   }
 
-  function sendMessage(question) {
+  async function sendMessage(question) {
     const cleanQuestion = question.trim();
 
     if (!cleanQuestion || isTyping) {
@@ -363,7 +364,7 @@ export default function OniriaAIChat() {
     }
 
     const userMessage = {
-      id: `${Date.now()}-user`,
+      id: crypto.randomUUID(),
       sender: "user",
       text: cleanQuestion,
       links: [],
@@ -373,19 +374,32 @@ export default function OniriaAIChat() {
     setInput("");
     setIsTyping(true);
 
-    const response = findAnswer(cleanQuestion);
-
-    setTimeout(() => {
+    try {
+      const response = await askOniriaAI({
+        question: cleanQuestion,
+        anonymous_session_id: getAnonymousSessionId(),
+        page_path: window.location.pathname,
+      });
       const assistantMessage = {
-        id: `${Date.now()}-assistant`,
+        id: crypto.randomUUID(),
+        sender: "assistant",
+        text: response.answer,
+        links: response.suggested_actions || [],
+      };
+
+      setMessages((current) => [...current, assistantMessage]);
+    } catch {
+      const response = findAnswer(cleanQuestion);
+      const assistantMessage = {
+        id: crypto.randomUUID(),
         sender: "assistant",
         text: response.answer,
         links: response.links,
       };
-
       setMessages((current) => [...current, assistantMessage]);
+    } finally {
       setIsTyping(false);
-    }, 650);
+    }
   }
 
   function handleSubmit(event) {

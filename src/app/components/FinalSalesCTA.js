@@ -5,7 +5,7 @@ export default function FinalSalesCTA() {
         className="finalSalesBackground"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1519046904884-53103b34b206?q=85&w=2000&auto=format&fit=crop')",
+            "url('/media/oniria/v-avenue-commercial.png')",
         }}
       >
         <div className="finalSalesOverlay" />

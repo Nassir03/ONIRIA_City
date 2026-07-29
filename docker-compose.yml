@@ -1,4 +1,24 @@
 services:
+  mysql:
+    image: mysql:8.4
+    container_name: oniria-city-mysql
+    environment:
+      MYSQL_DATABASE: oniria_city
+      MYSQL_USER: oniria_user
+      MYSQL_PASSWORD: oniria_password
+      MYSQL_ROOT_PASSWORD: oniria_root_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - oniria_mysql_data:/var/lib/mysql
+      - ./database/mysql-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uoniria_user -poniria_password --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
   backend:
     build:
       context: ./backend
@@ -6,8 +26,14 @@ services:
     container_name: oniria-city-backend
     env_file:
       - ./backend/.env.example
+    environment:
+      DATABASE_URL: mysql://oniria_user:oniria_password@mysql:3306/oniria_city
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,http://localhost:7000,http://127.0.0.1:7000
     ports:
       - "7000:7000"
+    depends_on:
+      mysql:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7000/api/health', timeout=5).read()"]
@@ -15,3 +41,20 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oniria-city-frontend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:7000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  oniria_mysql_data:

@@ -4,6 +4,11 @@ import { useState } from "react";
 import Header from "../components/Header";
 import PublicPageHero from "../components/PublicPageHero";
 import Footer from "../components/Footer";
+import {
+  getAnonymousSessionId,
+  getCampaignAttribution,
+  submitEnquiry,
+} from "../services/api";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -18,6 +23,7 @@ export default function ContactPage() {
     type: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -28,7 +34,7 @@ export default function ContactPage() {
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (
@@ -44,19 +50,37 @@ export default function ContactPage() {
       return;
     }
 
-    setStatus({
-      type: "success",
-      message:
-        "Thank you. Your message has been prepared successfully. Backend submission will be connected in the next stage.",
-    });
-
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    });
+    setIsSubmitting(true);
+    try {
+      const result = await submitEnquiry({
+        enquiry_type: formData.subject === "commercial" ? "commercial" : "general",
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone || null,
+        message: formData.message,
+        anonymous_session_id: getAnonymousSessionId(),
+        consent: true,
+        campaign: getCampaignAttribution(),
+      });
+      setStatus({
+        type: "success",
+        message: `${result.message} Reference: ${result.reference_number}`,
+      });
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message: error.message,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -67,7 +91,7 @@ export default function ContactPage() {
         eyebrow="CONTACT ONIRIA CITY"
         title="Let Us Start a Conversation"
         description="Speak with our team about properties, investment, site visits, commercial opportunities or general questions."
-        image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85"
+        image="/media/oniria/residence-aerial-masterplan.png"
       />
 
       <section className="contactPageSection" id="page-content">
@@ -216,8 +240,12 @@ export default function ContactPage() {
               </div>
             )}
 
-            <button type="submit" className="formSubmitButton">
-              Send message
+            <button
+              type="submit"
+              className="formSubmitButton"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending..." : "Send message"}
             </button>
           </form>
         </div>

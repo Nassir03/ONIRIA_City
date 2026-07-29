@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         eyebrow="LEGAL INFORMATION"
         title="Privacy Policy"
         description="This page explains how information submitted through the ONIRIA City website prototype may be collected, used and protected."
-        image="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=85"
+        image="/media/oniria/residence-roundabout.png"
       />
 
       <section className="legalPageSection" id="page-content">
