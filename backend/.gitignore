@@ -8,6 +8,7 @@ __pycache__/
 .coverage
 htmlcov/
 
+.next
 .vscode/
 .venv/
 venv/
