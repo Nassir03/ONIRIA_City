@@ -186,7 +186,7 @@ export default function HeroSection() {
             </option>
           ))}
         </select>
-        <strong>{selectedLabels[filter.id]}</strong>
+        {context === "mobile" && <strong>{selectedLabels[filter.id]}</strong>}
       </label>
     ));
   }

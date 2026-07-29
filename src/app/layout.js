@@ -9,6 +9,11 @@ export const metadata = {
   },
   description:
     "Explore ONIRIA City, a destination for modern living, lifestyle, investment and commercial opportunities in Zanzibar.",
+  icons: {
+    icon: "/oniria-favicon.svg",
+    shortcut: "/oniria-favicon.svg",
+    apple: "/oniria-favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {

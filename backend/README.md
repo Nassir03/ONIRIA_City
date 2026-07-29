@@ -2,13 +2,14 @@
 
 FastAPI backend for public ONIRIA City property content, enquiries, AI, and WhatsApp integrations.
 
-This first implementation covers:
+This implementation covers:
 
 - Application setup, CORS, logging, error handling, and rate limiting
 - Environment configuration
-- Optional MySQL connection pool
+- Optional MySQL connection pool and local seeded demo fallback
 - Health endpoint
 - Public properties, collections, masterplan zones, and search APIs
+- Public enquiry, brochure, consultation, site-visit, commercial enquiry, AI, WhatsApp and protected admin APIs
 
 ## Run locally
 
@@ -26,13 +27,15 @@ Then open:
 - `http://127.0.0.1:7000/api/health`
 - `http://127.0.0.1:7000/docs`
 
-If `DATABASE_URL` is not set, the public content and lead APIs use seeded/in-memory demo data.
+If `DATABASE_URL` and `MYSQL_USER`/`MYSQL_PASSWORD` are blank, the public content and lead APIs use seeded/in-memory demo data.
 
-To connect MySQL later, set `DATABASE_URL` in `backend\.env`:
+To connect MySQL, set `DATABASE_URL` in `backend\.env`:
 
 ```text
-DATABASE_URL=mysql://oniria_user:oniria_password@127.0.0.1:3306/oniria_city
+DATABASE_URL=mysql://root:<your-local-mysql-password>@127.0.0.1:3306/oniria_city
 ```
+
+Or set all `MYSQL_*` values in `backend\.env`.
 
 ## Test locally
 
@@ -81,8 +84,6 @@ $body = @{
 } | ConvertTo-Json -Depth 5
 
 Invoke-RestMethod -Uri http://127.0.0.1:7000/api/enquiries -Method Post -ContentType "application/json" -Body $body
-curl.exe http://127.0.0.1:7000/api/internal/leads
-curl.exe http://127.0.0.1:7000/api/internal/leads/1
 ```
 
 Other enquiry endpoint paths use the same contact and consent fields:
@@ -106,9 +107,14 @@ curl.exe -i "http://127.0.0.1:7000/api/properties/bad<script>"
 From the project root:
 
 ```powershell
-docker compose up --build
+docker compose up -d --build
 ```
 
-The API will be available at `http://127.0.0.1:7000`.
+Docker starts:
 
-For real deployment values, create `backend\.env` from `backend\.env.example` and update `docker-compose.yml` to point at it.
+- Frontend: `http://127.0.0.1:3000`
+- Backend API: `http://127.0.0.1:7000/api`
+- API docs: `http://127.0.0.1:7000/docs`
+- MySQL on host port `3307`
+
+For real deployment values, create `backend\.env` from `backend\.env.example` and replace demo Docker credentials with real secrets.

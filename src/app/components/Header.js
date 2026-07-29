@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const searchableItems = [
   { title: "ONIRIA Villas", type: "Property collection", href: "/villas", keywords: "villa private home garden family property" },
@@ -17,12 +16,10 @@ const searchableItems = [
 ];
 
 export default function Header() {
-  const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const isHome = pathname === "/";
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -43,9 +40,7 @@ export default function Header() {
 
   useEffect(() => {
     function handleScroll() {
-      const threshold = isHome
-        ? Math.max(420, window.innerHeight - 140)
-        : 8;
+      const threshold = Math.max(420, window.innerHeight - 140);
       setScrolled(window.scrollY > threshold);
     }
 
@@ -53,7 +48,7 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome]);
+  }, []);
 
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -73,7 +68,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`oniriaHeader ${isHome ? "oniriaHeaderHome" : ""} ${
+        className={`oniriaHeader ${
           scrolled ? "oniriaHeaderScrolled" : ""
         }`}
       >
