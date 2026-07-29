@@ -9,15 +9,6 @@ The project uses two environment files:
 - `.env.example` for the Next.js frontend API URL.
 - `backend/.env.example` for FastAPI local settings.
 
-For local development, copy them when needed:
-
-```powershell
-Copy-Item .env.example .env
-Copy-Item backend\.env.example backend\.env
-```
-
-Do not commit real passwords, API tokens, WhatsApp secrets, or production database URLs. The real `.env` files are ignored by git.
-
 ## Run With Docker
 
 Start Docker Desktop, then run from the project root:
@@ -127,40 +118,6 @@ Check backend health:
 curl.exe -s http://127.0.0.1:7000/api/health
 ```
 
-## Test Enquiries With Different Values
-
-Change `enquiry_type`, contact details, `budget`, `collection_slug`, and `campaign` values to confirm different scores and follow-up statuses.
-
-```powershell
-$body = @{
-  enquiry_type = "site_visit"
-  name = "Test Visitor"
-  email = "visitor@example.com"
-  phone = "+255700000000"
-  message = "I want to visit ONIRIA City."
-  preferred_date = "2026-08-10"
-  number_of_guests = 2
-  anonymous_session_id = "anon-local-test"
-  consent = $true
-  campaign = @{
-    utm_source = "google"
-    utm_medium = "cpc"
-    utm_campaign = "local-test"
-    landing_page = "/inquiries"
-  }
-} | ConvertTo-Json -Depth 5
-
-Invoke-RestMethod `
-  -Method Post `
-  -Uri "http://127.0.0.1:7000/api/site-visits" `
-  -ContentType "application/json" `
-  -Body $body
-```
-
-Useful endpoints to try:
-
-- `POST /api/enquiries`
-- `POST /api/brochure-requests`
 - `POST /api/consultations`
 - `POST /api/site-visits`
 - `POST /api/commercial-enquiries`
