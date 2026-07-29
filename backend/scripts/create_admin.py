@@ -3,14 +3,20 @@ from __future__ import annotations
 import asyncio
 import getpass
 import os
+import re
 import sys
 from pathlib import Path
 
-import aiomysql
+try:
+    import aiomysql
+except ModuleNotFoundError:
+    raise SystemExit("aiomysql is not installed. Run: backend\\.venv\\Scripts\\python.exe -m pip install -r backend\\requirements.txt")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.security.password_hashing import hash_password, validate_password_strength
+
+EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
 async def main() -> None:
@@ -19,10 +25,14 @@ async def main() -> None:
     if missing:
         raise SystemExit(f"Missing required environment values: {', '.join(missing)}")
 
-    full_name = input("Full name: ").strip()
-    email = input("Email: ").strip().lower()
-    password = getpass.getpass("Password: ")
-    confirm = getpass.getpass("Confirm password: ")
+    full_name = os.getenv("ONIRIA_ADMIN_FULL_NAME") or input("Full name: ").strip()
+    email = (os.getenv("ONIRIA_ADMIN_EMAIL") or input("Email: ")).strip().lower()
+    if not EMAIL_PATTERN.fullmatch(email):
+        raise SystemExit("Email must be a valid address and contain @.")
+    password = os.getenv("ONIRIA_ADMIN_PASSWORD") or getpass.getpass("Password: ")
+    confirm = os.getenv("ONIRIA_ADMIN_PASSWORD_CONFIRM") or (
+        password if os.getenv("ONIRIA_ADMIN_PASSWORD") else getpass.getpass("Confirm password: ")
+    )
     if password != confirm:
         raise SystemExit("Passwords do not match.")
     try:

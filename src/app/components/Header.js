@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const searchableItems = [
   { title: "ONIRIA Villas", type: "Property collection", href: "/villas", keywords: "villa private home garden family property" },
@@ -16,10 +17,12 @@ const searchableItems = [
 ];
 
 export default function Header() {
+  const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const isHome = pathname === "/";
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -40,14 +43,17 @@ export default function Header() {
 
   useEffect(() => {
     function handleScroll() {
-      setScrolled(window.scrollY > 8);
+      const threshold = isHome
+        ? Math.max(420, window.innerHeight - 140)
+        : 8;
+      setScrolled(window.scrollY > threshold);
     }
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHome]);
 
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -66,14 +72,23 @@ export default function Header() {
 
   return (
     <>
-      <header className={`oniriaHeader ${scrolled ? "oniriaHeaderScrolled" : ""}`}>
+      <header
+        className={`oniriaHeader ${isHome ? "oniriaHeaderHome" : ""} ${
+          scrolled ? "oniriaHeaderScrolled" : ""
+        }`}
+      >
         <Link href="/" className="oniriaHeaderLogo" onClick={closeAllPanels}>
           ONIRIA CITY
         </Link>
 
-        <Link href="/contact" className="oniriaMobileContactQuick" onClick={closeAllPanels}>
-          Contact
-        </Link>
+        <div className="oniriaMobileTopActions">
+          <button type="button" className="headerSearchButton" onClick={() => setSearchOpen(true)} aria-label="Open search">
+            <span aria-hidden="true" />
+          </button>
+          <button type="button" className="headerInquiryButton" onClick={() => setDrawerOpen(true)}>
+            Inquiries
+          </button>
+        </div>
 
         <nav className="oniriaDesktopNav" aria-label="Main navigation">
           <Link href="/vision">Vision</Link>

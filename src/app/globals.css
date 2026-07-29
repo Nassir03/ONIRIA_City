@@ -38,12 +38,26 @@ textarea {
 
 .heroSlider {
   position: relative;
-  min-height: max(650px, calc(100vh - 96px));
+  min-height: max(760px, 100svh);
   overflow: visible;
   background-color: #10100e;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.heroSlider::before {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: 190px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0)
+  );
+  content: "";
+  pointer-events: none;
 }
 
 .heroSlides {
@@ -91,9 +105,10 @@ textarea {
 
 .heroMainContent {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   width: min(1180px, calc(100% - 48px));
-  margin-bottom: 82px;
+  margin-bottom: 150px;
+  padding-top: 108px;
   color: #ffffff;
   text-align: center;
 }
@@ -134,7 +149,7 @@ textarea {
 .heroArrow {
   position: absolute;
   top: 50%;
-  z-index: 3;
+  z-index: 12;
   width: 46px;
   height: 46px;
   padding: 0;
@@ -188,7 +203,7 @@ textarea {
   position: absolute;
   right: 7vw;
   bottom: 158px;
-  z-index: 3;
+  z-index: 12;
   color: #ffffff;
   font-size: 13px;
   font-weight: 700;
@@ -203,16 +218,21 @@ textarea {
 .propertySearchBar {
   position: absolute;
   right: 50%;
-  bottom: -64px;
-  z-index: 4;
-  width: min(1600px, 88vw);
-  min-height: 132px;
-  border-radius: 28px 28px 22px 22px;
+  bottom: 52px;
+  z-index: 40;
+  width: min(86vw, 1420px);
+  min-height: 82px;
+  border-radius: 42px;
   background-color: #ffffff;
-  box-shadow: 0 24px 65px rgba(20, 20, 18, 0.18);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
   transform: translateX(50%);
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(245px, 0.85fr);
+  grid-template-columns:
+    minmax(170px, 1fr)
+    minmax(150px, 0.9fr)
+    minmax(190px, 1.15fr)
+    minmax(150px, 0.9fr)
+    minmax(245px, 1.15fr);
   align-items: stretch;
   overflow: hidden;
 }
@@ -220,19 +240,23 @@ textarea {
 .propertySearchField {
   position: relative;
   min-width: 0;
-  padding: 34px 34px 28px;
-  border-right: 1px solid #e5dfd6;
+  padding: 12px 28px;
+  border-right: 1px solid rgba(35, 35, 35, 0.12);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .propertySearchField span {
   display: block;
-  margin-bottom: 12px;
-  color: #8a7354;
+  margin-bottom: 5px;
+  color: #917650;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2.4px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .propertySearchField select {
@@ -246,26 +270,28 @@ textarea {
 
 .propertySearchField strong {
   position: relative;
-  display: block;
-  padding-right: 24px;
+  width: 100%;
+  padding-right: 28px;
   overflow: hidden;
-  color: #171717;
-  font-size: 20px;
-  font-weight: 500;
+  color: #242321;
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .propertySearchField strong::after {
   position: absolute;
-  top: 7px;
+  top: 50%;
   right: 2px;
   width: 8px;
   height: 8px;
   border-right: 1px solid #171717;
   border-bottom: 1px solid #171717;
   content: "";
-  transform: rotate(45deg);
+  transform: translateY(-60%) rotate(45deg);
 }
 
 .propertySearchField:focus-within {
@@ -274,19 +300,23 @@ textarea {
 }
 
 .propertySearchButton {
-  min-height: 132px;
+  min-width: 245px;
+  min-height: 82px;
+  height: 100%;
+  padding: 0 28px;
   border: 0;
-  border-radius: 0 28px 22px 0;
-  background-color: #111815;
+  border-radius: 0 42px 42px 0;
+  background-color: #101816;
   color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 13px;
+  gap: 14px;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
   text-transform: uppercase;
   transition:
     background-color 0.3s ease,
@@ -295,7 +325,7 @@ textarea {
 
 .propertySearchButton:hover,
 .propertySearchButton:focus-visible {
-  background-color: #ae8a55;
+  background-color: #1b2522;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
   outline: none;
 }
@@ -334,7 +364,7 @@ textarea {
 .introductionSection {
   max-width: 960px;
   margin: 0 auto;
-  padding: 188px 40px 120px;
+  padding: 120px 40px 120px;
   text-align: center;
 }
 
@@ -503,28 +533,36 @@ textarea {
 
 @media (max-width: 1100px) {
   .heroSlider {
-    min-height: 75vh;
+    min-height: max(760px, 100svh);
   }
 
   .heroMainContent {
-    margin-bottom: 100px;
+    margin-bottom: 156px;
+    padding-top: 120px;
   }
 
   .propertySearchBar {
-    bottom: -92px;
-    grid-template-columns: repeat(2, 1fr);
-    width: min(900px, calc(100% - 48px));
-    min-height: 230px;
+    bottom: 38px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(92vw, 900px);
+    min-height: 148px;
+    border-radius: 30px;
   }
 
   .propertySearchField {
+    min-height: 74px;
+    padding: 12px 22px;
     border-bottom: 1px solid #d8d3ca;
   }
 
+  .propertySearchField:nth-child(3) {
+    border-right: 0;
+  }
+
   .propertySearchButton {
-    min-height: 84px;
-    border-radius: 0 0 22px 22px;
-    grid-column: 1 / -1;
+    min-height: 74px;
+    border-radius: 0 0 30px 0;
+    grid-column: 2 / -1;
   }
 
   .heroSlideStatus {
@@ -533,7 +571,7 @@ textarea {
   }
 
   .introductionSection {
-    padding-top: 230px;
+    padding-top: 110px;
   }
 
   .collectionsGrid {
@@ -553,12 +591,13 @@ textarea {
 
 @media (max-width: 700px) {
   .heroSlider {
-    min-height: 70vh;
+    min-height: max(660px, 100svh);
   }
 
   .heroMainContent {
     width: calc(100% - 40px);
-    margin-bottom: 74px;
+    margin-bottom: 112px;
+    padding-top: 132px;
   }
 
   .heroWelcome,
@@ -582,14 +621,14 @@ textarea {
 
   .heroSlideStatus {
     right: 24px;
-    bottom: 98px;
+    bottom: 126px;
     font-size: 11px;
     letter-spacing: 3px;
   }
 
   .heroArrow {
     top: auto;
-    bottom: 86px;
+    bottom: 120px;
     width: 42px;
     height: 42px;
   }
@@ -610,13 +649,13 @@ textarea {
   .mobilePropertySearch {
     position: absolute;
     right: 18px;
-    bottom: -34px;
+    bottom: 36px;
     left: 18px;
-    z-index: 5;
-    min-height: 82px;
+    z-index: 40;
+    min-height: 66px;
     border-radius: 24px;
-    background-color: #ffffff;
-    box-shadow: 0 22px 50px rgba(20, 20, 18, 0.2);
+    background-color: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 38px rgba(20, 20, 18, 0.22);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -624,11 +663,11 @@ textarea {
 
   .mobilePropertySearch button {
     width: calc(100% - 20px);
-    min-height: 58px;
+    min-height: 48px;
     border: 0;
     border-radius: 17px;
-    background-color: #111815;
-    color: #ffffff;
+    background-color: transparent;
+    color: #111815;
     cursor: pointer;
     font-size: 12px;
     font-weight: 700;
@@ -750,7 +789,7 @@ textarea {
   }
 
   .introductionSection {
-    padding: 104px 22px 85px;
+    padding: 86px 22px 85px;
   }
 
   .introductionSection h2 {
@@ -4355,47 +4394,72 @@ textarea {
   border-bottom: 1px solid rgba(231, 225, 215, 0.45);
   background-color: rgba(250, 247, 240, 0.99);
   backdrop-filter: blur(12px);
-  display: grid;
-  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 32px;
   transition:
+    background-color 0.3s ease,
     box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.oniriaHeaderHome {
+  position: absolute;
+  right: 0;
+  left: 0;
+  border-color: transparent;
+  background-color: transparent !important;
+  color: #ffffff;
+  backdrop-filter: none;
 }
 
 .oniriaHeaderScrolled {
+  background-color: rgba(250, 247, 240, 0.98);
   border-color: rgba(214, 204, 188, 0.85);
+  color: #111111;
+  backdrop-filter: blur(12px);
   box-shadow: 0 12px 34px rgba(18, 18, 15, 0.08);
 }
 
-.oniriaHeaderLogo {
-  color: #111111;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
+.oniriaHeaderHome.oniriaHeaderScrolled {
+  position: fixed;
+  right: 0;
+  left: 0;
+  background-color: rgba(250, 247, 240, 0.98) !important;
 }
 
-.oniriaMobileContactQuick {
+.oniriaHeaderLogo {
+  color: currentColor;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.oniriaMobileTopActions {
   display: none;
 }
 
 .oniriaDesktopNav {
-  display: grid;
-  grid-template-columns: repeat(4, auto) 46px auto;
+  display: flex;
   align-items: center;
-  gap: clamp(24px, 2.7vw, 48px);
-  justify-content: center;
-  grid-column: 2;
+  justify-content: flex-end;
+  gap: clamp(30px, 2.8vw, 48px);
+  margin-left: auto;
 }
 
 .oniriaDesktopNav > a {
   position: relative;
-  color: #222222;
-  font-size: 12px;
+  color: currentColor;
+  font-size: clamp(12px, 0.85vw, 14px);
   font-weight: 700;
-  letter-spacing: 2.6px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  opacity: 0.94;
+  transition: opacity 0.25s ease;
 }
 
 .oniriaDesktopNav > a::after {
@@ -4416,20 +4480,25 @@ textarea {
   transform-origin: left;
 }
 
+.oniriaDesktopNav > a:hover {
+  opacity: 1;
+}
+
 .headerInquiryButton,
 .headerSearchButton,
 .mobileMenuButton {
   border: 0;
   background-color: transparent;
-  color: #111111;
+  color: currentColor;
   cursor: pointer;
 }
 
 .headerInquiryButton {
   min-height: 46px;
   padding: 0 25px;
-  background-color: #111815;
-  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #111815;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2.2px;
@@ -4441,8 +4510,16 @@ textarea {
 
 .headerInquiryButton:hover,
 .headerInquiryButton:focus-visible {
+  border-color: #ae8a55;
   background-color: #ae8a55;
+  color: #ffffff;
   outline: none;
+}
+
+.oniriaHeaderScrolled .headerInquiryButton {
+  border-color: #10221f;
+  background-color: #10221f;
+  color: #ffffff;
 }
 
 .headerSearchButton {
@@ -4483,10 +4560,17 @@ textarea {
 
 .headerSearchButton:hover,
 .headerSearchButton:focus-visible {
+  border-color: currentColor;
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  outline: none;
+}
+
+.oniriaHeaderScrolled .headerSearchButton:hover,
+.oniriaHeaderScrolled .headerSearchButton:focus-visible {
   border-color: #10221f;
   background-color: #10221f;
   color: #ffffff;
-  outline: none;
 }
 
 .oniriaMobileControls {
@@ -4879,26 +4963,52 @@ textarea {
 
 @media (max-width: 900px) {
   .oniriaHeader {
-    min-height: 92px;
-    padding: 13px 14px 11px;
+    min-height: 112px;
+    padding: 18px 18px 14px;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
     align-content: center;
-    gap: 11px;
+    align-items: start;
+    gap: 12px;
   }
 
   .oniriaDesktopNav {
     display: none;
   }
 
+  .oniriaMobileTopActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .oniriaMobileTopActions .headerSearchButton {
+    width: 34px;
+    height: 34px;
+  }
+
+  .oniriaMobileTopActions .headerInquiryButton {
+    min-height: 34px;
+    padding: 0 14px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
   .oniriaMobileControls {
     width: 100%;
+    grid-column: 1 / -1;
     padding-bottom: 2px;
-    display: grid;
-    grid-template-columns: repeat(4, auto) 18px auto;
+    overflow-x: auto;
+    display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 5px;
+    justify-content: flex-start;
+    gap: 18px;
+    scrollbar-width: none;
+  }
+
+  .oniriaMobileControls::-webkit-scrollbar {
+    display: none;
   }
 
   .oniriaMobileControls a,
@@ -4906,105 +5016,67 @@ textarea {
     flex: 0 0 auto;
     border: 0;
     background-color: transparent;
-    color: #222222;
+    color: currentColor;
     cursor: pointer;
-    font-size: 8.5px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   .oniriaMobileControls .headerSearchButton {
-    width: 18px;
-    height: 20px;
-    padding: 0;
+    display: none;
   }
 
   .oniriaMobileControls .headerSearchButton span {
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
     border-width: 1.5px;
+  }
+
+  .oniriaMobileControls button:last-child {
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
   .oniriaHeader {
-    min-height: 124px;
-    position: sticky;
+    min-height: 118px;
+    padding: 18px 14px 12px;
   }
 
   .oniriaHeaderLogo {
     font-size: 17px;
-    letter-spacing: 2px;
-  }
-
-  .oniriaMobileContactQuick {
-    position: absolute;
-    top: 24px;
-    right: 14px;
-    display: block;
-    color: #222222;
-    font-size: 8.5px;
-    font-weight: 700;
-    letter-spacing: 0.7px;
-    text-transform: uppercase;
+    letter-spacing: 0.16em;
   }
 
   .oniriaMobileControls {
-    grid-template-columns: repeat(4, 1fr);
-    position: relative;
-    height: 50px;
-    display: block;
+    position: static;
+    height: auto;
+    padding-top: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px 17px;
   }
 
   .oniriaMobileControls a,
   .oniriaMobileControls button {
-    position: absolute;
+    position: static;
     text-align: center;
   }
 
-  .oniriaMobileControls a:nth-child(1) {
-    top: 0;
-    left: 0;
-  }
-
-  .oniriaMobileControls a:nth-child(2) {
-    top: 0;
-    left: 28%;
-    transform: translateX(-50%);
-  }
-
-  .oniriaMobileControls a:nth-child(3) {
-    top: 0;
-    left: 61%;
-    transform: translateX(-50%);
-  }
-
-  .oniriaMobileControls a:nth-child(4) {
-    top: 0;
-    right: 0;
-  }
-
   .oniriaMobileControls a[href="/contact"] {
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    z-index: 2;
-    display: block !important;
-    color: #222222 !important;
+    position: static !important;
+    display: inline-flex !important;
+    color: currentColor !important;
   }
 
   .oniriaMobileControls .headerSearchButton {
-    top: 25px;
-    left: 48%;
-    transform: translateX(-50%);
-    width: 30px;
+    display: none;
   }
 
   .oniriaMobileControls button:last-child {
-    top: 26px;
-    left: 70%;
-    transform: translateX(-50%);
+    display: none;
   }
 
   .searchOverlayTop {
@@ -6685,5 +6757,44 @@ textarea {
   .adminCards,
   .adminFilters {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   FINAL HOMEPAGE HEADER AND FLOATING CONTROL OVERRIDES
+========================================================= */
+
+.oniriaAIButton {
+  right: 32px !important;
+  bottom: 222px !important;
+  z-index: 690 !important;
+}
+
+.oniriaAIChat {
+  right: 32px !important;
+  bottom: 296px !important;
+}
+
+.oniriaWhatsappFabV2 {
+  right: 32px !important;
+  bottom: 150px !important;
+  z-index: 680 !important;
+}
+
+@media (max-width: 700px) {
+  .oniriaAIButton {
+    right: 15px !important;
+    bottom: 184px !important;
+  }
+
+  .oniriaAIChat {
+    right: 8px !important;
+    bottom: 252px !important;
+    height: calc(100vh - 266px) !important;
+  }
+
+  .oniriaWhatsappFabV2 {
+    right: 15px !important;
+    bottom: 112px !important;
   }
 }

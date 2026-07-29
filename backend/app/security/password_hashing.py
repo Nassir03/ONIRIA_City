@@ -33,7 +33,11 @@ def verify_password(password: str, password_hash: str) -> bool:
 def validate_password_strength(password: str) -> None:
     if len(password) < 10:
         raise ValueError("Password must be at least 10 characters.")
-    if password.lower() == password or password.upper() == password:
-        raise ValueError("Password must include upper and lower case letters.")
+    if not any(char.isupper() for char in password):
+        raise ValueError("Password must include at least one capital letter.")
+    if not any(char.islower() for char in password):
+        raise ValueError("Password must include at least one small letter.")
     if not any(char.isdigit() for char in password):
         raise ValueError("Password must include at least one number.")
+    if not any(not char.isalnum() for char in password):
+        raise ValueError("Password must include at least one symbol.")

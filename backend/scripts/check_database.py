@@ -3,7 +3,10 @@ from __future__ import annotations
 import asyncio
 import os
 
-import aiomysql
+try:
+    import aiomysql
+except ModuleNotFoundError:
+    raise SystemExit("aiomysql is not installed. Run: backend\\.venv\\Scripts\\python.exe -m pip install -r backend\\requirements.txt")
 
 
 async def main() -> None:

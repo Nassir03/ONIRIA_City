@@ -34,6 +34,40 @@ backend\.venv\Scripts\python.exe backend\scripts\create_admin.py
 
 Then open `http://127.0.0.1:3000/admin/login`.
 
+## Use Local MySQL On Port 3306
+
+If you are using MySQL installed on your machine instead of the Docker MySQL container, install backend dependencies and apply the schema like this:
+
+```powershell
+backend\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+
+$env:MYSQL_HOST="127.0.0.1"
+$env:MYSQL_PORT="3306"
+$env:MYSQL_DATABASE="oniria_city"
+$env:MYSQL_USER="root"
+$env:MYSQL_PASSWORD="<your-local-mysql-password>"
+
+backend\.venv\Scripts\python.exe backend\scripts\run_migrations.py
+backend\.venv\Scripts\python.exe backend\scripts\check_database.py
+```
+
+To create the first admin without interactive prompts:
+
+```powershell
+$env:ONIRIA_ADMIN_FULL_NAME="ONIRIA Admin"
+$env:ONIRIA_ADMIN_EMAIL="admin@example.com"
+$env:ONIRIA_ADMIN_PASSWORD="<strong-admin-password>"
+$env:ONIRIA_ADMIN_PASSWORD_CONFIRM="<strong-admin-password>"
+backend\.venv\Scripts\python.exe backend\scripts\create_admin.py
+```
+
+To make the backend use local MySQL, set:
+
+```powershell
+$env:DATABASE_URL="mysql://root:<your-local-mysql-password>@127.0.0.1:3306/oniria_city"
+backend\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 7000
+```
+
 ## Test The Project
 
 Run backend tests:
