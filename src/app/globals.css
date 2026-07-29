@@ -38,9 +38,9 @@ textarea {
 
 .heroSlider {
   position: relative;
-  min-height: calc(100vh - 74px);
-  overflow: hidden;
-  background-color: #111111;
+  min-height: max(650px, calc(100vh - 96px));
+  overflow: visible;
+  background-color: #10100e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,6 +49,8 @@ textarea {
 .heroSlides {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+  background-color: #10100e;
 }
 
 .heroSlide {
@@ -57,15 +59,15 @@ textarea {
   background-position: center;
   background-size: cover;
   opacity: 0;
-  transform: scale(1.08);
+  transform: scale(1);
   transition:
-    opacity 1.2s ease,
-    transform 7s ease;
+    opacity 1.6s ease,
+    transform 8.5s ease;
 }
 
 .heroSlideActive {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1.08);
 }
 
 .heroDarkOverlay {
@@ -74,131 +76,104 @@ textarea {
   z-index: 1;
   background:
     linear-gradient(
-      90deg,
-      rgba(4, 15, 14, 0.55) 0%,
-      rgba(4, 15, 14, 0.25) 50%,
-      rgba(4, 15, 14, 0.48) 100%
+      to bottom,
+      rgba(4, 8, 8, 0.22) 0%,
+      rgba(4, 8, 8, 0.25) 42%,
+      rgba(4, 8, 8, 0.58) 100%
     ),
     linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.65),
-      rgba(0, 0, 0, 0.05) 58%
+      90deg,
+      rgba(0, 0, 0, 0.18),
+      rgba(0, 0, 0, 0.02) 50%,
+      rgba(0, 0, 0, 0.18)
     );
 }
 
 .heroMainContent {
   position: relative;
   z-index: 2;
-  width: min(1180px, calc(100% - 80px));
-  margin-bottom: 135px;
+  width: min(1180px, calc(100% - 48px));
+  margin-bottom: 82px;
   color: #ffffff;
   text-align: center;
 }
 
-.heroEyebrow {
-  margin: 0 0 24px;
-  font-size: 13px;
+.heroWelcome,
+.heroLocation {
+  margin: 0;
+  font-size: clamp(14px, 1.35vw, 20px);
   font-weight: 700;
-  letter-spacing: 6px;
+  letter-spacing: 8px;
   text-transform: uppercase;
 }
 
 .heroMainContent h1 {
-  max-width: 1050px;
-  margin: 0 auto;
+  margin: 16px auto 4px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(54px, 7vw, 108px);
+  font-size: clamp(72px, 8vw, 150px);
   font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -2px;
+  line-height: 0.9;
+  letter-spacing: 0;
 }
 
-.heroDescription {
-  max-width: 700px;
-  margin: 30px auto 0;
-  font-size: clamp(17px, 2vw, 23px);
-  font-weight: 300;
-  line-height: 1.6;
+.heroSignature {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 48px);
+  font-style: italic;
+  line-height: 1.2;
 }
 
-.heroActions {
-  margin-top: 34px;
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.heroPrimaryButton,
-.heroSecondaryButton {
-  display: inline-flex;
-  min-width: 190px;
-  min-height: 52px;
-  padding: 14px 25px;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    transform 0.3s ease;
-}
-
-.heroPrimaryButton {
-  border: 1px solid #ffffff;
-  background-color: #ffffff;
-  color: #111111;
-}
-
-.heroPrimaryButton:hover {
-  border-color: #ae8a55;
-  background-color: #ae8a55;
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.heroSecondaryButton {
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  background-color: transparent;
-  color: #ffffff;
-}
-
-.heroSecondaryButton:hover {
-  background-color: #ffffff;
-  color: #111111;
-  transform: translateY(-2px);
+.heroLocation {
+  margin-top: 20px;
+  font-size: clamp(12px, 1vw, 16px);
 }
 
 /* Hero left and right controls */
 
 .heroArrow {
   position: absolute;
-  top: 44%;
+  top: 50%;
   z-index: 3;
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.18);
+  background-color: rgba(0, 0, 0, 0.12);
   color: #ffffff;
   cursor: pointer;
-  font-size: 22px;
   backdrop-filter: blur(5px);
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease,
     transform 0.3s ease;
 }
 
-.heroArrow:hover {
+.heroArrow span {
+  width: 11px;
+  height: 11px;
+  border-top: 1px solid currentColor;
+  border-left: 1px solid currentColor;
+}
+
+.heroArrowLeft span {
+  transform: rotate(-45deg);
+}
+
+.heroArrowRight span {
+  transform: rotate(135deg);
+}
+
+.heroArrow:hover,
+.heroArrow:focus-visible {
   border-color: #ae8a55;
   background-color: rgba(174, 138, 85, 0.95);
-  transform: scale(1.06);
+  outline: none;
+  transform: translateY(-50%) scale(1.06);
 }
 
 .heroArrowLeft {
@@ -209,34 +184,16 @@ textarea {
   right: 32px;
 }
 
-/* Hero slide indicators */
-
-.heroIndicators {
+.heroSlideStatus {
   position: absolute;
-  right: 0;
-  bottom: 180px;
-  left: 0;
+  right: 7vw;
+  bottom: 158px;
   z-index: 3;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.heroIndicator {
-  width: 34px;
-  height: 3px;
-  padding: 0;
-  border: 0;
-  background-color: rgba(255, 255, 255, 0.45);
-  cursor: pointer;
-  transition:
-    width 0.3s ease,
-    background-color 0.3s ease;
-}
-
-.heroIndicatorActive {
-  width: 62px;
-  background-color: #ffffff;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
 }
 
 /* =========================================================
@@ -246,88 +203,128 @@ textarea {
 .propertySearchBar {
   position: absolute;
   right: 50%;
-  bottom: 45px;
+  bottom: -64px;
   z-index: 4;
-  width: min(1240px, calc(100% - 80px));
-  padding: 10px;
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.97);
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.28);
+  width: min(1600px, 88vw);
+  min-height: 132px;
+  border-radius: 28px 28px 22px 22px;
+  background-color: #ffffff;
+  box-shadow: 0 24px 65px rgba(20, 20, 18, 0.18);
   transform: translateX(50%);
   display: grid;
-  grid-template-columns: repeat(4, 1fr) 220px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(245px, 0.85fr);
   align-items: stretch;
+  overflow: hidden;
 }
 
 .propertySearchField {
-  padding: 10px 20px;
-  border-right: 1px solid #d8d3ca;
+  position: relative;
+  min-width: 0;
+  padding: 34px 34px 28px;
+  border-right: 1px solid #e5dfd6;
+  cursor: pointer;
 }
 
-.propertySearchField label {
+.propertySearchField span {
   display: block;
-  margin-bottom: 6px;
-  color: #8a744f;
-  font-size: 9px;
+  margin-bottom: 12px;
+  color: #8a7354;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.8px;
+  letter-spacing: 2.4px;
   text-transform: uppercase;
 }
 
 .propertySearchField select {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  padding: 4px 24px 4px 0;
-  border: 0;
-  outline: none;
-  background-color: transparent;
-  color: #171717;
+  height: 100%;
+  opacity: 0;
   cursor: pointer;
-  font-size: 14px;
+}
+
+.propertySearchField strong {
+  position: relative;
+  display: block;
+  padding-right: 24px;
+  overflow: hidden;
+  color: #171717;
+  font-size: 20px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.propertySearchField strong::after {
+  position: absolute;
+  top: 7px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid #171717;
+  border-bottom: 1px solid #171717;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.propertySearchField:focus-within {
+  outline: 2px solid #9a7b4f;
+  outline-offset: -4px;
 }
 
 .propertySearchButton {
-  min-height: 62px;
+  min-height: 132px;
   border: 0;
-  border-radius: 3px;
-  background-color: #101b1a;
+  border-radius: 0 28px 22px 0;
+  background-color: #111815;
   color: #ffffff;
   cursor: pointer;
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   transition:
     background-color 0.3s ease,
-    transform 0.3s ease;
+    box-shadow 0.3s ease;
 }
 
-.propertySearchButton:hover {
+.propertySearchButton:hover,
+.propertySearchButton:focus-visible {
   background-color: #ae8a55;
-  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+  outline: none;
 }
 
-/* Scroll-down arrow */
+.searchButtonIcon {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
 
-.heroScrollArrow {
+.searchButtonIcon::after {
   position: absolute;
-  bottom: 7px;
-  left: 50%;
-  z-index: 4;
-  color: #ffffff;
-  font-size: 27px;
-  transform: translateX(-50%);
-  animation: oniriaBounce 1.8s infinite;
+  right: -7px;
+  bottom: -5px;
+  width: 9px;
+  height: 2px;
+  background-color: currentColor;
+  content: "";
+  transform: rotate(45deg);
+  transform-origin: left center;
 }
 
-@keyframes oniriaBounce {
-  0%,
-  100% {
-    transform: translate(-50%, 0);
-  }
-
-  50% {
-    transform: translate(-50%, 7px);
-  }
+.mobilePropertySearch,
+.mobileFilterBackdrop,
+.mobileFilterSheet {
+  display: none;
 }
 
 /* =========================================================
@@ -337,7 +334,7 @@ textarea {
 .introductionSection {
   max-width: 960px;
   margin: 0 auto;
-  padding: 120px 40px;
+  padding: 188px 40px 120px;
   text-align: center;
 }
 
@@ -506,20 +503,18 @@ textarea {
 
 @media (max-width: 1100px) {
   .heroSlider {
-    min-height: 930px;
+    min-height: 75vh;
   }
 
   .heroMainContent {
-    margin-bottom: 340px;
-  }
-
-  .heroIndicators {
-    bottom: 340px;
+    margin-bottom: 100px;
   }
 
   .propertySearchBar {
-    bottom: 45px;
+    bottom: -92px;
     grid-template-columns: repeat(2, 1fr);
+    width: min(900px, calc(100% - 48px));
+    min-height: 230px;
   }
 
   .propertySearchField {
@@ -527,8 +522,18 @@ textarea {
   }
 
   .propertySearchButton {
-    min-height: 62px;
+    min-height: 84px;
+    border-radius: 0 0 22px 22px;
     grid-column: 1 / -1;
+  }
+
+  .heroSlideStatus {
+    right: 48px;
+    bottom: 160px;
+  }
+
+  .introductionSection {
+    padding-top: 230px;
   }
 
   .collectionsGrid {
@@ -548,95 +553,204 @@ textarea {
 
 @media (max-width: 700px) {
   .heroSlider {
-    min-height: 1080px;
+    min-height: 70vh;
   }
 
   .heroMainContent {
     width: calc(100% - 40px);
-    margin-bottom: 565px;
+    margin-bottom: 74px;
   }
 
-  .heroEyebrow {
-    margin-bottom: 18px;
-    font-size: 10px;
-    letter-spacing: 4px;
+  .heroWelcome,
+  .heroLocation {
+    font-size: 11px;
+    letter-spacing: 5px;
   }
 
   .heroMainContent h1 {
-    font-size: clamp(46px, 13vw, 68px);
-    line-height: 1;
-    letter-spacing: -1px;
+    margin-top: 12px;
+    font-size: clamp(32px, 9.6vw, 44px);
   }
 
-  .heroDescription {
-    max-width: 340px;
-    margin-top: 22px;
-    font-size: 16px;
-    line-height: 1.5;
+  .heroSignature {
+    font-size: clamp(22px, 6.6vw, 32px);
   }
 
-  .heroActions {
-    margin-top: 26px;
-    flex-direction: column;
-    align-items: center;
+  .heroLocation {
+    margin-top: 15px;
   }
 
-  .heroPrimaryButton,
-  .heroSecondaryButton {
-    width: min(290px, 100%);
+  .heroSlideStatus {
+    right: 24px;
+    bottom: 98px;
+    font-size: 11px;
+    letter-spacing: 3px;
   }
 
   .heroArrow {
-    top: 32%;
+    top: auto;
+    bottom: 86px;
     width: 42px;
     height: 42px;
-    font-size: 18px;
   }
 
   .heroArrowLeft {
-    left: 12px;
+    left: 22px;
   }
 
   .heroArrowRight {
-    right: 12px;
-  }
-
-  .heroIndicators {
-    bottom: 540px;
-  }
-
-  .heroIndicator {
-    width: 23px;
-  }
-
-  .heroIndicatorActive {
-    width: 42px;
+    left: 74px;
+    right: auto;
   }
 
   .propertySearchBar {
-    bottom: 40px;
-    width: calc(100% - 28px);
-    padding: 8px;
-    grid-template-columns: 1fr;
-  }
-
-  .propertySearchField {
-    padding: 11px 15px;
-    border-right: 0;
-    border-bottom: 1px solid #d8d3ca;
-  }
-
-  .propertySearchButton {
-    min-height: 58px;
-    grid-column: auto;
-  }
-
-  .heroScrollArrow {
     display: none;
   }
 
+  .mobilePropertySearch {
+    position: absolute;
+    right: 18px;
+    bottom: -34px;
+    left: 18px;
+    z-index: 5;
+    min-height: 82px;
+    border-radius: 24px;
+    background-color: #ffffff;
+    box-shadow: 0 22px 50px rgba(20, 20, 18, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobilePropertySearch button {
+    width: calc(100% - 20px);
+    min-height: 58px;
+    border: 0;
+    border-radius: 17px;
+    background-color: #111815;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .mobileFilterBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 590;
+    background-color: rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobileFilterBackdropOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobileFilterSheet {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 600;
+    max-height: min(86vh, 720px);
+    overflow-y: auto;
+    border-radius: 26px 26px 0 0;
+    background-color: #ffffff;
+    box-shadow: 0 -22px 60px rgba(0, 0, 0, 0.25);
+    display: block;
+    transform: translateY(105%);
+    transition: transform 0.35s ease;
+  }
+
+  .mobileFilterSheetOpen {
+    transform: translateY(0);
+  }
+
+  .mobileFilterSheetHeader {
+    padding: 24px 22px 18px;
+    border-bottom: 1px solid #e5dfd6;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .mobileFilterSheetHeader p {
+    margin: 0 0 7px;
+    color: #8a7354;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+
+  .mobileFilterSheetHeader h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    font-weight: 400;
+  }
+
+  .mobileFilterSheetHeader button {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #cbc3b7;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #111111;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .mobileFilterForm {
+    padding: 6px 22px 24px;
+  }
+
+  .mobileFilterForm .propertySearchField {
+    display: block;
+    min-height: 83px;
+    padding: 18px 0;
+    border-right: 0;
+    border-bottom: 1px solid #e5dfd6;
+  }
+
+  .mobileFilterActions {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 10px;
+  }
+
+  .mobileFilterActions button {
+    min-height: 54px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+  }
+
+  .mobileFilterActions button:first-child {
+    border: 1px solid #d8d3ca;
+    background-color: #ffffff;
+    color: #111111;
+  }
+
+  .mobileFilterActions button:last-child {
+    border: 0;
+    background-color: #111815;
+    color: #ffffff;
+  }
+
   .introductionSection {
-    padding: 85px 22px;
+    padding: 104px 22px 85px;
   }
 
   .introductionSection h2 {
@@ -681,19 +795,11 @@ textarea {
 
 @media (max-width: 420px) {
   .heroSlider {
-    min-height: 1120px;
-  }
-
-  .heroMainContent {
-    margin-bottom: 590px;
+    min-height: 70vh;
   }
 
   .heroMainContent h1 {
-    font-size: 44px;
-  }
-
-  .heroIndicators {
-    bottom: 560px;
+    font-size: clamp(31px, 9vw, 35px);
   }
 
   .collectionImage {
@@ -4244,33 +4350,52 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 200;
-  min-height: 74px;
-  padding: 0 40px;
-  border-bottom: 1px solid #e7e1d7;
-  background-color: rgba(250, 247, 240, 0.97);
+  min-height: 96px;
+  padding: 0 clamp(28px, 4vw, 72px);
+  border-bottom: 1px solid rgba(231, 225, 215, 0.45);
+  background-color: rgba(250, 247, 240, 0.99);
   backdrop-filter: blur(12px);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
   align-items: center;
-  justify-content: space-between;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.oniriaHeaderScrolled {
+  border-color: rgba(214, 204, 188, 0.85);
+  box-shadow: 0 12px 34px rgba(18, 18, 15, 0.08);
 }
 
 .oniriaHeaderLogo {
   color: #111111;
   font-size: 20px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.oniriaMobileContactQuick {
+  display: none;
 }
 
 .oniriaDesktopNav {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, auto) 46px auto;
   align-items: center;
-  gap: 27px;
+  gap: clamp(24px, 2.7vw, 48px);
+  justify-content: center;
+  grid-column: 2;
 }
 
 .oniriaDesktopNav > a {
   position: relative;
   color: #222222;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
 }
 
 .oniriaDesktopNav > a::after {
@@ -4301,22 +4426,34 @@ textarea {
 }
 
 .headerInquiryButton {
-  padding: 9px 0;
-  border-bottom: 1px solid #111111;
-  font-size: 13px;
+  min-height: 46px;
+  padding: 0 25px;
+  background-color: #111815;
+  color: #ffffff;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.headerInquiryButton:hover,
+.headerInquiryButton:focus-visible {
+  background-color: #ae8a55;
+  outline: none;
 }
 
 .headerSearchButton {
-  width: 38px;
-  height: 38px;
+  position: relative;
+  width: 46px;
+  height: 46px;
   padding: 0;
-  border: 1px solid #cbc3b7;
-  border-radius: 50%;
+  border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
   line-height: 1;
   transition:
     border-color 0.3s ease,
@@ -4324,10 +4461,32 @@ textarea {
     color 0.3s ease;
 }
 
-.headerSearchButton:hover {
+.headerSearchButton span {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.headerSearchButton span::after {
+  position: absolute;
+  right: -7px;
+  bottom: -5px;
+  width: 9px;
+  height: 2px;
+  background-color: currentColor;
+  content: "";
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+.headerSearchButton:hover,
+.headerSearchButton:focus-visible {
   border-color: #10221f;
   background-color: #10221f;
   color: #ffffff;
+  outline: none;
 }
 
 .oniriaMobileControls {
@@ -4720,7 +4879,12 @@ textarea {
 
 @media (max-width: 900px) {
   .oniriaHeader {
-    padding: 0 20px;
+    min-height: 92px;
+    padding: 13px 14px 11px;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 11px;
   }
 
   .oniriaDesktopNav {
@@ -4728,14 +4892,119 @@ textarea {
   }
 
   .oniriaMobileControls {
-    display: flex;
+    width: 100%;
+    padding-bottom: 2px;
+    display: grid;
+    grid-template-columns: repeat(4, auto) 18px auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .oniriaMobileControls a,
+  .oniriaMobileControls button {
+    flex: 0 0 auto;
+    border: 0;
+    background-color: transparent;
+    color: #222222;
+    cursor: pointer;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+  }
+
+  .oniriaMobileControls .headerSearchButton {
+    width: 18px;
+    height: 20px;
+    padding: 0;
+  }
+
+  .oniriaMobileControls .headerSearchButton span {
+    width: 12px;
+    height: 12px;
+    border-width: 1.5px;
   }
 }
 
 @media (max-width: 600px) {
+  .oniriaHeader {
+    min-height: 124px;
+    position: sticky;
+  }
+
   .oniriaHeaderLogo {
     font-size: 17px;
     letter-spacing: 2px;
+  }
+
+  .oniriaMobileContactQuick {
+    position: absolute;
+    top: 24px;
+    right: 14px;
+    display: block;
+    color: #222222;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+  }
+
+  .oniriaMobileControls {
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+    height: 50px;
+    display: block;
+  }
+
+  .oniriaMobileControls a,
+  .oniriaMobileControls button {
+    position: absolute;
+    text-align: center;
+  }
+
+  .oniriaMobileControls a:nth-child(1) {
+    top: 0;
+    left: 0;
+  }
+
+  .oniriaMobileControls a:nth-child(2) {
+    top: 0;
+    left: 28%;
+    transform: translateX(-50%);
+  }
+
+  .oniriaMobileControls a:nth-child(3) {
+    top: 0;
+    left: 61%;
+    transform: translateX(-50%);
+  }
+
+  .oniriaMobileControls a:nth-child(4) {
+    top: 0;
+    right: 0;
+  }
+
+  .oniriaMobileControls a[href="/contact"] {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: block !important;
+    color: #222222 !important;
+  }
+
+  .oniriaMobileControls .headerSearchButton {
+    top: 25px;
+    left: 48%;
+    transform: translateX(-50%);
+    width: 30px;
+  }
+
+  .oniriaMobileControls button:last-child {
+    top: 26px;
+    left: 70%;
+    transform: translateX(-50%);
   }
 
   .searchOverlayTop {

@@ -96,7 +96,6 @@ class Database:
                 await cursor.execute(query, params)
                 return int(cursor.lastrowid)
 
-    @asynccontextmanager
     async def transaction(self) -> AsyncIterator[Any]:
         if not self.pool:
             raise RuntimeError("Database pool is not configured")

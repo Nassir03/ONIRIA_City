@@ -19,6 +19,7 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -37,6 +38,17 @@ export default function Header() {
     };
   }, [searchOpen, drawerOpen]);
 
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) {
@@ -54,9 +66,13 @@ export default function Header() {
 
   return (
     <>
-      <header className="oniriaHeader">
+      <header className={`oniriaHeader ${scrolled ? "oniriaHeaderScrolled" : ""}`}>
         <Link href="/" className="oniriaHeaderLogo" onClick={closeAllPanels}>
           ONIRIA CITY
+        </Link>
+
+        <Link href="/contact" className="oniriaMobileContactQuick" onClick={closeAllPanels}>
+          Contact
         </Link>
 
         <nav className="oniriaDesktopNav" aria-label="Main navigation">
@@ -64,11 +80,11 @@ export default function Header() {
           <Link href="/masterplan">Masterplan</Link>
           <Link href="/lifestyle">Lifestyle</Link>
           <Link href="/contact">Contact</Link>
+          <button type="button" className="headerSearchButton" onClick={() => setSearchOpen(true)} aria-label="Open search">
+            <span aria-hidden="true" />
+          </button>
           <button type="button" className="headerInquiryButton" onClick={() => setDrawerOpen(true)}>
             Inquiries
-          </button>
-          <button type="button" className="headerSearchButton" onClick={() => setSearchOpen(true)} aria-label="Open search">
-            <span aria-hidden="true">Search</span>
           </button>
         </nav>
 
@@ -77,10 +93,10 @@ export default function Header() {
           <Link href="/masterplan">Masterplan</Link>
           <Link href="/lifestyle">Lifestyle</Link>
           <Link href="/contact">Contact</Link>
-          <button type="button" onClick={() => setDrawerOpen(true)}>Inquiries</button>
           <button type="button" className="headerSearchButton" onClick={() => setSearchOpen(true)} aria-label="Open search">
-            Search
+            <span aria-hidden="true" />
           </button>
+          <button type="button" onClick={() => setDrawerOpen(true)}>Inquiries</button>
         </nav>
       </header>
 
