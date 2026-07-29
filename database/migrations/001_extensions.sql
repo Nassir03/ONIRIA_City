@@ -1,0 +1,15 @@
+-- Migration 001: Database Setup Notes
+-- Created by Kelvin - Database & Knowledge Integration
+--
+-- This project uses PostgreSQL 17.10, matching the official implementation plan.
+--
+-- UUID generation: PostgreSQL 13+ includes gen_random_uuid() natively.
+-- No extension (uuid-ossp, pgcrypto) is required on PostgreSQL 17.
+-- UUIDs are generated per-table using DEFAULT gen_random_uuid() on UUID
+-- primary key columns. See migrations 002+ for usage.
+--
+-- Vector search (for ONIRIA AI knowledge retrieval): PostgreSQL uses the
+-- pgvector extension for this. It will be enabled in migration 008
+-- (knowledge base) once that phase begins.
+--
+-- No SQL statements required for this migration.
