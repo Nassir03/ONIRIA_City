@@ -123,7 +123,7 @@ export default function Footer() {
         consent,
         anonymous_session_id: getAnonymousSessionId(),
       });
-      setStatus({ type: "success", message: result.message });
+      setStatus({ type: "success", message: result.message || "You are subscribed to ONIRIA City updates." });
       setEmail("");
       setConsent(false);
     } catch (error) {

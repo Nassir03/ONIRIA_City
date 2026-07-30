@@ -1,8 +1,16 @@
 import Link from "next/link";
+import { EmptyState, StatusBadge } from "./AdminUI";
 
-export default function LeadTable({ leads }) {
+export default function LeadTable({ leads, onClearFilters, filtersActive = false }) {
   if (!leads?.length) {
-    return <div className="adminEmpty">No leads match the current filters.</div>;
+    return (
+      <EmptyState
+        title={filtersActive ? "No leads match these filters" : "No leads yet"}
+        description={filtersActive ? "Adjust the filters to broaden the lead list." : "New ONIRIA enquiries will appear here once they are captured."}
+        actionLabel={filtersActive ? "Clear filters" : undefined}
+        onAction={filtersActive ? onClearFilters : undefined}
+      />
+    );
   }
 
   return (
@@ -12,8 +20,6 @@ export default function LeadTable({ leads }) {
           <tr>
             <th>Reference</th>
             <th>Customer</th>
-            <th>Phone</th>
-            <th>Email</th>
             <th>Interest</th>
             <th>Source</th>
             <th>Status</th>
@@ -28,18 +34,19 @@ export default function LeadTable({ leads }) {
           {leads.map((lead) => (
             <tr key={lead.lead_id}>
               <td>{lead.reference || `Lead ${lead.lead_id}`}</td>
-              <td>{lead.customer || "Unknown"}</td>
-              <td>{lead.phone || "-"}</td>
-              <td>{lead.email || "-"}</td>
+              <td>
+                <strong>{lead.customer || "Unknown"}</strong>
+                <span>{lead.email || lead.phone || "-"}</span>
+              </td>
               <td>{lead.interest || "-"}</td>
               <td>{lead.source || "-"}</td>
-              <td>{lead.status || "-"}</td>
+              <td><StatusBadge value={lead.status} /></td>
               <td>{lead.assigned_staff || "Unassigned"}</td>
               <td>{lead.lead_score ?? 0}</td>
               <td>{lead.created_date ? new Date(lead.created_date).toLocaleDateString() : "-"}</td>
               <td>{lead.next_follow_up ? new Date(lead.next_follow_up).toLocaleString() : "-"}</td>
               <td>
-                <Link href={`/admin/leads/${lead.lead_id}`}>Open</Link>
+                <Link href={`/admin/leads/${lead.lead_id}`}>View</Link>
               </td>
             </tr>
           ))}

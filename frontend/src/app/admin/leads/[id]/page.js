@@ -10,6 +10,15 @@ import { adminApi } from "../../../services/adminApi";
 export default function AdminLeadDetailPage() {
   const params = useParams();
   const leadId = params.id;
+
+  return (
+    <AdminLayout title={`Lead ${leadId}`}>
+      <AdminLeadDetailContent leadId={leadId} />
+    </AdminLayout>
+  );
+}
+
+function AdminLeadDetailContent({ leadId }) {
   const [data, setData] = useState(null);
   const [staff, setStaff] = useState([]);
   const [note, setNote] = useState("");
@@ -59,7 +68,7 @@ export default function AdminLeadDetailPage() {
   }
 
   return (
-    <AdminLayout title={`Lead ${leadId}`}>
+    <>
       {error && <div className="adminError">{error}</div>}
       {!data ? <div className="adminLoading">Loading lead...</div> : (
         <>
@@ -94,6 +103,6 @@ export default function AdminLeadDetailPage() {
           <LeadTimeline activities={data.activities} notes={data.notes} followUps={data.follow_ups} />
         </>
       )}
-    </AdminLayout>
+    </>
   );
 }

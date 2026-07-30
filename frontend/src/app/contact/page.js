@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import {
   getAnonymousSessionId,
   getCampaignAttribution,
+  formatSubmissionSuccess,
   submitEnquiry,
 } from "../services/api";
 
@@ -77,7 +78,7 @@ export default function ContactPage() {
       );
       setStatus({
         type: "success",
-        message: `${result.message} Reference: ${result.reference_number}`,
+        message: formatSubmissionSuccess(result, "Thank you. Your message has been received."),
       });
       setFormData({
         fullName: "",

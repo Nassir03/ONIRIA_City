@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import sys
 from pathlib import Path
 
 try:
@@ -9,42 +10,26 @@ try:
 except ModuleNotFoundError:
     aiomysql = None
 
+from migration_manifest import MYSQL_MIGRATION_FILES, MYSQL_SEED_FILES
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from app.config import get_settings
 
 ROOT = Path(__file__).resolve().parents[2]
-MIGRATIONS = ROOT / "database" / "migrations"
-SEEDS = ROOT / "database" / "seed"
-MYSQL_MIGRATION_FILES = (
-    "001_database_setup.sql",
-    "002_staff_security.sql",
-    "003_property_catalogue.sql",
-    "004_masterplan_amenities.sql",
-    "005_anonymous_sessions.sql",
-    "006_customers_leads.sql",
-    "007_enquiries_requests.sql",
-    "008_lead_operations.sql",
-    "009_campaigns.sql",
-    "010_conversations.sql",
-    "011_knowledge.sql",
-    "012_indexes_constraints.sql",
-    "013_views.sql",
-    "014_audit_logs.sql",
-    "015_staff_account_recovery.sql",
-    "016_newsletter_subscriptions.sql",
-)
+DATABASE_DIR = Path(os.getenv("ONIRIA_DATABASE_DIR", str(ROOT / "database"))).resolve()
+MIGRATIONS = DATABASE_DIR / "migrations"
+SEEDS = DATABASE_DIR / "seed"
 
 
 def mysql_settings(database: str | None = None) -> dict[str, object]:
-    host = os.getenv("MYSQL_HOST", "127.0.0.1")
-    port = os.getenv("MYSQL_PORT", "3306")
-    user = os.getenv("MYSQL_USER")
-    password = os.getenv("MYSQL_PASSWORD")
-    if not user or not password:
-        raise SystemExit("MYSQL_USER and MYSQL_PASSWORD are required. Put them in your local environment, not source code.")
+    try:
+        connection_params = get_settings().mysql_connection_params
+    except Exception as exc:
+        raise SystemExit(f"Settings validation failed: {exc}") from exc
+    if not connection_params:
+        raise SystemExit("DATABASE_URL or MYSQL_HOST, MYSQL_DATABASE, MYSQL_USER and MYSQL_PASSWORD are required.")
     settings: dict[str, object] = {
-        "host": host,
-        "port": int(port),
-        "user": user,
-        "password": password,
+        **connection_params,
         "charset": "utf8mb4",
         "autocommit": True,
     }
@@ -84,7 +69,7 @@ def split_mysql_script(sql_text: str) -> list[str]:
 
 
 async def apply_sql(cursor, path: Path) -> None:
-    print(f"Applying {path.relative_to(ROOT)}")
+    print(f"Applying {path}")
     sql_text = path.read_text(encoding="utf-8")
     for statement in split_mysql_script(sql_text):
         await cursor.execute(statement)
@@ -94,12 +79,15 @@ async def main() -> None:
     if aiomysql is None:
         raise SystemExit("aiomysql is not installed. Run: backend\\.venv\\Scripts\\python.exe -m pip install -r backend\\requirements.txt")
 
-    connection = await aiomysql.connect(**mysql_settings())
+    try:
+        connection = await aiomysql.connect(**mysql_settings())
+    except Exception as exc:
+        raise SystemExit(f"Could not connect to MySQL: {exc}") from exc
     try:
         async with connection.cursor() as cursor:
             for file_name in MYSQL_MIGRATION_FILES:
                 await apply_sql(cursor, MIGRATIONS / file_name)
-            for seed_name in ("staff_roles.sql", "property_seed.sql", "masterplan_seed.sql"):
+            for seed_name in MYSQL_SEED_FILES:
                 seed_path = SEEDS / seed_name
                 if seed_path.exists():
                     await apply_sql(cursor, seed_path)
@@ -113,6 +101,10 @@ def cli() -> None:
         path = MIGRATIONS / file_name
         if not path.exists():
             raise SystemExit(f"Missing migration file: {path}")
+    for seed_name in MYSQL_SEED_FILES:
+        path = SEEDS / seed_name
+        if not path.exists():
+            raise SystemExit(f"Missing seed file: {path}")
     asyncio.run(main())
 
 

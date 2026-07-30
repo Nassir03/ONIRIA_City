@@ -1,6 +1,22 @@
+import os
 import sys
 from pathlib import Path
 
-BACKEND_ROOT = Path(__file__).resolve().parents[1]
-if str(BACKEND_ROOT) not in sys.path:
-    sys.path.insert(0, str(BACKEND_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+os.environ["DATABASE_URL"] = ""
+for name in (
+    "MYSQL_HOST",
+    "MYSQL_DATABASE",
+    "MYSQL_USER",
+    "MYSQL_PASSWORD",
+    "MAIL_PROVIDER",
+    "RESEND_API_KEY",
+    "MAIL_FROM",
+    "SALES_NOTIFICATION_EMAIL",
+    "SALES_NOTIFICATION_EMAILS",
+    "REPLY_TO_EMAIL",
+    "ONIRIA_ADMIN_EMAIL",
+    "ONIRIA_ADMIN_PASSWORD",
+    "ONIRIA_ADMIN_PASSWORD_CONFIRM",
+):
+    os.environ[name] = ""

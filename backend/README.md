@@ -1,120 +1,87 @@
 # ONIRIA City Backend
 
-FastAPI backend for public ONIRIA City property content, enquiries, AI, and WhatsApp integrations.
+FastAPI backend for public content, enquiries, newsletter, AI, WhatsApp, staff authentication, and admin lead management.
 
-This implementation covers:
+The only supported database is MySQL 8.4. Do not use PostgreSQL, SQLite, SQLAlchemy, Alembic, or Supabase for this backend.
 
-- Application setup, CORS, logging, error handling, and rate limiting
-- Environment configuration
-- Optional MySQL connection pool and local seeded demo fallback
-- Health endpoint
-- Public properties, collections, masterplan zones, and search APIs
-- Public enquiry, brochure, consultation, site-visit, commercial enquiry, AI, WhatsApp and protected admin APIs
-
-## Run locally
+## Local Setup
 
 ```powershell
 cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env
-python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 7000
+Copy-Item .env.example .env
 ```
 
-Then open:
-
-- `http://127.0.0.1:7000/api/health`
-- `http://127.0.0.1:7000/docs`
-
-If `DATABASE_URL` and `MYSQL_USER`/`MYSQL_PASSWORD` are blank, the public content and lead APIs use seeded/in-memory demo data.
-
-To connect MySQL, set `DATABASE_URL` in `backend\.env`:
+Fill `backend/.env`. Use either:
 
 ```text
-DATABASE_URL=mysql://root:<your-local-mysql-password>@127.0.0.1:3306/oniria_city
+DATABASE_URL=mysql://root:<percent-encoded-password-if-needed>@127.0.0.1:3306/oniria_city
 ```
 
-Or set all `MYSQL_*` values in `backend\.env`.
+or raw `MYSQL_*` fields:
 
-## Test locally
+```text
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_DATABASE=oniria_city
+MYSQL_USER=root
+MYSQL_PASSWORD=<actual raw password>
+```
 
-From the project root:
+Only `DATABASE_URL` needs percent-encoding for special characters. `MYSQL_PASSWORD` should contain the actual password.
+
+## Migrate, Bootstrap, Run
+
+From the repository root:
 
 ```powershell
-python -m pytest backend\tests
+python backend\scripts\run_migrations.py
+python backend\scripts\create_admin.py
+python backend\scripts\verify_admin.py
+python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 7000
 ```
 
-With the server running on port `7000`, test the public API:
+The admin bootstrap is idempotent. It does not reset an existing password unless `ONIRIA_ADMIN_UPDATE_PASSWORD=true`.
+
+## Email
+
+If `MAIL_PROVIDER` is blank, email delivery is skipped safely. To send through Resend, configure:
+
+```text
+MAIL_PROVIDER=resend
+RESEND_API_KEY=<resend-api-key>
+MAIL_FROM=verified-sender@example.com
+MAIL_FROM_NAME=ONIRIA City
+SALES_NOTIFICATION_EMAIL=team@example.com
+```
+
+Use `SALES_NOTIFICATION_EMAILS` for comma-separated multiple recipients. Public enquiry writes are preserved even if Resend is unavailable.
+
+## Cookies
+
+Local:
+
+```text
+SESSION_COOKIE_SECURE=false
+SESSION_COOKIE_SAMESITE=lax
+SESSION_COOKIE_DOMAIN=
+```
+
+Cross-site HTTPS production:
+
+```text
+SESSION_COOKIE_SECURE=true
+SESSION_COOKIE_SAMESITE=none
+SESSION_COOKIE_DOMAIN=
+```
+
+`SameSite=None` is rejected unless `Secure=true`.
+
+## Tests
 
 ```powershell
-curl.exe http://127.0.0.1:7000/api/health
-curl.exe http://127.0.0.1:7000/api/properties
-curl.exe "http://127.0.0.1:7000/api/properties?page=1&page_size=2"
-curl.exe "http://127.0.0.1:7000/api/properties?collection=v-avenue"
-curl.exe "http://127.0.0.1:7000/api/properties?property_type=villa"
-curl.exe "http://127.0.0.1:7000/api/properties?bedrooms=3"
-curl.exe http://127.0.0.1:7000/api/properties/skyline-villa
-curl.exe http://127.0.0.1:7000/api/collections
-curl.exe http://127.0.0.1:7000/api/masterplan/zones
-curl.exe "http://127.0.0.1:7000/api/search?q=villa"
-curl.exe "http://127.0.0.1:7000/api/search?q=commercial&limit=5"
+python -m pytest backend\tests -q
+python -m compileall backend\app backend\scripts
 ```
-
-Create and inspect an enquiry lead:
-
-```powershell
-$body = @{
-  enquiry_type = "property"
-  name = "Amina Hassan"
-  email = "amina@example.com"
-  phone = "+255 700 111 222"
-  message = "I would like villa details."
-  property_slug = "skyline-villa"
-  budget = "USD 500k-750k"
-  purchase_timeline = "1-3_months"
-  anonymous_session_id = "session-12345"
-  consent = $true
-  campaign = @{
-    utm_source = "google"
-    utm_medium = "cpc"
-    utm_campaign = "villa-launch"
-    landing_page = "/properties/skyline-villa"
-  }
-} | ConvertTo-Json -Depth 5
-
-Invoke-RestMethod -Uri http://127.0.0.1:7000/api/enquiries -Method Post -ContentType "application/json" -Body $body
-```
-
-Other enquiry endpoint paths use the same contact and consent fields:
-
-```powershell
-POST /api/brochure-requests
-POST /api/consultations
-POST /api/site-visits
-```
-
-Check validation with intentionally wrong values:
-
-```powershell
-curl.exe -i "http://127.0.0.1:7000/api/properties?page=0"
-curl.exe -i "http://127.0.0.1:7000/api/search?q=x"
-curl.exe -i "http://127.0.0.1:7000/api/properties/bad<script>"
-```
-
-## Run with Docker
-
-From the project root:
-
-```powershell
-docker compose up -d --build
-```
-
-Docker starts:
-
-- Frontend: `http://127.0.0.1:3000`
-- Backend API: `http://127.0.0.1:7000/api`
-- API docs: `http://127.0.0.1:7000/docs`
-- MySQL on host port `3307`
-
-For real deployment values, create `backend\.env` from `backend\.env.example` and replace demo Docker credentials with real secrets.

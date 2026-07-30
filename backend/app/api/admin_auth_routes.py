@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from app.api.admin_dependencies import current_staff, require_database
@@ -12,9 +14,41 @@ from app.services.password_reset_service import PasswordResetService
 from app.utils.rate_limit import FixedWindowRateLimiter
 
 router = APIRouter(prefix="/admin", tags=["admin auth"])
+logger = logging.getLogger(__name__)
 forgot_password_limiter = FixedWindowRateLimiter(max_attempts=5, window_seconds=15 * 60)
 reset_token_limiter = FixedWindowRateLimiter(max_attempts=12, window_seconds=15 * 60)
 recovery_request_limiter = FixedWindowRateLimiter(max_attempts=3, window_seconds=60 * 60)
+
+
+def session_cookie_options() -> dict[str, object]:
+    settings = get_settings()
+    options: dict[str, object] = {
+        "httponly": True,
+        "secure": settings.session_cookie_secure,
+        "samesite": settings.session_cookie_samesite,
+        "max_age": 8 * 60 * 60,
+        "path": "/",
+    }
+    if settings.session_cookie_domain:
+        options["domain"] = settings.session_cookie_domain
+    return options
+
+
+def session_cookie_delete_options() -> dict[str, object]:
+    settings = get_settings()
+    options: dict[str, object] = {
+        "path": "/",
+        "secure": settings.session_cookie_secure,
+        "samesite": settings.session_cookie_samesite,
+    }
+    if settings.session_cookie_domain:
+        options["domain"] = settings.session_cookie_domain
+    return options
+
+
+def local_admin_auth_log(message: str, **details) -> None:
+    if get_settings().app_env == "local":
+        logger.info(message, extra=details)
 
 
 @router.post("/login")
@@ -37,12 +71,9 @@ async def login(payload: AdminLoginRequest, request: Request, response: Response
     response.set_cookie(
         key=SESSION_COOKIE_NAME,
         value=token,
-        httponly=True,
-        secure=request.url.scheme == "https",
-        samesite="lax",
-        max_age=8 * 60 * 60,
-        path="/",
+        **session_cookie_options(),
     )
+    local_admin_auth_log("admin login completed", status_code=200, set_cookie=True)
     return {
         "success": True,
         "data": {
@@ -57,12 +88,14 @@ async def logout(request: Request, response: Response, database=Depends(require_
     token = request.cookies.get(SESSION_COOKIE_NAME)
     if token:
         await StaffRepository(database).revoke_session(hash_session_token(token))
-    response.delete_cookie(SESSION_COOKIE_NAME, path="/")
+    response.delete_cookie(SESSION_COOKIE_NAME, **session_cookie_delete_options())
+    local_admin_auth_log("admin logout completed", status_code=200, cookie_deleted=True)
     return {"success": True, "data": {"logged_out": True}}
 
 
 @router.get("/session")
 async def session(staff=Depends(current_staff)):
+    local_admin_auth_log("admin session completed", status_code=200)
     return {
         "success": True,
         "data": {

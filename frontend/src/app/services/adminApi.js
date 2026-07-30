@@ -1,8 +1,10 @@
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:7000/api";
+import { joinApiUrl } from "./api";
+
+let sessionCheckPromise = null;
+let cachedSession = null;
 
 async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(joinApiUrl(path), {
     ...options,
     credentials: "include",
     headers: {
@@ -11,6 +13,7 @@ async function request(path, options = {}) {
     },
   });
   const body = await response.json().catch(() => ({}));
+
   if (!response.ok || body.success === false) {
     const message = body?.error?.message || body?.detail || "Admin request failed";
     throw new Error(message);
@@ -19,8 +22,12 @@ async function request(path, options = {}) {
 }
 
 export const adminApi = {
-  login: (payload) =>
-    request("/admin/login", { method: "POST", body: JSON.stringify(payload) }),
+  login: async (payload) => {
+    const session = await request("/admin/login", { method: "POST", body: JSON.stringify(payload) });
+    cachedSession = session;
+    sessionCheckPromise = Promise.resolve(session);
+    return session;
+  },
   forgotPassword: (payload) =>
     request("/admin/auth/forgot-password", { method: "POST", body: JSON.stringify(payload) }),
   validateResetToken: (payload) =>
@@ -29,8 +36,28 @@ export const adminApi = {
     request("/admin/auth/reset-password", { method: "POST", body: JSON.stringify(payload) }),
   recoveryRequest: (payload) =>
     request("/admin/auth/recovery-request", { method: "POST", body: JSON.stringify(payload) }),
-  logout: () => request("/admin/logout", { method: "POST" }),
+  logout: async () => {
+    clearAdminSessionCache();
+    return request("/admin/logout", { method: "POST" });
+  },
   session: () => request("/admin/session"),
+  cachedSession: () => {
+    if (cachedSession) {
+      return Promise.resolve(cachedSession);
+    }
+    if (!sessionCheckPromise) {
+      sessionCheckPromise = request("/admin/session")
+        .then((session) => {
+          cachedSession = session;
+          return session;
+        })
+        .catch((error) => {
+          sessionCheckPromise = null;
+          throw error;
+        });
+    }
+    return sessionCheckPromise;
+  },
   dashboard: () => request("/admin/dashboard"),
   leads: (params = {}) => {
     const query = new URLSearchParams(
@@ -84,3 +111,8 @@ export const adminApi = {
     return request(`/admin/newsletter/subscribers${query.toString() ? `?${query}` : ""}`);
   },
 };
+
+export function clearAdminSessionCache() {
+  sessionCheckPromise = null;
+  cachedSession = null;
+}

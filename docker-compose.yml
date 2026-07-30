@@ -3,59 +3,60 @@ services:
     image: mysql:8.4
     container_name: oniria-city-mysql
     environment:
-      MYSQL_DATABASE: oniria_city
-      MYSQL_USER: oniria_user
-      MYSQL_PASSWORD: oniria_password
-      MYSQL_ROOT_PASSWORD: oniria_root_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-oniria_city}
+      MYSQL_USER: ${MYSQL_USER:-oniria_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
       - oniria_mysql_data:/var/lib/mysql
       - ./database/mysql-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uoniria_user -poniria_password --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 20s
 
   migrate:
-    image: mysql:8.4
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: oniria-city-migrate
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      MYSQL_PWD: oniria_password
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-oniria_city}
+      MYSQL_USER: ${MYSQL_USER:-oniria_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ONIRIA_DATABASE_DIR: /database
     volumes:
       - ./database:/database:ro
-    command:
-      - sh
-      - -c
-      - |
-        set -e
-        for file in \
-          /database/migrations/001_database_setup.sql \
-          /database/migrations/002_staff_security.sql \
-          /database/migrations/003_property_catalogue.sql \
-          /database/migrations/004_masterplan_amenities.sql \
-          /database/migrations/005_anonymous_sessions.sql \
-          /database/migrations/006_customers_leads.sql \
-          /database/migrations/007_enquiries_requests.sql \
-          /database/migrations/008_lead_operations.sql \
-          /database/migrations/009_campaigns.sql \
-          /database/migrations/010_conversations.sql \
-          /database/migrations/011_knowledge.sql \
-          /database/migrations/012_indexes_constraints.sql \
-          /database/migrations/013_views.sql \
-          /database/migrations/014_audit_logs.sql \
-          /database/seed/staff_roles.sql \
-          /database/seed/property_seed.sql \
-          /database/seed/masterplan_seed.sql
-        do
-          echo "Applying $$file"
-          mysql -hmysql -P3306 -uoniria_user < "$$file"
-        done
+    command: ["python", "scripts/run_migrations.py"]
+    restart: "no"
+
+  admin-bootstrap:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: oniria-city-admin-bootstrap
+    env_file:
+      - ./backend/.env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-oniria_city}
+      MYSQL_USER: ${MYSQL_USER:-oniria_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ONIRIA_ADMIN_UPDATE_PASSWORD: ${ONIRIA_ADMIN_UPDATE_PASSWORD:-false}
+    command: ["python", "scripts/create_admin.py"]
     restart: "no"
 
   backend:
@@ -64,19 +65,18 @@ services:
       dockerfile: Dockerfile
     container_name: oniria-city-backend
     env_file:
-      - ./backend/.env.example
+      - ./backend/.env
     environment:
-      DATABASE_URL: mysql://oniria_user:oniria_password@mysql:3306/oniria_city
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
-      MYSQL_DATABASE: oniria_city
-      MYSQL_USER: oniria_user
-      MYSQL_PASSWORD: oniria_password
-      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,http://localhost:7000,http://127.0.0.1:7000
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-oniria_city}
+      MYSQL_USER: ${MYSQL_USER:-oniria_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
     ports:
       - "7000:7000"
     depends_on:
-      migrate:
+      admin-bootstrap:
         condition: service_completed_successfully
     restart: unless-stopped
     healthcheck:
@@ -88,11 +88,11 @@ services:
 
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: oniria-city-frontend
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:7000/api
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:7000/api
     ports:
       - "3000:3000"
     depends_on:
