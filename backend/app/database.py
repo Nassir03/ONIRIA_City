@@ -1,5 +1,7 @@
-import logging
+from __future__ import annotations
+
 import asyncio
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -24,16 +26,38 @@ class Database:
         return self.pool is not None
 
     async def connect(self, settings: Settings) -> None:
-        if not settings.database_url and not settings.has_mysql_connection_settings:
-            logger.warning("DATABASE_URL is not configured; using seeded public content data")
+        if self.pool is not None:
+            logger.info("MySQL connection pool is already established")
             return
-        if aiomysql is None:
-            raise RuntimeError("aiomysql is required when DATABASE_URL is configured")
 
-        parsed_url = self._parse_mysql_url(settings.database_url) if settings.database_url else settings.mysql_connection_params
-        if not parsed_url:
-            logger.warning("MySQL settings are incomplete; using seeded public content data")
+        if not settings.database_url and not settings.has_mysql_connection_settings:
+            logger.warning(
+                "MySQL is not configured; using seeded public content data"
+            )
             return
+
+        if aiomysql is None:
+            raise RuntimeError(
+                "aiomysql is required when MySQL is configured. "
+                "Install backend requirements first."
+            )
+
+        connection_params = (
+            self._parse_mysql_url(settings.database_url)
+            if settings.database_url
+            else settings.mysql_connection_params
+        )
+        if not connection_params:
+            logger.warning(
+                "MySQL settings are incomplete; using seeded public content data"
+            )
+            return
+
+        try:
+            ssl_context = settings.create_mysql_ssl_context()
+        except ValueError as exc:
+            raise RuntimeError(str(exc)) from exc
+
         logger.info(
             "MySQL configuration loaded",
             extra={
@@ -42,28 +66,40 @@ class Database:
                 "configuration_source": settings.mysql_configuration_source,
             },
         )
+
         last_error: Exception | None = None
-        for attempt in range(1, 11):
+        max_attempts = 10
+
+        for attempt in range(1, max_attempts + 1):
             try:
                 self.pool = await aiomysql.create_pool(
-                    **parsed_url,
+                    **connection_params,
                     minsize=settings.database_min_size,
-                    maxsize=max(settings.database_max_size, settings.mysql_pool_size),
+                    maxsize=max(
+                        settings.database_max_size,
+                        settings.mysql_pool_size,
+                    ),
                     autocommit=True,
                     charset="utf8mb4",
+                    ssl=ssl_context,
+                    connect_timeout=15,
                 )
                 break
             except Exception as exc:
                 last_error = exc
                 logger.warning(
-                    "MySQL connection attempt %s failed: %s",
+                    "MySQL connection attempt %s/%s failed: %s",
                     attempt,
+                    max_attempts,
                     self._safe_connection_error(exc),
                 )
-                await asyncio.sleep(2)
-        if not self.pool:
+                if attempt < max_attempts:
+                    await asyncio.sleep(2)
+
+        if self.pool is None:
             detail = self._safe_connection_error(last_error)
             raise RuntimeError(f"Could not connect to MySQL: {detail}") from last_error
+
         logger.info(
             "MySQL connection pool established",
             extra={
@@ -74,63 +110,64 @@ class Database:
         )
 
     async def disconnect(self) -> None:
-        if self.pool:
-            self.pool.close()
-            await self.pool.wait_closed()
-            self.pool = None
-            logger.info("MySQL connection pool closed")
+        if self.pool is None:
+            return
+
+        self.pool.close()
+        await self.pool.wait_closed()
+        self.pool = None
+        logger.info("MySQL connection pool closed")
 
     async def healthcheck(self) -> bool:
-        if not self.pool:
+        if self.pool is None:
             return False
-        result = await self.fetchval("SELECT 1")
-        return result == 1
+        try:
+            result = await self.fetchval("SELECT 1")
+            return result == 1
+        except Exception:
+            logger.exception("MySQL health check failed")
+            return False
 
     async def fetch(self, query: str, *params: Any) -> list[dict[str, Any]]:
-        if not self.pool:
-            raise RuntimeError("Database pool is not configured")
-        async with self.pool.acquire() as connection:
+        pool = self._require_pool()
+        async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
                 await cursor.execute(query, params)
-                return list(await cursor.fetchall())
+                rows = await cursor.fetchall()
+                return list(rows)
 
     async def fetchrow(self, query: str, *params: Any) -> dict[str, Any] | None:
-        if not self.pool:
-            raise RuntimeError("Database pool is not configured")
-        async with self.pool.acquire() as connection:
+        pool = self._require_pool()
+        async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
                 await cursor.execute(query, params)
                 return await cursor.fetchone()
 
     async def fetchval(self, query: str, *params: Any) -> Any:
-        if not self.pool:
-            raise RuntimeError("Database pool is not configured")
-        async with self.pool.acquire() as connection:
+        pool = self._require_pool()
+        async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
                 await cursor.execute(query, params)
                 row = await cursor.fetchone()
                 return row[0] if row else None
 
     async def insert_and_get_id(self, query: str, *params: Any) -> int:
-        if not self.pool:
-            raise RuntimeError("Database pool is not configured")
-        async with self.pool.acquire() as connection:
+        pool = self._require_pool()
+        async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
                 await cursor.execute(query, params)
                 return int(cursor.lastrowid)
 
     async def execute(self, query: str, *params: Any) -> int:
-        if not self.pool:
-            raise RuntimeError("Database pool is not configured")
-        async with self.pool.acquire() as connection:
+        pool = self._require_pool()
+        async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                return await cursor.execute(query, params)
+                return int(await cursor.execute(query, params))
 
     @asynccontextmanager
     async def transaction(self) -> AsyncIterator[Any]:
-        if not self.pool:
-            raise RuntimeError("Database pool is not configured")
-        async with self.pool.acquire() as connection:
+        pool = self._require_pool()
+        async with pool.acquire() as connection:
             await connection.begin()
             try:
                 yield connection
@@ -140,12 +177,22 @@ class Database:
             else:
                 await connection.commit()
 
+    def _require_pool(self) -> Any:
+        if self.pool is None:
+            raise RuntimeError("Database pool is not configured")
+        return self.pool
+
     def _parse_mysql_url(self, database_url: str) -> dict[str, Any]:
         parsed = urlparse(database_url)
         if parsed.scheme not in {"mysql", "mysql+pymysql", "mysql+aiomysql"}:
-            raise ValueError("DATABASE_URL must use mysql://, mysql+pymysql://, or mysql+aiomysql://")
+            raise ValueError(
+                "DATABASE_URL must use mysql://, mysql+pymysql://, "
+                "or mysql+aiomysql://"
+            )
         if not parsed.hostname or not parsed.path.strip("/"):
-            raise ValueError("DATABASE_URL must include host and database name")
+            raise ValueError(
+                "DATABASE_URL must include a hostname and database name"
+            )
         return {
             "host": parsed.hostname,
             "port": parsed.port or 3306,
@@ -157,14 +204,27 @@ class Database:
     def _safe_connection_error(self, exc: Exception | None) -> str:
         if exc is None:
             return "unknown connection error"
+
         message = str(exc)
-        if "Access denied" in message:
-            return "access denied for configured MySQL user; check MYSQL_USER, MYSQL_PASSWORD, host and port"
-        if "Can't connect" in message or "Connect call failed" in message:
-            return "could not reach MySQL server; check MYSQL_HOST and MYSQL_PORT"
-        if "Unknown database" in message:
-            return "configured MySQL database does not exist"
-        return exc.__class__.__name__
+        lowered = message.lower()
+
+        if "access denied" in lowered:
+            return (
+                "access denied for the configured MySQL user; check MYSQL_USER, "
+                "MYSQL_PASSWORD, MYSQL_HOST and MYSQL_PORT"
+            )
+        if "can't connect" in lowered or "connect call failed" in lowered:
+            return "could not reach MySQL; check MYSQL_HOST, MYSQL_PORT and network access"
+        if "unknown database" in lowered:
+            return "the configured MySQL database does not exist"
+        if "certificate verify failed" in lowered:
+            return "MySQL SSL certificate verification failed; check MYSQL_SSL_CA"
+        if "no such file or directory" in lowered and "pem" in lowered:
+            return "the MYSQL_SSL_CA certificate file could not be found"
+        if "timed out" in lowered:
+            return "the MySQL connection timed out"
+
+        return f"{exc.__class__.__name__}: {message}"
 
 
 db = Database()

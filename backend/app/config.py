@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+import ssl
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -18,21 +21,28 @@ class Settings(BaseSettings):
     app_debug: bool = False
     api_prefix: str = "/api"
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+
     database_url: str | None = None
     mysql_host: str | None = None
     mysql_port: int = 3306
     mysql_database: str | None = None
     mysql_user: str | None = None
     mysql_password: str | None = None
+    mysql_ssl_enabled: bool = False
+    mysql_ssl_ca: str | None = None
     mysql_pool_size: int = 10
     mysql_max_overflow: int = 20
     database_min_size: int = 1
     database_max_size: int = 5
+
     log_level: str = "INFO"
     rate_limit_per_minute: int = 120
+
     whatsapp_verify_token: str = "oniria-demo-verify-token"
     whatsapp_app_secret: str | None = None
+
     frontend_url: str = "http://localhost:3000"
+
     mail_provider: str | None = None
     resend_api_key: str | None = None
     mail_from: str | None = None
@@ -40,11 +50,13 @@ class Settings(BaseSettings):
     sales_notification_email: str | None = None
     sales_notification_emails: str | None = None
     reply_to_email: str | None = None
+
     oniria_admin_full_name: str | None = None
     oniria_admin_email: str | None = None
     oniria_admin_password: str | None = None
     oniria_admin_password_confirm: str | None = None
     oniria_admin_update_password: bool = False
+
     session_cookie_secure: bool = False
     session_cookie_samesite: Literal["lax", "strict", "none"] = "lax"
     session_cookie_domain: str | None = None
@@ -80,6 +92,7 @@ class Settings(BaseSettings):
         "mysql_database",
         "mysql_user",
         "mysql_password",
+        "mysql_ssl_ca",
         "mail_provider",
         "resend_api_key",
         "mail_from",
@@ -105,7 +118,9 @@ class Settings(BaseSettings):
             return None
         parsed = urlparse(value)
         if parsed.scheme not in MYSQL_SCHEMES:
-            raise ValueError("DATABASE_URL must use mysql://, mysql+pymysql://, or mysql+aiomysql://")
+            raise ValueError(
+                "DATABASE_URL must use mysql://, mysql+pymysql://, or mysql+aiomysql://"
+            )
         return value
 
     @field_validator("session_cookie_domain", mode="before")
@@ -116,31 +131,54 @@ class Settings(BaseSettings):
         value = str(value).strip()
         return value or None
 
+    @field_validator("database_min_size", "database_max_size", "mysql_pool_size")
+    @classmethod
+    def validate_positive_pool_sizes(cls, value: int) -> int:
+        if value < 1:
+            raise ValueError("Database pool sizes must be at least 1")
+        return value
+
     @model_validator(mode="after")
     def validate_environment_consistency(self) -> "Settings":
+        if self.database_max_size < self.database_min_size:
+            raise ValueError(
+                "DATABASE_MAX_SIZE must be greater than or equal to DATABASE_MIN_SIZE"
+            )
+
         if self.session_cookie_samesite == "none" and not self.session_cookie_secure:
-            raise ValueError("SESSION_COOKIE_SAMESITE=none requires SESSION_COOKIE_SECURE=true")
-        if self.database_url and any([self.mysql_host, self.mysql_database, self.mysql_user]):
+            raise ValueError(
+                "SESSION_COOKIE_SAMESITE=none requires SESSION_COOKIE_SECURE=true"
+            )
+
+        if self.database_url and any(
+            [self.mysql_host, self.mysql_database, self.mysql_user]
+        ):
             parsed = urlparse(self.database_url)
-            if parsed.scheme not in MYSQL_SCHEMES:
-                raise ValueError("DATABASE_URL must use a supported MySQL scheme")
             comparisons = {
                 "host": (parsed.hostname, self.mysql_host),
                 "port": (parsed.port or 3306, self.mysql_port),
                 "database": (parsed.path.lstrip("/"), self.mysql_database),
                 "username": (unquote(parsed.username or ""), self.mysql_user),
             }
-            mismatches = [name for name, (left, right) in comparisons.items() if right and str(left) != str(right)]
+            mismatches = [
+                name
+                for name, (left, right) in comparisons.items()
+                if right is not None and str(left) != str(right)
+            ]
             if mismatches:
-                raise ValueError(f"DATABASE_URL and MYSQL_* disagree on: {', '.join(mismatches)}")
+                raise ValueError(
+                    f"DATABASE_URL and MYSQL_* disagree on: {', '.join(mismatches)}"
+                )
+
         if self.mail_from:
             email_adapter.validate_python(self.mail_from)
         if self.reply_to_email:
             email_adapter.validate_python(self.reply_to_email)
         for recipient in self.sales_notification_recipient_list:
             email_adapter.validate_python(recipient)
+
         if (self.mail_provider or "").strip().lower() == "resend":
-            missing = []
+            missing: list[str] = []
             if not self.resend_api_key:
                 missing.append("RESEND_API_KEY")
             if not self.mail_from:
@@ -148,12 +186,19 @@ class Settings(BaseSettings):
             if not self.sales_notification_recipient_list:
                 missing.append("SALES_NOTIFICATION_EMAIL or SALES_NOTIFICATION_EMAILS")
             if missing:
-                raise ValueError(f"MAIL_PROVIDER=resend requires: {', '.join(missing)}")
+                raise ValueError(
+                    f"MAIL_PROVIDER=resend requires: {', '.join(missing)}"
+                )
+
         return self
 
     @property
     def cors_origin_list(self) -> list[str]:
-        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        return [
+            origin.strip()
+            for origin in self.cors_origins.split(",")
+            if origin.strip()
+        ]
 
     @property
     def sales_notification_recipient_list(self) -> list[str]:
@@ -168,16 +213,28 @@ class Settings(BaseSettings):
     def effective_database_url(self) -> str | None:
         if self.database_url:
             return self.database_url
-        if all([self.mysql_host, self.mysql_database, self.mysql_user, self.mysql_password]):
-            return f"mysql://{self.mysql_user}:{self.mysql_password}@{self.mysql_host}:{self.mysql_port}/{self.mysql_database}"
+        if self.has_mysql_connection_settings:
+            return (
+                f"mysql://{self.mysql_user}:{self.mysql_password}"
+                f"@{self.mysql_host}:{self.mysql_port}/{self.mysql_database}"
+            )
         return None
 
     @property
     def has_mysql_connection_settings(self) -> bool:
-        return bool(all([self.mysql_host, self.mysql_database, self.mysql_user, self.mysql_password]))
+        return bool(
+            all(
+                [
+                    self.mysql_host,
+                    self.mysql_database,
+                    self.mysql_user,
+                    self.mysql_password,
+                ]
+            )
+        )
 
     @property
-    def mysql_log_summary(self) -> dict[str, str | int | None]:
+    def mysql_log_summary(self) -> dict[str, str | int | bool | None]:
         if self.database_url:
             parsed = urlparse(self.database_url)
             return {
@@ -185,12 +242,14 @@ class Settings(BaseSettings):
                 "mysql_port": parsed.port or 3306,
                 "mysql_database": parsed.path.lstrip("/") or None,
                 "mysql_user": unquote(parsed.username or "") or None,
+                "mysql_ssl_enabled": self.mysql_ssl_enabled,
             }
         return {
             "mysql_host": self.mysql_host,
             "mysql_port": self.mysql_port,
             "mysql_database": self.mysql_database,
             "mysql_user": self.mysql_user,
+            "mysql_ssl_enabled": self.mysql_ssl_enabled,
         }
 
     @property
@@ -203,16 +262,34 @@ class Settings(BaseSettings):
                 "password": str(self.mysql_password),
                 "db": str(self.mysql_database),
             }
+
         if self.database_url:
             parsed = urlparse(self.database_url)
+            if not parsed.hostname or not parsed.path.strip("/"):
+                raise ValueError(
+                    "DATABASE_URL must include a hostname and database name"
+                )
             return {
-                "host": str(parsed.hostname),
+                "host": parsed.hostname,
                 "port": parsed.port or 3306,
                 "user": unquote(parsed.username or ""),
                 "password": unquote(parsed.password or ""),
                 "db": parsed.path.lstrip("/"),
             }
+
         return None
+
+    def create_mysql_ssl_context(self) -> ssl.SSLContext | None:
+        if not self.mysql_ssl_enabled:
+            return None
+
+        try:
+            return ssl.create_default_context(cafile=self.mysql_ssl_ca or None)
+        except (OSError, ssl.SSLError) as exc:
+            ca_path = self.mysql_ssl_ca or "the operating system CA store"
+            raise ValueError(
+                f"Could not create MySQL SSL context using {ca_path}: {exc}"
+            ) from exc
 
     @property
     def mysql_configuration_source(self) -> str:
@@ -221,14 +298,6 @@ class Settings(BaseSettings):
     @property
     def resolved_env_file(self) -> Path:
         return BACKEND_ENV_FILE
-
-    @field_validator("database_max_size")
-    @classmethod
-    def validate_pool_size(cls, value: int, info) -> int:
-        min_size = info.data.get("database_min_size", 1)
-        if value < min_size:
-            raise ValueError("DATABASE_MAX_SIZE must be greater than or equal to DATABASE_MIN_SIZE")
-        return value
 
 
 @lru_cache
