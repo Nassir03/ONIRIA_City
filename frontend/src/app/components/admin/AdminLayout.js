@@ -1,37 +1,89 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { adminApi } from "../../services/adminApi";
+import { AdminLoadingScreen, StaffAvatar } from "./AdminUI";
 
-const navItems = [
-  ["Dashboard", "/admin", null],
-  ["Leads", "/admin/leads", null],
-  ["Enquiries", "/admin/enquiries", null],
-  ["Brochures", "/admin/brochure-requests", null],
-  ["Consultations", "/admin/consultations", null],
-  ["Site Visits", "/admin/site-visits", null],
-  ["AI Conversations", "/admin/conversations", null],
-  ["WhatsApp", "/admin/whatsapp", null],
-  ["Campaigns", "/admin/campaigns", null],
-  ["Follow-ups", "/admin/follow-ups", null],
-  ["Subscribers", "/admin/subscribers", ["administrator", "marketing_staff"]],
-  ["Account Recovery", "/admin/account-recovery", ["administrator"]],
-  ["Staff", "/admin/staff", null],
+const navGroups = [
+  ["Core", [
+    ["Dashboard", "/admin", null, "DA"],
+    ["Leads", "/admin/leads", null, "LE"],
+    ["Enquiries", "/admin/enquiries", null, "EN"],
+  ]],
+  ["Appointments", [
+    ["Consultations", "/admin/consultations", null, "CO"],
+    ["Site Visits", "/admin/site-visits", null, "SV"],
+  ]],
+  ["Content and Communication", [
+    ["Brochures", "/admin/brochure-requests", null, "BR"],
+    ["AI Conversations", "/admin/conversations", null, "AI"],
+    ["WhatsApp", "/admin/whatsapp", null, "WA"],
+    ["Campaigns", "/admin/campaigns", null, "CA"],
+  ]],
+  ["Operations", [
+    ["Follow-ups", "/admin/follow-ups", null, "FU"],
+    ["Subscribers", "/admin/subscribers", ["administrator", "marketing_staff"], "SU"],
+  ]],
+  ["Administration", [
+    ["Account Recovery", "/admin/account-recovery", ["administrator"], "AR"],
+    ["Staff", "/admin/staff", null, "ST"],
+  ]],
 ];
 
 export default function AdminLayout({ title, children }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [session, setSession] = useState(null);
+  const [status, setStatus] = useState("loading");
   const [error, setError] = useState("");
+  const [timedOut, setTimedOut] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const checkStartedRef = useRef(false);
+  const redirectedRef = useRef(false);
 
   useEffect(() => {
+    if (checkStartedRef.current) {
+      return;
+    }
+    checkStartedRef.current = true;
+    setTimedOut(false);
     adminApi
-      .session()
-      .then(setSession)
-      .catch(() => router.replace("/admin/login"));
+      .cachedSession()
+      .then((result) => {
+        setSession(result);
+        setStatus("authenticated");
+      })
+      .catch(() => {
+        setStatus("unauthenticated");
+        if (!redirectedRef.current) {
+          redirectedRef.current = true;
+          router.replace("/admin/login");
+        }
+      });
   }, [router]);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      if (status === "loading") {
+        setTimedOut(true);
+      }
+    }, 9000);
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [status]);
+
+  function retrySession() {
+    adminApi.session().then((result) => {
+      setSession(result);
+      setStatus("authenticated");
+      setTimedOut(false);
+    }).catch(() => {
+      setTimedOut(true);
+    });
+  }
 
   async function logout() {
     try {
@@ -42,35 +94,72 @@ export default function AdminLayout({ title, children }) {
     }
   }
 
-  if (!session) {
-    return <main className="adminLoading">Checking staff session...</main>;
+  if (status === "loading") {
+    return <AdminLoadingScreen timedOut={timedOut} onRetry={retrySession} />;
   }
+
+  if (status === "unauthenticated" || !session) {
+    return <AdminLoadingScreen title="Redirecting to sign in" message="Your staff session could not be verified." />;
+  }
+
+  const staffName = session.staff.full_name;
+  const primaryRole = session.staff.roles?.[0]?.replace(/_/g, " ") || "staff";
 
   return (
     <main className="adminShell">
-      <aside className="adminSidebar">
-        <Link href="/admin" className="adminBrand">
-          ONIRIA CITY
-        </Link>
-        <nav>
-          {navItems
-            .filter(([, , roles]) => !roles || roles.some((role) => session.staff.roles?.includes(role)))
-            .map(([label, href]) => (
-              <Link href={href} key={href}>
-                {label}
-              </Link>
-            ))}
+      {sidebarOpen && <button className="adminSidebarBackdrop" type="button" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />}
+      <aside className={`adminSidebar ${sidebarOpen ? "isOpen" : ""}`}>
+        <div className="adminBrandBlock">
+          <Link href="/admin" className="adminBrand" prefetch={false} onClick={() => setSidebarOpen(false)}>
+            ONIRIA CITY
+          </Link>
+          <span>Private Staff Area</span>
+        </div>
+        <nav aria-label="Staff navigation">
+          {navGroups.map(([group, items]) => {
+            const visibleItems = items.filter(([, , roles]) => !roles || roles.some((role) => session.staff.roles?.includes(role)));
+            if (!visibleItems.length) return null;
+            return (
+              <section className="adminNavGroup" key={group}>
+                <p>{group}</p>
+                {visibleItems.map(([label, href, , icon]) => {
+                  const active = href === "/admin" ? pathname === href : pathname?.startsWith(href);
+                  return (
+                    <Link
+                      href={href}
+                      key={href}
+                      prefetch={false}
+                      className={active ? "isActive" : ""}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <span className="adminNavIcon" aria-hidden="true">{icon}</span>
+                      {label}
+                    </Link>
+                  );
+                })}
+              </section>
+            );
+          })}
         </nav>
       </aside>
 
       <section className="adminMain">
         <header className="adminTopbar">
+          <button className="adminMenuButton" type="button" aria-label="Open navigation" onClick={() => setSidebarOpen(true)}>
+            <span />
+            <span />
+            <span />
+          </button>
           <div>
-            <p>PRIVATE STAFF AREA</p>
+            <p>STAFF WORKSPACE</p>
             <h1>{title}</h1>
           </div>
           <div className="adminStaffBadge">
-            <span>{session.staff.full_name}</span>
+            <StaffAvatar name={staffName} />
+            <div>
+              <strong>{staffName}</strong>
+              <span>{primaryRole}</span>
+            </div>
             <button type="button" onClick={logout}>
               Logout
             </button>

@@ -1,5 +1,4 @@
-import OniriaAIChat from "./components/OniriaAIChat";
-import WhatsAppButton from "./components/WhatsAppButton";
+import PublicFloatingActions from "./components/PublicFloatingActions";
 import "./globals.css";
 
 export const metadata = {
@@ -18,11 +17,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className="h-full antialiased" data-scroll-behavior="smooth">
       <body className="min-h-full flex flex-col">
         {children}
-        <OniriaAIChat />
-        <WhatsAppButton />
+        <PublicFloatingActions />
       </body>
     </html>
   );

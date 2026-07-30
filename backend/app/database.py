@@ -24,14 +24,24 @@ class Database:
         return self.pool is not None
 
     async def connect(self, settings: Settings) -> None:
-        database_url = settings.effective_database_url
-        if not database_url:
+        if not settings.database_url and not settings.has_mysql_connection_settings:
             logger.warning("DATABASE_URL is not configured; using seeded public content data")
             return
         if aiomysql is None:
             raise RuntimeError("aiomysql is required when DATABASE_URL is configured")
 
-        parsed_url = self._parse_mysql_url(str(database_url))
+        parsed_url = self._parse_mysql_url(settings.database_url) if settings.database_url else settings.mysql_connection_params
+        if not parsed_url:
+            logger.warning("MySQL settings are incomplete; using seeded public content data")
+            return
+        logger.info(
+            "MySQL configuration loaded",
+            extra={
+                **settings.mysql_log_summary,
+                "env_file": str(settings.resolved_env_file),
+                "configuration_source": settings.mysql_configuration_source,
+            },
+        )
         last_error: Exception | None = None
         for attempt in range(1, 11):
             try:
@@ -45,11 +55,23 @@ class Database:
                 break
             except Exception as exc:
                 last_error = exc
-                logger.warning("MySQL connection attempt %s failed", attempt)
+                logger.warning(
+                    "MySQL connection attempt %s failed: %s",
+                    attempt,
+                    self._safe_connection_error(exc),
+                )
                 await asyncio.sleep(2)
         if not self.pool:
-            raise RuntimeError("Could not connect to MySQL") from last_error
-        logger.info("MySQL connection pool established")
+            detail = self._safe_connection_error(last_error)
+            raise RuntimeError(f"Could not connect to MySQL: {detail}") from last_error
+        logger.info(
+            "MySQL connection pool established",
+            extra={
+                **settings.mysql_log_summary,
+                "env_file": str(settings.resolved_env_file),
+                "configuration_source": settings.mysql_configuration_source,
+            },
+        )
 
     async def disconnect(self) -> None:
         if self.pool:
@@ -131,6 +153,18 @@ class Database:
             "password": unquote(parsed.password or ""),
             "db": parsed.path.lstrip("/"),
         }
+
+    def _safe_connection_error(self, exc: Exception | None) -> str:
+        if exc is None:
+            return "unknown connection error"
+        message = str(exc)
+        if "Access denied" in message:
+            return "access denied for configured MySQL user; check MYSQL_USER, MYSQL_PASSWORD, host and port"
+        if "Can't connect" in message or "Connect call failed" in message:
+            return "could not reach MySQL server; check MYSQL_HOST and MYSQL_PORT"
+        if "Unknown database" in message:
+            return "configured MySQL database does not exist"
+        return exc.__class__.__name__
 
 
 db = Database()

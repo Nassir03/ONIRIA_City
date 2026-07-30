@@ -1,4 +1,4 @@
-export default function LeadFilters({ filters, onChange, onSubmit }) {
+export default function LeadFilters({ filters, onChange, onSubmit, onClear }) {
   function setValue(key, value) {
     onChange({ ...filters, [key]: value });
   }
@@ -6,6 +6,7 @@ export default function LeadFilters({ filters, onChange, onSubmit }) {
   return (
     <form className="adminFilters" onSubmit={onSubmit}>
       <input
+        aria-label="Search leads"
         value={filters.q || ""}
         onChange={(event) => setValue("q", event.target.value)}
         placeholder="Search customer, reference, phone..."
@@ -23,6 +24,7 @@ export default function LeadFilters({ filters, onChange, onSubmit }) {
         <option value="score">Lead score</option>
       </select>
       <button type="submit">Apply</button>
+      <button type="button" className="adminSecondaryButton" onClick={onClear}>Clear</button>
     </form>
   );
 }

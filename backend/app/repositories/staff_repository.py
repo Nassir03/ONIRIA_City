@@ -99,8 +99,25 @@ class StaffRepository:
 
     async def list_staff(self) -> list[dict[str, Any]]:
         rows = await self.pool.fetch("SELECT id, full_name, email, is_active, last_login_at, created_at FROM staff_users ORDER BY full_name")
+        if not rows:
+            return rows
+        staff_ids = [row["id"] for row in rows]
+        placeholders = ", ".join(["%s"] * len(staff_ids))
+        role_rows = await self.pool.fetch(
+            f"""
+            SELECT sur.staff_user_id, sr.role_key
+            FROM staff_user_roles sur
+            JOIN staff_roles sr ON sr.id = sur.role_id
+            WHERE sur.staff_user_id IN ({placeholders})
+            ORDER BY sr.role_key
+            """,
+            *staff_ids,
+        )
+        roles_by_staff_id: dict[int, list[str]] = {staff_id: [] for staff_id in staff_ids}
+        for role_row in role_rows:
+            roles_by_staff_id.setdefault(role_row["staff_user_id"], []).append(role_row["role_key"])
         for row in rows:
-            row["roles"] = await self.get_staff_roles(row["id"])
+            row["roles"] = roles_by_staff_id.get(row["id"], [])
         return rows
 
     async def create_staff(self, *, full_name: str, email: str, password_hash: str, roles: list[str]) -> dict[str, Any]:

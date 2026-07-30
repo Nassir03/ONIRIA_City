@@ -7,9 +7,14 @@ export const metadata = {
 export default function AdminLoginPage() {
   return (
     <main className="adminLoginPage">
-      <div>
+      <div className="adminLoginHero">
         <p>ONIRIA CITY STAFF</p>
-        <h1>Staff Login</h1>
+        <h1>Secure access for authorised team members</h1>
+        <span>Manage leads, enquiries, appointments and staff operations from the private ONIRIA workspace.</span>
+      </div>
+      <div className="adminLoginCard">
+        <p>Staff Portal</p>
+        <h2>Sign in</h2>
         <StaffLoginForm />
       </div>
     </main>

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from typing import Any
 
 
@@ -8,29 +9,47 @@ class AdminRepository:
         self.pool = pool
 
     async def dashboard(self) -> dict[str, Any]:
-        total = int(await self.pool.fetchval("SELECT COUNT(*) FROM leads") or 0)
-        new = int(await self.pool.fetchval("SELECT COUNT(*) FROM leads WHERE COALESCE(lead_status, follow_up_status) IN ('New', 'new')") or 0)
-        priority = int(await self.pool.fetchval("SELECT COUNT(*) FROM leads WHERE COALESCE(lead_score, score, 0) >= 70 OR follow_up_status = 'priority_follow_up'") or 0)
-        unassigned = int(await self.pool.fetchval("SELECT COUNT(*) FROM leads WHERE assigned_salesperson_id IS NULL") or 0)
-        brochure = int(await self.pool.fetchval("SELECT COUNT(*) FROM enquiries WHERE enquiry_type = 'brochure'") or 0)
-        consultations = int(await self.pool.fetchval("SELECT COUNT(*) FROM enquiries WHERE enquiry_type = 'consultation'") or 0)
-        site_visits = int(await self.pool.fetchval("SELECT COUNT(*) FROM enquiries WHERE enquiry_type = 'site_visit'") or 0)
-        due_today = int(await self.pool.fetchval("SELECT COUNT(*) FROM leads WHERE DATE(next_follow_up_at) = CURRENT_DATE") or 0)
-        sources = await self.pool.fetch(
-            "SELECT COALESCE(utm_source, source_platform, 'Direct') AS source, COUNT(*) AS count FROM leads GROUP BY source ORDER BY count DESC"
+        lead_counts, enquiry_counts, sources, recent = await asyncio.gather(
+            self.pool.fetchrow(
+                """
+                SELECT
+                    COUNT(*) AS total_leads,
+                    COALESCE(SUM(COALESCE(lead_status, follow_up_status) IN ('New', 'new')), 0) AS new_leads,
+                    COALESCE(SUM(lead_status = 'Contacted'), 0) AS contacted_leads,
+                    COALESCE(SUM(lead_status = 'Qualified'), 0) AS qualified_leads,
+                    COALESCE(SUM(COALESCE(lead_score, score, 0) >= 70 OR follow_up_status = 'priority_follow_up'), 0) AS priority_leads,
+                    COALESCE(SUM(assigned_salesperson_id IS NULL), 0) AS unassigned_leads,
+                    COALESCE(SUM(DATE(next_follow_up_at) = CURRENT_DATE), 0) AS follow_ups_due_today
+                FROM leads
+                """
+            ),
+            self.pool.fetchrow(
+                """
+                SELECT
+                    COALESCE(SUM(enquiry_type = 'brochure'), 0) AS brochure_requests,
+                    COALESCE(SUM(enquiry_type = 'consultation'), 0) AS consultation_requests,
+                    COALESCE(SUM(enquiry_type = 'site_visit'), 0) AS site_visit_requests
+                FROM enquiries
+                """
+            ),
+            self.pool.fetch(
+                "SELECT COALESCE(utm_source, source_platform, 'Direct') AS source, COUNT(*) AS count FROM leads GROUP BY source ORDER BY count DESC"
+            ),
+            self.pool.fetch("SELECT * FROM admin_lead_summary ORDER BY created_date DESC LIMIT 8"),
         )
-        recent = await self.pool.fetch("SELECT * FROM admin_lead_summary ORDER BY created_date DESC LIMIT 8")
+        lead_counts = lead_counts or {}
+        enquiry_counts = enquiry_counts or {}
         return {
-            "total_leads": total,
-            "new_leads": new,
-            "contacted_leads": int(await self.pool.fetchval("SELECT COUNT(*) FROM leads WHERE lead_status = 'Contacted'") or 0),
-            "qualified_leads": int(await self.pool.fetchval("SELECT COUNT(*) FROM leads WHERE lead_status = 'Qualified'") or 0),
-            "priority_leads": priority,
-            "brochure_requests": brochure,
-            "consultation_requests": consultations,
-            "site_visit_requests": site_visits,
-            "follow_ups_due_today": due_today,
-            "unassigned_leads": unassigned,
+            "total_leads": int(lead_counts.get("total_leads") or 0),
+            "new_leads": int(lead_counts.get("new_leads") or 0),
+            "contacted_leads": int(lead_counts.get("contacted_leads") or 0),
+            "qualified_leads": int(lead_counts.get("qualified_leads") or 0),
+            "priority_leads": int(lead_counts.get("priority_leads") or 0),
+            "brochure_requests": int(enquiry_counts.get("brochure_requests") or 0),
+            "consultation_requests": int(enquiry_counts.get("consultation_requests") or 0),
+            "site_visit_requests": int(enquiry_counts.get("site_visit_requests") or 0),
+            "follow_ups_due_today": int(lead_counts.get("follow_ups_due_today") or 0),
+            "unassigned_leads": int(lead_counts.get("unassigned_leads") or 0),
             "leads_by_source": sources,
             "recent_enquiries": recent,
         }

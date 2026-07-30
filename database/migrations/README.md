@@ -1,12 +1,15 @@
 # ONIRIA MySQL Migrations
 
-Apply only the MySQL migration files listed in `backend/scripts/run_migrations.py` or `docker-compose.yml`.
+Apply only the MySQL migration files listed in `backend/scripts/migration_manifest.py`.
 
-Do not bulk-run every `.sql` file in this directory. The older files below are PostgreSQL drafts and are intentionally excluded from the MySQL runner:
+Do not bulk-run every `.sql` file. Production and local development use MySQL 8.4 only.
 
-- `001_extensions.sql`
-- `002_properties.sql`
-- `003_masterplan_amenities.sql`
-- `004_anonymous_sessions.sql`
+Historical PostgreSQL drafts have been moved to `database/archive/postgresql-drafts/`. They must not be executed.
 
-The active MySQL sequence starts with `001_database_setup.sql` and continues through `014_audit_logs.sql`.
+The active MySQL sequence starts with `001_database_setup.sql` and continues through `016_newsletter_subscriptions.sql`.
+
+After the 16 active migrations, apply safe seed data in this order:
+
+1. `staff_roles.sql`
+2. `property_seed.sql`
+3. `masterplan_seed.sql`

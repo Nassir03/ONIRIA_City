@@ -5,6 +5,14 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import { adminApi } from "../../services/adminApi";
 
 export default function AccountRecoveryPage() {
+  return (
+    <AdminLayout title="Account Recovery">
+      <AccountRecoveryContent />
+    </AdminLayout>
+  );
+}
+
+function AccountRecoveryContent() {
   const [requests, setRequests] = useState([]);
   const [selected, setSelected] = useState(null);
   const [note, setNote] = useState("");
@@ -70,7 +78,7 @@ export default function AccountRecoveryPage() {
   }
 
   return (
-    <AdminLayout title="Account Recovery">
+    <>
       {error && <div className="adminError">{error}</div>}
       {loading ? <div className="adminLoading">Loading recovery requests...</div> : (
         <div className="adminRecoveryGrid">
@@ -153,6 +161,6 @@ export default function AccountRecoveryPage() {
           )}
         </div>
       )}
-    </AdminLayout>
+    </>
   );
 }

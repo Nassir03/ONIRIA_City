@@ -135,7 +135,7 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 async def healthcheck():
     database_connected = await db.healthcheck()
     database_status = "connected" if database_connected else "not_configured"
-    if settings.effective_database_url and not database_connected:
+    if (settings.database_url or settings.has_mysql_connection_settings) and not database_connected:
         database_status = "unavailable"
     return {
         "success": True,
@@ -144,6 +144,37 @@ async def healthcheck():
             "environment": settings.app_env,
             "status": "ok",
             "database": database_status,
+        },
+    }
+
+
+@app.get(f"{settings.api_prefix}/ready", tags=["health"])
+async def readiness():
+    database_connected = await db.healthcheck()
+    required_tables = [
+        "staff_users",
+        "staff_roles",
+        "staff_sessions",
+        "customers",
+        "leads",
+        "enquiries",
+        "newsletter_subscriptions",
+    ]
+    table_status: dict[str, bool] = {}
+    if database_connected:
+        for table in required_tables:
+            try:
+                await db.fetchval(f"SELECT 1 FROM {table} LIMIT 1")
+                table_status[table] = True
+            except Exception:
+                table_status[table] = False
+    return {
+        "success": True,
+        "data": {
+            "service": settings.app_name,
+            "environment": settings.app_env,
+            "database": "connected" if database_connected else "unavailable",
+            "tables": table_status,
         },
     }
 

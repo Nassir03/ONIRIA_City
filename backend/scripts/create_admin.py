@@ -1,9 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import getpass
-import os
-import re
 import sys
 from pathlib import Path
 
@@ -14,65 +11,41 @@ except ModuleNotFoundError:
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from app.security.password_hashing import hash_password, validate_password_strength
-
-EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+from app.config import get_settings
+from app.services.admin_bootstrap_service import bootstrap_administrator, verify_administrator
 
 
 async def main() -> None:
-    required = ["MYSQL_HOST", "MYSQL_DATABASE", "MYSQL_USER", "MYSQL_PASSWORD"]
-    missing = [name for name in required if not os.getenv(name)]
-    if missing:
-        raise SystemExit(f"Missing required environment values: {', '.join(missing)}")
-
-    full_name = os.getenv("ONIRIA_ADMIN_FULL_NAME") or input("Full name: ").strip()
-    email = (os.getenv("ONIRIA_ADMIN_EMAIL") or input("Email: ")).strip().lower()
-    if not EMAIL_PATTERN.fullmatch(email):
-        raise SystemExit("Email must be a valid address and contain @.")
-    password = os.getenv("ONIRIA_ADMIN_PASSWORD") or getpass.getpass("Password: ")
-    confirm = os.getenv("ONIRIA_ADMIN_PASSWORD_CONFIRM") or (
-        password if os.getenv("ONIRIA_ADMIN_PASSWORD") else getpass.getpass("Confirm password: ")
-    )
-    if password != confirm:
-        raise SystemExit("Passwords do not match.")
     try:
-        validate_password_strength(password)
-    except ValueError as exc:
-        raise SystemExit(str(exc)) from exc
+        settings = get_settings()
+    except Exception as exc:
+        raise SystemExit(f"Settings validation failed: {exc}") from exc
+    connection_params = settings.mysql_connection_params
+    if not connection_params:
+        raise SystemExit("Required values are missing: DATABASE_URL or MYSQL_HOST, MYSQL_DATABASE, MYSQL_USER and MYSQL_PASSWORD")
 
-    connection = await aiomysql.connect(
-        host=os.getenv("MYSQL_HOST"),
-        port=int(os.getenv("MYSQL_PORT", "3306")),
-        user=os.getenv("MYSQL_USER"),
-        password=os.getenv("MYSQL_PASSWORD"),
-        db=os.getenv("MYSQL_DATABASE"),
-        autocommit=False,
-    )
     try:
-        async with connection.cursor(aiomysql.DictCursor) as cursor:
-            await cursor.execute("SELECT id FROM staff_users WHERE email = %s", (email,))
-            if await cursor.fetchone():
-                raise SystemExit("A staff user with that email already exists.")
-            await cursor.execute(
-                "INSERT INTO staff_users (full_name, email, password_hash) VALUES (%s, %s, %s)",
-                (full_name, email, hash_password(password)),
-            )
-            staff_id = cursor.lastrowid
-            await cursor.execute("SELECT id FROM staff_roles WHERE role_key = 'administrator'")
-            role = await cursor.fetchone()
-            if not role:
-                raise SystemExit("administrator role is missing. Run migrations and staff role seed first.")
-            await cursor.execute(
-                "INSERT INTO staff_user_roles (staff_user_id, role_id) VALUES (%s, %s)",
-                (staff_id, role["id"]),
-            )
+        connection = await aiomysql.connect(
+            **connection_params,
+            autocommit=False,
+        )
+    except Exception as exc:
+        raise SystemExit(f"Could not connect to MySQL: {exc}") from exc
+    try:
+        result = await bootstrap_administrator(connection, settings)
         await connection.commit()
+        verification = await verify_administrator(connection, str(settings.oniria_admin_email))
+        if not verification.active or not verification.has_administrator_role:
+            raise SystemExit("Administrator verification failed after bootstrap.")
+        print(result.status)
+    except ValueError as exc:
+        await connection.rollback()
+        raise SystemExit(str(exc)) from exc
     except Exception:
         await connection.rollback()
         raise
     finally:
         connection.close()
-    print(f"Administrator created for {email}.")
 
 
 if __name__ == "__main__":

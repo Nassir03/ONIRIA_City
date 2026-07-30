@@ -5,6 +5,14 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import { adminApi } from "../../services/adminApi";
 
 export default function SubscribersPage() {
+  return (
+    <AdminLayout title="Subscribers">
+      <SubscribersContent />
+    </AdminLayout>
+  );
+}
+
+function SubscribersContent() {
   const [filters, setFilters] = useState({ q: "", status: "", campaign: "" });
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
@@ -39,7 +47,7 @@ export default function SubscribersPage() {
   }
 
   return (
-    <AdminLayout title="Subscribers">
+    <>
       {error && <div className="adminError">{error}</div>}
       <form className="adminFilters" onSubmit={submit}>
         <input placeholder="Search email" value={filters.q} onChange={(event) => setFilters({ ...filters, q: event.target.value })} />
@@ -82,6 +90,6 @@ export default function SubscribersPage() {
           {!data.items?.length && <div className="adminEmpty">No subscribers found.</div>}
         </div>
       )}
-    </AdminLayout>
+    </>
   );
 }

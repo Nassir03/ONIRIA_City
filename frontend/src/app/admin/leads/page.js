@@ -4,9 +4,18 @@ import { useEffect, useState } from "react";
 import AdminLayout from "../../components/admin/AdminLayout";
 import LeadFilters from "../../components/admin/LeadFilters";
 import LeadTable from "../../components/admin/LeadTable";
+import { AdminPageHeader, ErrorState, LoadingSkeleton } from "../../components/admin/AdminUI";
 import { adminApi } from "../../services/adminApi";
 
 export default function AdminLeadsPage() {
+  return (
+    <AdminLayout title="Leads">
+      <AdminLeadsContent />
+    </AdminLayout>
+  );
+}
+
+function AdminLeadsContent() {
   const [filters, setFilters] = useState({ sort: "newest" });
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
@@ -18,6 +27,12 @@ export default function AdminLeadsPage() {
     } catch (err) {
       setError(err.message);
     }
+  }
+
+  function clearFilters() {
+    const nextFilters = { sort: "newest" };
+    setFilters(nextFilters);
+    load(nextFilters);
   }
 
   useEffect(() => {
@@ -40,10 +55,21 @@ export default function AdminLeadsPage() {
   }, []);
 
   return (
-    <AdminLayout title="Leads">
-      <LeadFilters filters={filters} onChange={setFilters} onSubmit={(event) => { event.preventDefault(); load(filters); }} />
-      {error && <div className="adminError">{error}</div>}
-      {!data ? <div className="adminLoading">Loading leads...</div> : <LeadTable leads={data.items} />}
-    </AdminLayout>
+    <>
+      <AdminPageHeader
+        eyebrow="Core"
+        title="Leads"
+        description="Track and manage potential ONIRIA City clients."
+      />
+      <LeadFilters filters={filters} onChange={setFilters} onClear={clearFilters} onSubmit={(event) => { event.preventDefault(); load(filters); }} />
+      {error && <ErrorState message={error} onRetry={() => load(filters)} />}
+      {!data && !error ? <LoadingSkeleton /> : data && (
+        <LeadTable
+          leads={data.items}
+          filtersActive={Boolean(filters.q || filters.status || filters.sort !== "newest")}
+          onClearFilters={clearFilters}
+        />
+      )}
+    </>
   );
 }

@@ -46,7 +46,7 @@ def test_general_enquiry_creates_lead_reference_activity_and_campaign():
     assert lead["email"] == "amina@example.com"
     assert lead["property_interests"] == ["skyline-villa"]
     assert store.activities[0]["campaign"].utm_source == "google"
-    assert store.enquiries[0]["notification_status"] == "logged"
+    assert store.enquiries[0]["notification_status"] == "skipped"
 
 
 def test_brochure_request_reuses_existing_lead_by_email():

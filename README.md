@@ -1,125 +1,111 @@
 # ONIRIA City
 
-Full-stack ONIRIA City website with a FastAPI backend, MySQL database, public enquiry workflow, lead management APIs, and a private staff dashboard.
+Full-stack ONIRIA City website with a Next.js frontend, FastAPI backend, MySQL 8.4 database, public enquiry workflow, lead management APIs, staff authentication, and a private admin dashboard.
 
 ## Environment Files
 
-The project uses two environment files:
+Copy examples before running locally:
 
-- `.env.example` for the Next.js frontend API URL.
-- `backend/.env.example` for FastAPI local settings.
+```powershell
+Copy-Item .env.example .env
+Copy-Item backend\.env.example backend\.env
+Copy-Item frontend\.env.example frontend\.env.local
+```
 
-## Run With Docker
+Fill secrets manually. Never commit `.env`, `backend/.env`, `frontend/.env.local`, passwords, Resend API keys, or private email addresses.
 
-Start Docker Desktop, then run from the project root:
+Browser requests use `NEXT_PUBLIC_API_BASE_URL`. For local development:
+
+```text
+NEXT_PUBLIC_API_BASE_URL=http://localhost:7000/api
+```
+
+Do not use container-only names such as `http://backend:7000` in a value used by an external browser.
+
+## Local Startup
+
+1. Start MySQL 8.4 and create/use the `oniria_city` database.
+2. Fill `backend/.env` with either `DATABASE_URL` or `MYSQL_*` values.
+3. Run migrations:
+
+```powershell
+python backend\scripts\run_migrations.py
+```
+
+4. Bootstrap the first admin:
+
+```powershell
+python backend\scripts\create_admin.py
+```
+
+Verify the configured admin without printing secrets:
+
+```powershell
+python backend\scripts\verify_admin.py
+```
+
+5. Start the backend:
+
+```powershell
+python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 7000
+```
+
+6. Start the frontend:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+7. Open `http://localhost:3000/admin/login` and test the configured admin.
+
+## Docker Startup
+
+Fill root `.env` and `backend/.env`, then run:
 
 ```powershell
 docker compose up -d --build
 ```
 
-Docker starts:
+Docker starts MySQL, runs migrations, runs `admin-bootstrap`, starts the backend, then starts the frontend.
 
-- Frontend: `http://127.0.0.1:3000`
-- Backend API: `http://127.0.0.1:7000/api`
-- API docs: `http://127.0.0.1:7000/docs`
-- MySQL on host port `3307`
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:7000/api`
+- API docs: `http://localhost:7000/docs`
+- MySQL host port: `3307`
 
-The `migrate` service applies the MySQL migrations and safe seed data before the backend starts.
+## Verification
 
-Docker uses demo local credentials inside `docker-compose.yml`. Replace them with real secrets or an external secret manager before deployment.
-
-## Create An Admin User
-
-Create your first staff administrator locally. Do not commit or share the password.
+Backend tests:
 
 ```powershell
-$env:MYSQL_HOST="127.0.0.1"
-$env:MYSQL_PORT="3307"
-$env:MYSQL_DATABASE="oniria_city"
-$env:MYSQL_USER="oniria_user"
-$env:MYSQL_PASSWORD="oniria_password"
-backend\.venv\Scripts\python.exe backend\scripts\create_admin.py
+python -m pytest backend\tests -q
 ```
 
-Then open `http://127.0.0.1:3000/admin/login`.
-
-Admin email must be a valid email address containing `@`. Admin password must be at least 10 characters and include uppercase, lowercase, number and symbol.
-
-## Use Local MySQL On Port 3306
-
-If you are using MySQL installed on your machine instead of the Docker MySQL container, install backend dependencies and apply the schema like this:
+Backend syntax/import check:
 
 ```powershell
-backend\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
-
-$env:MYSQL_HOST="127.0.0.1"
-$env:MYSQL_PORT="3306"
-$env:MYSQL_DATABASE="oniria_city"
-$env:MYSQL_USER="root"
-$env:MYSQL_PASSWORD="<your-local-mysql-password>"
-
-backend\.venv\Scripts\python.exe backend\scripts\run_migrations.py
-backend\.venv\Scripts\python.exe backend\scripts\check_database.py
+python -m compileall backend\app backend\scripts
 ```
 
-To make the backend use local MySQL through `backend\.env`, set either `DATABASE_URL` or all `MYSQL_*` values. Example:
-
-```text
-DATABASE_URL=mysql://root:<your-local-mysql-password>@127.0.0.1:3306/oniria_city
-```
-
-To create the first admin without interactive prompts:
+Frontend checks:
 
 ```powershell
-$env:ONIRIA_ADMIN_FULL_NAME="ONIRIA Admin"
-$env:ONIRIA_ADMIN_EMAIL="admin@example.com"
-$env:ONIRIA_ADMIN_PASSWORD="<strong-admin-password>"
-$env:ONIRIA_ADMIN_PASSWORD_CONFIRM="<strong-admin-password>"
-backend\.venv\Scripts\python.exe backend\scripts\create_admin.py
+cd frontend
+npm run lint
+npm run build
 ```
 
-To run the backend manually on port `7000`:
+Configuration validation with local MySQL available:
 
 ```powershell
-backend\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 7000
+python backend\scripts\validate_configuration.py
 ```
 
-To run the frontend manually:
+## More Documentation
 
-```powershell
-npm.cmd install
-npm.cmd run dev
-```
-
-## Test The Project
-
-Run backend tests:
-
-```powershell
-backend\.venv\Scripts\python.exe -m pytest backend\tests
-```
-
-Run frontend checks:
-
-```powershell
-npm.cmd run lint
-npm.cmd run build
-```
-
-Check Docker status:
-
-```powershell
-docker compose ps
-```
-
-Check backend health:
-
-```powershell
-curl.exe -s http://127.0.0.1:7000/api/health
-```
-
-- `POST /api/consultations`
-- `POST /api/site-visits`
-- `POST /api/commercial-enquiries`
-- `GET /api/admin/leads` after staff login
-- `GET /api/admin/leads/{lead_id}` after staff login
+- `docs/LOCAL_MYSQL_SETUP.md`
+- `docs/ADMIN_SETUP.md`
+- `docs/EMAIL_SETUP.md`
+- `docs/PRODUCTION_DEPLOYMENT.md`

@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import {
   getAnonymousSessionId,
   getCampaignAttribution,
+  formatSubmissionSuccess,
   submitEnquiry,
 } from "../services/api";
 
@@ -154,7 +155,7 @@ export default function InquiriesPage() {
 
       setStatus({
         type: "success",
-        message: result.message,
+        message: formatSubmissionSuccess(result, "Thank you. Your inquiry has been received."),
         reference: result.reference_number,
       });
 

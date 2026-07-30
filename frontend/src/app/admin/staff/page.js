@@ -5,6 +5,14 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import { adminApi } from "../../services/adminApi";
 
 export default function AdminStaffPage() {
+  return (
+    <AdminLayout title="Staff">
+      <AdminStaffContent />
+    </AdminLayout>
+  );
+}
+
+function AdminStaffContent() {
   const [staff, setStaff] = useState([]);
   const [form, setForm] = useState({ full_name: "", email: "", password: "", roles: "sales_agent" });
   const [error, setError] = useState("");
@@ -49,7 +57,7 @@ export default function AdminStaffPage() {
   }
 
   return (
-    <AdminLayout title="Staff">
+    <>
       {error && <div className="adminError">{error}</div>}
       <form className="adminFilters" onSubmit={create}>
         <input placeholder="Full name" value={form.full_name} onChange={(event) => setForm({ ...form, full_name: event.target.value })} required />
@@ -80,6 +88,6 @@ export default function AdminStaffPage() {
           </tbody>
         </table>
       </div>
-    </AdminLayout>
+    </>
   );
 }
