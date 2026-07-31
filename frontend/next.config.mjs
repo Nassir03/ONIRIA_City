@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  allowedDevOrigins: ["127.0.0.1"],
+  // allowedDevOrigins: ["127.0.0.1"],
   devIndicators: false,
-  output: "standalone",
+  // output: "standalone",
 };
 
 export default nextConfig;
