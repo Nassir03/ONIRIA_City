@@ -1,30 +1,3 @@
-const masterplanHighlights = [
-  {
-    number: "01",
-    title: "ONIRIA Villas",
-    description:
-      "Private homes with generous indoor spaces, gardens and a strong connection to Zanzibar’s tropical surroundings.",
-  },
-  {
-    number: "02",
-    title: "ONIRIA Residences",
-    description:
-      "Modern apartments and residences designed for comfort, natural light and convenient community living.",
-  },
-  {
-    number: "03",
-    title: "V Avenue",
-    description:
-      "A lively commercial destination bringing together shops, cafés, restaurants, services and social spaces.",
-  },
-  {
-    number: "04",
-    title: "Green Community",
-    description:
-      "Landscaped walking routes, gardens, wellness areas and shared spaces connect every part of the development.",
-  },
-];
-
 export default function MasterplanPreview() {
   return (
     <section className="masterplanSection" id="masterplan">
@@ -94,26 +67,6 @@ export default function MasterplanPreview() {
         </div>
       </div>
 
-      <div className="masterplanHighlights">
-        {masterplanHighlights.map((highlight) => (
-          <article
-            className="masterplanHighlightCard"
-            key={highlight.number}
-          >
-            <span className="masterplanHighlightNumber">
-              {highlight.number}
-            </span>
-
-            <h3>{highlight.title}</h3>
-
-            <p>{highlight.description}</p>
-
-            <a href="/masterplan">
-              Discover <span>→</span>
-            </a>
-          </article>
-        ))}
-      </div>
 
     </section>
   );
