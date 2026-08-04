@@ -270,22 +270,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="contactMapSection">
-        <div className="contactMapPlaceholder">
-          <p className="sectionLabel">FUMBA, ZANZIBAR</p>
-
-          <h2>Discover the location of ONIRIA City</h2>
-
-          <p>
-            An interactive map can be connected here after the approved project
-            location and coordinates are provided.
-          </p>
-
-          <a href="/masterplan" className="textLink">
-            Explore the masterplan →
-          </a>
-        </div>
-      </section>
 
       <Footer />
     </main>
