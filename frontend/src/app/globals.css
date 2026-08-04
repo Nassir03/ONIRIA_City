@@ -11248,3 +11248,692 @@ footer *,
     font-size: 38px;
   }
 }
+
+/* =========================================================
+   UNIFIED PREMIUM HERO TYPOGRAPHY
+   Shared scale across Vision, Lifestyle, Masterplan, Villas,
+   V Avenue, Contact and the three private request journeys.
+========================================================= */
+.publicPageHeroContent h1,
+.propertyCollectionHeroContent h1,
+.vAvenueHeroContent h1,
+.premiumInquiryHeroContent h1 {
+  width: min(100%, 760px);
+  max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  color: #ffffff !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(38px, 4.15vw, 54px) !important;
+  line-height: 1.02 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.9px !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  text-wrap: balance;
+}
+
+.publicPageHeroContent span,
+.propertyCollectionHeroContent span,
+.vAvenueHeroMeta,
+.premiumInquiryHeroContent > p {
+  display: block;
+  width: min(100%, 650px);
+  max-width: 650px !important;
+  margin: 22px auto 0 !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: clamp(16px, 1.25vw, 18px) !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  text-wrap: balance;
+}
+
+/* Keep small editorial labels restrained and consistent. */
+.publicPageHeroContent > p,
+.propertyCollectionHeroContent > p,
+.vAvenueHeroContent > p:not(.vAvenueHeroMeta) {
+  color: #ffffff !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3em !important;
+  text-transform: uppercase !important;
+}
+
+@media (max-width: 720px) {
+  .publicPageHeroContent h1,
+  .propertyCollectionHeroContent h1,
+  .vAvenueHeroContent h1,
+  .premiumInquiryHeroContent h1 {
+    font-size: clamp(32px, 10vw, 43px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .publicPageHeroContent span,
+  .propertyCollectionHeroContent span,
+  .vAvenueHeroMeta,
+  .premiumInquiryHeroContent > p {
+    max-width: 520px !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+}
+
+
+/* =========================================================
+   PREMIUM VILLA BENEFITS
+   A restrained editorial presentation used only on Villas.
+========================================================= */
+.villaPremiumFeatures {
+  width: min(1320px, calc(100% - 80px));
+  margin: 0 auto 132px;
+  border: 1px solid rgba(149, 105, 77, 0.22);
+  background: #f6f2e9 !important;
+  overflow: hidden;
+}
+
+.villaPremiumFeatures article {
+  position: relative;
+  min-height: 360px;
+  padding: 46px 42px 48px;
+  display: flex;
+  flex-direction: column;
+  background: #f6f2e9 !important;
+  border-right: 1px solid rgba(149, 105, 77, 0.22);
+  transition: background-color 220ms ease, transform 220ms ease;
+}
+
+.villaPremiumFeatures article::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #95694d;
+  transform: scaleX(0.28);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.villaPremiumFeatures article:hover {
+  background: #efe3d2 !important;
+}
+
+.villaPremiumFeatures article:hover::before {
+  transform: scaleX(1);
+}
+
+.villaPremiumFeatures article:last-child {
+  border-right: 0;
+}
+
+.villaPremiumFeatures span {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(149, 105, 77, 0.35);
+  border-radius: 50%;
+  color: #95694d !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.villaPremiumFeatures h3 {
+  max-width: 290px;
+  margin: auto 0 22px;
+  color: #95694d !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 2.5vw, 39px);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+}
+
+.villaPremiumFeatures p {
+  max-width: 330px;
+  margin: 0;
+  color: #95694d !important;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+@media (max-width: 980px) {
+  .villaPremiumFeatures {
+    width: min(100% - 48px, 760px);
+    grid-template-columns: 1fr;
+  }
+
+  .villaPremiumFeatures article {
+    min-height: 280px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(149, 105, 77, 0.22);
+  }
+
+  .villaPremiumFeatures article:last-child {
+    border-bottom: 0;
+  }
+
+  .villaPremiumFeatures h3,
+  .villaPremiumFeatures p {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 600px) {
+  .villaPremiumFeatures {
+    width: calc(100% - 32px);
+    margin-bottom: 92px;
+  }
+
+  .villaPremiumFeatures article {
+    min-height: 250px;
+    padding: 32px 26px 34px;
+  }
+
+  .villaPremiumFeatures h3 {
+    margin-top: 46px;
+    font-size: 31px;
+  }
+
+  .villaPremiumFeatures p {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+}
+
+/* =========================================================
+   EDEN-INSPIRED HERO SYSTEM — FINAL CONSISTENCY PASS
+   One restrained editorial scale for every public and sales hero.
+========================================================= */
+.publicPageHero,
+.premiumInquiryHero,
+.vAvenueHero {
+  min-height: clamp(560px, 78vh, 760px) !important;
+}
+
+.publicPageHeroOverlay,
+.premiumInquiryHeroOverlay,
+.vAvenueHeroOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 28, 22, 0.24) 0%,
+    rgba(10, 28, 22, 0.48) 52%,
+    rgba(10, 28, 22, 0.64) 100%
+  ) !important;
+}
+
+.publicPageHeroContent,
+.premiumInquiryHeroContent,
+.vAvenueHeroContent {
+  width: min(900px, calc(100% - 48px)) !important;
+  margin: 0 auto !important;
+  padding: 110px 0 84px !important;
+  color: #ffffff !important;
+  text-align: center !important;
+}
+
+.publicPageHeroContent h1,
+.premiumInquiryHeroContent h1,
+.vAvenueHeroContent h1 {
+  width: 100% !important;
+  max-width: 880px !important;
+  margin: 0 auto !important;
+  color: #ffffff !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(50px, 5.3vw, 72px) !important;
+  line-height: 0.96 !important;
+  font-weight: 400 !important;
+  letter-spacing: -1.8px !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+.publicPageHeroTitleLine,
+.premiumInquiryHeroContent h1 > span,
+.vAvenueHeroContent h1 > span {
+  display: block;
+}
+
+.publicPageHeroEyebrow,
+.publicPageHeroContent > p,
+.vAvenueHeroContent > p:not(.vAvenueHeroMeta) {
+  margin: 0 auto 24px !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.34em !important;
+  text-transform: uppercase !important;
+}
+
+.publicPageHeroDescription,
+.publicPageHeroContent > span.publicPageHeroDescription,
+.premiumInquiryHeroContent > p,
+.vAvenueHeroMeta {
+  display: block !important;
+  width: min(100%, 690px) !important;
+  max-width: 690px !important;
+  margin: 34px auto 0 !important;
+  color: rgba(255, 255, 255, 0.96) !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(17px, 1.35vw, 20px) !important;
+  line-height: 1.45 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  text-wrap: balance;
+}
+
+.publicPageScroll,
+.premiumInquiryHeroContent > a,
+.vAvenueScrollLink {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.72) !important;
+}
+
+@media (max-width: 760px) {
+  .publicPageHero,
+  .premiumInquiryHero,
+  .vAvenueHero {
+    min-height: 620px !important;
+  }
+
+  .publicPageHeroContent,
+  .premiumInquiryHeroContent,
+  .vAvenueHeroContent {
+    width: min(100% - 34px, 650px) !important;
+    padding: 118px 0 82px !important;
+  }
+
+  .publicPageHeroContent h1,
+  .premiumInquiryHeroContent h1,
+  .vAvenueHeroContent h1 {
+    font-size: clamp(39px, 11.5vw, 54px) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .publicPageHeroDescription,
+  .publicPageHeroContent > span.publicPageHeroDescription,
+  .premiumInquiryHeroContent > p,
+  .vAvenueHeroMeta {
+    max-width: 540px !important;
+    margin-top: 26px !important;
+    font-size: 17px !important;
+    line-height: 1.45 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .publicPageHeroContent h1,
+  .premiumInquiryHeroContent h1,
+  .vAvenueHeroContent h1 {
+    font-size: clamp(36px, 12vw, 46px) !important;
+  }
+}
+
+.publicPageHeroContent h1 > .publicPageHeroTitleLine,
+.premiumInquiryHeroContent h1 > span,
+.vAvenueHeroContent h1 > span {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  text-align: inherit !important;
+  text-transform: inherit !important;
+}
+
+/* =========================================================
+   REFINED PROPERTY DETAIL EXPERIENCE
+   Premium, editorial presentation for villa detail pages
+========================================================= */
+
+.propertyDetailPage {
+  background: #e9ddcb;
+  color: #95694d;
+}
+
+.propertyDetailPage .propertyDetailHero {
+  min-height: 88vh;
+  background-position: center;
+}
+
+.propertyDetailPage .propertyDetailHeroOverlay {
+  background:
+    linear-gradient(180deg, rgba(16, 38, 30, 0.38) 0%, rgba(16, 38, 30, 0.18) 40%, rgba(16, 38, 30, 0.62) 100%);
+}
+
+.propertyDetailPage .propertyDetailHeroContent {
+  width: min(980px, calc(100% - 48px));
+  text-align: center;
+}
+
+.propertyDetailPage .propertyDetailHeroContent > p,
+.propertyDetailPage .propertyDetailHeroContent > span,
+.propertyDetailPage .propertyDetailHeroContent h1,
+.propertyDetailPage .propertyDetailScroll {
+  color: #ffffff !important;
+}
+
+.propertyDetailPage .propertyDetailHeroContent > p {
+  margin-bottom: 22px;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+}
+
+.propertyDetailPage .propertyDetailHeroContent h1 {
+  max-width: 880px;
+  margin-inline: auto;
+  font-size: clamp(48px, 6.2vw, 82px);
+  line-height: 0.96;
+  letter-spacing: -1.8px;
+  text-wrap: balance;
+}
+
+.propertyDetailPage .propertyDetailHeroContent > span {
+  display: block;
+  margin-top: 26px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.propertyDetailPage .propertyDetailOverview {
+  width: min(1280px, calc(100% - 80px));
+  padding: clamp(96px, 10vw, 150px) 0;
+  align-items: start;
+  gap: clamp(60px, 8vw, 130px);
+}
+
+.propertyDetailPage .propertyDetailOverviewText .sectionLabel,
+.propertyDetailPage .propertyDetailFeaturesHeading .sectionLabel,
+.propertyDetailPage .propertyDetailInquiry .sectionLabel {
+  color: #95694d !important;
+}
+
+.propertyDetailPage .propertyDetailOverviewText h2 {
+  max-width: 720px;
+  color: #95694d !important;
+  font-size: clamp(44px, 5vw, 66px);
+  line-height: 1.02;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.propertyDetailPage .propertyDetailOverviewText > p:last-of-type {
+  max-width: 680px;
+  color: #95694d !important;
+  font-size: 19px;
+  line-height: 1.65;
+}
+
+.propertyDetailOverviewActions {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  margin-top: 38px;
+}
+
+.propertyDetailPage .propertyDetailOverviewActions .propertyDetailPrimaryButton {
+  margin-top: 0;
+}
+
+.propertyDetailTextLink {
+  padding: 10px 0 8px;
+  border-bottom: 1px solid currentColor;
+  color: #95694d !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.propertyDetailPage .propertyDetailFacts {
+  padding: 18px 28px;
+  border: 1px solid rgba(149, 105, 77, 0.22);
+  background: #f6f2e9;
+}
+
+.propertyDetailPage .propertyDetailFacts > div {
+  padding: 22px 0;
+  border-color: rgba(149, 105, 77, 0.2);
+}
+
+.propertyDetailPage .propertyDetailFacts span,
+.propertyDetailPage .propertyDetailFacts strong {
+  color: #95694d !important;
+}
+
+.propertyDetailPage .propertyDetailGallery {
+  width: min(1500px, calc(100% - 48px));
+  gap: 18px;
+  grid-auto-rows: clamp(420px, 42vw, 620px);
+}
+
+.propertyDetailPage .propertyDetailGalleryCaption h3 {
+  font-size: clamp(30px, 3vw, 44px);
+}
+
+.propertyDetailPage .propertyDetailFeaturesSection {
+  margin-top: clamp(90px, 10vw, 150px);
+  padding: clamp(100px, 11vw, 160px) 40px;
+  background: #f6f2e9;
+}
+
+.propertyDetailPage .propertyDetailFeaturesHeading {
+  max-width: 880px;
+  margin-bottom: 72px;
+}
+
+.propertyDetailPage .propertyDetailFeaturesHeading h2 {
+  color: #95694d !important;
+  font-size: clamp(42px, 4.8vw, 64px);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  text-wrap: balance;
+}
+
+.propertyDetailPage .propertyDetailFeaturesHeading > p:last-child {
+  max-width: 650px;
+  margin: 26px auto 0;
+  color: #95694d !important;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.propertyDetailPage .propertyDetailFeaturesGrid {
+  border-color: rgba(149, 105, 77, 0.24);
+}
+
+.propertyDetailPage .propertyDetailFeaturesGrid article {
+  position: relative;
+  min-height: 350px;
+  padding: 42px 32px;
+  border-color: rgba(149, 105, 77, 0.24);
+  background: transparent;
+  transition: background-color 220ms ease, transform 220ms ease;
+}
+
+.propertyDetailPage .propertyDetailFeaturesGrid article:hover {
+  background: #e9ddcb;
+}
+
+.propertyDetailPage .propertyDetailFeaturesGrid span,
+.propertyDetailPage .propertyDetailFeaturesGrid h3,
+.propertyDetailPage .propertyDetailFeaturesGrid p {
+  color: #95694d !important;
+}
+
+.propertyDetailPage .propertyDetailFeaturesGrid h3 {
+  margin-top: 64px;
+  font-size: clamp(27px, 2.2vw, 34px);
+  line-height: 1.08;
+}
+
+.propertyDetailPage .propertyDetailFeaturesGrid p {
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.propertyDetailPage .propertyDetailLayout {
+  min-height: 760px;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent {
+  padding: clamp(64px, 7vw, 110px);
+  background: #2a4933;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent h2 {
+  color: #ffffff !important;
+  font-size: clamp(42px, 4.7vw, 64px);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  text-wrap: balance;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent > p,
+.propertyDetailPage .propertyDetailLayoutContent li {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent li span {
+  color: #e9ddcb !important;
+}
+
+.propertyDetailPage .propertyDetailPrimaryButton,
+.propertyDetailPage .propertyDetailInquiryActions .propertyDetailPrimaryButton {
+  border-color: #95694d !important;
+  background: #95694d !important;
+  color: #ffffff !important;
+}
+
+.propertyDetailPage .propertyDetailPrimaryButton:hover,
+.propertyDetailPage .propertyDetailInquiryActions .propertyDetailPrimaryButton:hover {
+  border-color: #7f573f !important;
+  background: #7f573f !important;
+  color: #ffffff !important;
+}
+
+.propertyDetailPage .propertyDetailSecondaryButton {
+  border-color: #95694d !important;
+  background: transparent !important;
+  color: #95694d !important;
+}
+
+.propertyDetailPage .propertyDetailSecondaryButton:hover {
+  background: #95694d !important;
+  color: #ffffff !important;
+}
+
+.propertyDetailPage .propertyDetailInquiry {
+  width: min(1280px, calc(100% - 80px));
+  padding: clamp(95px, 10vw, 145px) 0;
+  align-items: center;
+}
+
+.propertyDetailInquiryCopy > p:last-child {
+  max-width: 700px;
+  margin: 26px 0 0;
+  color: #95694d !important;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.propertyDetailPage .propertyDetailInquiry h2 {
+  max-width: 760px;
+  color: #95694d !important;
+  font-size: clamp(42px, 4.8vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+@media (max-width: 1000px) {
+  .propertyDetailPage .propertyDetailOverview,
+  .propertyDetailPage .propertyDetailInquiry {
+    grid-template-columns: 1fr;
+  }
+
+  .propertyDetailPage .propertyDetailFacts {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 700px) {
+  .propertyDetailPage .propertyDetailHero {
+    min-height: 76vh;
+  }
+
+  .propertyDetailPage .propertyDetailHeroContent h1 {
+    font-size: clamp(40px, 12vw, 54px);
+  }
+
+  .propertyDetailPage .propertyDetailOverview,
+  .propertyDetailPage .propertyDetailInquiry {
+    width: calc(100% - 36px);
+  }
+
+  .propertyDetailPage .propertyDetailOverviewText h2,
+  .propertyDetailPage .propertyDetailFeaturesHeading h2,
+  .propertyDetailPage .propertyDetailLayoutContent h2,
+  .propertyDetailPage .propertyDetailInquiry h2 {
+    font-size: 38px;
+  }
+
+  .propertyDetailPage .propertyDetailOverviewText > p:last-of-type,
+  .propertyDetailPage .propertyDetailFeaturesHeading > p:last-child,
+  .propertyDetailInquiryCopy > p:last-child {
+    font-size: 17px;
+  }
+
+  .propertyDetailOverviewActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .propertyDetailTextLink {
+    width: fit-content;
+  }
+
+  .propertyDetailPage .propertyDetailGallery {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .propertyDetailPage .propertyDetailFeaturesSection {
+    padding-inline: 18px;
+  }
+
+  .propertyDetailPage .propertyDetailLayoutContent {
+    padding: 68px 24px;
+  }
+}

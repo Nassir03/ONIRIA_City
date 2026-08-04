@@ -42,9 +42,9 @@ const COUNTRY_OPTIONS = [
 
 const CONFIG = {
   brochure: {
-    title: "Discover ONIRIA in Detail",
+    title: ["DISCOVER", "ONIRIA"],
     description:
-      "Receive a curated introduction to ONIRIA City, its collections and the lifestyle taking shape in Fumba, Zanzibar.",
+      "The vision, collections and lifestyle—curated for you.",
     image: "/media/oniria/residence-aerial-masterplan.png",
     sectionLabel: "YOUR PRIVATE PROJECT INTRODUCTION",
     formTitle: "Request the ONIRIA brochure",
@@ -66,9 +66,9 @@ const CONFIG = {
     ],
   },
   interest: {
-    title: "Begin Your ONIRIA Journey",
+    title: ["FIND YOUR", "PLACE"],
     description:
-      "Share what you are looking for and receive a private response shaped around your preferred way to live, own or do business in ONIRIA.",
+      "A private path to the right ONIRIA opportunity.",
     image: "/media/oniria/villa-pool-rear.png",
     sectionLabel: "A PERSONALISED PROPERTY CONVERSATION",
     formTitle: "Tell us what matters to you",
@@ -90,9 +90,9 @@ const CONFIG = {
     ],
   },
   "site-visit": {
-    title: "Experience ONIRIA in Fumba",
+    title: ["EXPERIENCE", "ONIRIA"],
     description:
-      "Request a guided visit and begin understanding the setting, collections and future of ONIRIA City in person.",
+      "See the setting, explore the collections and meet our team.",
     image: "/media/oniria/villa-gated-entry.png",
     sectionLabel: "YOUR PRIVATE SITE VISIT",
     formTitle: "Plan your visit with our team",
@@ -264,7 +264,7 @@ export default function PremiumInquiryPage({ mode }) {
       <section className="premiumInquiryHero" style={{ backgroundImage: `url('${config.image}')` }}>
         <div className="premiumInquiryHeroOverlay" />
         <div className="premiumInquiryHeroContent">
-          <h1>{config.title}</h1>
+          <h1>{config.title.map((line) => <span key={line}>{line}</span>)}</h1>
           <p>{config.description}</p>
           <a href="#request-form">Continue to your request ↓</a>
         </div>
@@ -278,7 +278,7 @@ export default function PremiumInquiryPage({ mode }) {
         <p className="premiumInquiryIntroCopy">{config.formDescription}</p>
       </section>
 
-      <section className="premiumInquiryHighlights" aria-label={`${config.title} benefits`}>
+      <section className="premiumInquiryHighlights" aria-label={`${config.title.join(" ")} benefits`}>
         {config.highlights.map(([number, title, text]) => (
           <article key={number}>
             <div className="premiumHighlightNumber" aria-hidden="true">{number}</div>
