@@ -139,7 +139,7 @@ class Database:
 
         async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
-                await cursor.execute(query, params)
+                await cursor.execute(query, self._query_params(params))
                 rows = await cursor.fetchall()
                 return list(rows)
 
@@ -152,7 +152,7 @@ class Database:
 
         async with pool.acquire() as connection:
             async with connection.cursor(aiomysql.DictCursor) as cursor:
-                await cursor.execute(query, params)
+                await cursor.execute(query, self._query_params(params))
                 return await cursor.fetchone()
 
     async def fetchval(
@@ -164,7 +164,7 @@ class Database:
 
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(query, params)
+                await cursor.execute(query, self._query_params(params))
                 row = await cursor.fetchone()
                 return row[0] if row else None
 
@@ -177,7 +177,7 @@ class Database:
 
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(query, params)
+                await cursor.execute(query, self._query_params(params))
                 return int(cursor.lastrowid)
 
     async def execute(
@@ -189,7 +189,7 @@ class Database:
 
         async with pool.acquire() as connection:
             async with connection.cursor() as cursor:
-                return int(await cursor.execute(query, params))
+                return int(await cursor.execute(query, self._query_params(params)))
 
     @asynccontextmanager
     async def transaction(self) -> AsyncIterator[Any]:
@@ -211,6 +211,9 @@ class Database:
             raise RuntimeError("Database pool is not configured")
 
         return self.pool
+
+    def _query_params(self, params: tuple[Any, ...]) -> tuple[Any, ...] | None:
+        return params or None
 
     def _parse_mysql_url(
         self,
