@@ -59,11 +59,11 @@ export default function VAvenuePage() {
       >
         <div className="vAvenueHeroOverlay" />
         <div className="vAvenueHeroContent">
-          <h1><span>THE HEART</span><span>OF ONIRIA</span></h1>
-          <p className="vAvenueHeroMeta">
+          <h1 className="hero-title"><span>THE HEART</span><span>OF ONIRIA</span></h1>
+          <p className="vAvenueHeroMeta hero-subtitle">
             Living, dining, retail and business—brought together.
           </p>
-          <a href="#discover-v-avenue" className="vAvenueScrollLink">
+          <a href="#discover-v-avenue" className="vAvenueScrollLink hero-cta">
             Explore <span aria-hidden="true">↓</span>
           </a>
         </div>

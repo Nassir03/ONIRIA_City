@@ -11,8 +11,6 @@ export default function FinalSalesCTA() {
         <div className="finalSalesOverlay" />
 
         <div className="finalSalesContent">
-          <p className="finalSalesLabel">BEGIN YOUR</p>
-
           <h2>ONIRIA story</h2>
 
           <p className="finalSalesDescription">

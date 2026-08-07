@@ -267,9 +267,9 @@ export default function PremiumInquiryPage({ mode }) {
       <section className="premiumInquiryHero" style={{ backgroundImage: `url('${config.image}')` }}>
         <div className="premiumInquiryHeroOverlay" />
         <div className="premiumInquiryHeroContent">
-          <h1>{config.title.map((line) => <span key={line}>{line}</span>)}</h1>
-          <p>{config.description}</p>
-          <a href="#request-form">Continue to your request ↓</a>
+          <h1 className="hero-title">{config.title.map((line) => <span key={line}>{line}</span>)}</h1>
+          <p className="hero-subtitle">{config.description}</p>
+          <a className="hero-cta" href="#request-form">Continue to your request ↓</a>
         </div>
       </section>
 
