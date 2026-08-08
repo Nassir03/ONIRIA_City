@@ -13173,11 +13173,3 @@ footer,
   color: #ffffff !important;
 }
 
-/* Keep admin action and filter button labels visible. */
-.adminFilters button,
-.adminActions button {
-  background-color: #95694d !important;
-  border-color: #95694d !important;
-  color: #ffffff !important;
-}
-
