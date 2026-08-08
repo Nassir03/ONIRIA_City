@@ -13,7 +13,7 @@ const residences = [
   },
   {
     title: "Garden Residence",
-    type: "ONIRIA RESIDENCES",
+    type: "RESIDENCES",
     image:
       "/media/oniria/residence-roundabout.png",
     bedrooms: "3 Bedrooms",
@@ -52,7 +52,7 @@ export default function FeaturedResidences() {
             for comfort, privacy and modern island living.
           </p>
 
-          <a href="/properties" className="textLink">
+          <a href="/properties#available-collection" className="textLink">
             View all properties →
           </a>
         </div>

@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "V Avenue | ONIRIA City",
+  title: "V Avenue",
   description:
     "Discover apartments, retail, dining and professional opportunities at V Avenue, the social and commercial heart of ONIRIA City.",
 };
@@ -80,7 +80,7 @@ export default function VAvenuePage() {
         </p>
       </section>
 
-      <section className="vAvenueExperience" aria-label="V Avenue experience">
+      <section className="vAvenueExperience" id="v-avenue-experience" aria-label="V Avenue experience">
         <div className="vAvenueExperienceImage" />
         <div className="vAvenueExperienceContent">
           <p className="vAvenueSectionLabel">A PLACE WITH PURPOSE</p>
@@ -98,7 +98,7 @@ export default function VAvenuePage() {
         </div>
       </section>
 
-      <section className="vAvenueOpportunities">
+      <section className="vAvenueOpportunities" id="v-avenue-opportunities">
         <div className="vAvenueOpportunitiesHeading">
           <p className="vAvenueSectionLabel">EXPLORE THE COLLECTION</p>
           <h2>Opportunities within V Avenue</h2>

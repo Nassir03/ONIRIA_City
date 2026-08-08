@@ -439,7 +439,7 @@ textarea {
 ========================================================= */
 
 .collectionsSection {
-  background-color: #f5f1e9;
+  background-color: #e9ddcb;
   padding: 115px 40px;
 }
 
@@ -475,6 +475,9 @@ textarea {
 
 .collectionCard {
   min-width: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .collectionImage {
@@ -544,10 +547,15 @@ textarea {
 }
 
 .collectionDescription {
-  margin: 22px 8px 0;
-  color: #5d5d5d;
-  font-size: 15px;
-  line-height: 1.7;
+  margin: 0;
+  padding: 24px 0 0;
+  background: transparent;
+  background-color: transparent;
+  color: #95694d;
+  font-size: 16px;
+  line-height: 1.55;
+  border: 0;
+  box-shadow: none;
 }
 
 /* =========================================================
@@ -10033,9 +10041,14 @@ footer *,
 }
 
 .homePage .collectionDescription {
-  margin: 24px 4px 0;
+  margin: 0;
+  padding: 24px 0 0;
+  border: 0;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none;
   color: #95694d !important;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -13011,7 +13024,6 @@ body > main:not(.adminLoginPage):not(.adminShell) > section:not(.heroSlider):not
   background-color: var(--oniria-bg) !important;
 }
 
-.collectionCard,
 .residenceCard,
 .propertyCard,
 .journalCard,
@@ -13034,6 +13046,13 @@ body > main:not(.adminLoginPage):not(.adminShell) > section:not(.heroSlider):not
 .lifestylePreviewCard {
   background-color: var(--oniria-cream-panel) !important;
   color: var(--oniria-text) !important;
+}
+
+.collectionCard {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 .formField input,
@@ -13101,5 +13120,49 @@ footer,
   .premiumInquiryHeroContent > p.hero-subtitle {
     font-size: 15px !important;
   }
+}
+
+/* Final WhatsApp size lock */
+.oniriaWhatsappFabV2 {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  border-width: 2px !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24) !important;
+}
+
+.oniriaWhatsappFabV2Icon {
+  width: 23px !important;
+  height: 23px !important;
+}
+
+@media (max-width: 700px) {
+  .oniriaWhatsappFabV2 {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    right: 14px !important;
+    bottom: 14px !important;
+  }
+
+  .oniriaWhatsappFabV2Icon {
+    width: 22px !important;
+    height: 22px !important;
+  }
+}
+
+/* Keep collection descriptions on the section background, without boxed panels. */
+.collectionDescription,
+.homePage .collectionDescription {
+  padding: 24px 0 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: #95694d !important;
 }
 

@@ -157,12 +157,12 @@ export async function generateMetadata({ params }) {
 
   if (!article) {
     return {
-      title: "Journal Article Not Found | ONIRIA City",
+      title: "Journal Article Not Found",
     };
   }
 
   return {
-    title: `${article.title} | ONIRIA City`,
+    title: `${article.title}`,
     description: article.description,
   };
 }
