@@ -36,14 +36,20 @@ textarea {
 :root {
   --font-sans: Arial, Helvetica, sans-serif;
   --font-display: Georgia, "Times New Roman", serif;
-  --section-eyebrow-size: 18px;
-  --section-title-size: clamp(48px, 3.4vw, 64px);
-  --section-description-size: clamp(18px, 1.3vw, 24px);
-  --section-title-line-height: 0.94;
-  --section-description-line-height: 1.4;
-  --section-title-tracking: -0.035em;
-  --section-title-max-width: 950px;
-  --section-description-max-width: 820px;
+  --oniria-bg: #e9ddcb;
+  --oniria-text: #95694d;
+  --oniria-footer-bg: #3a241c;
+  --oniria-cream-panel: #f6f2e9;
+  --oniria-cta: #95694d;
+  --oniria-cta-hover: #7f573f;
+  --section-eyebrow-size: 11px;
+  --section-title-size: clamp(32px, 3vw, 42px);
+  --section-description-size: 16px;
+  --section-title-line-height: 1.05;
+  --section-description-line-height: 1.6;
+  --section-title-tracking: -0.02em;
+  --section-title-max-width: 820px;
+  --section-description-max-width: 720px;
 }
 
 /* =========================================================
@@ -862,7 +868,7 @@ textarea {
 
 .masterplanSection {
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: #e9ddcb;
   padding: 120px 0 0;
 }
 
@@ -961,9 +967,9 @@ textarea {
 .masterplanImageContent h3 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 400;
-  line-height: 1.04;
+  line-height: 1.05;
 }
 
 .masterplanImageContent > span {
@@ -1297,7 +1303,7 @@ textarea {
 }
 
 .residenceCard {
-  background-color: #ffffff;
+  background-color: #f6f2e9;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
   transition:
     transform 0.35s ease,
@@ -1492,7 +1498,7 @@ textarea {
 ========================================================= */
 
 .lifestylePreviewSection {
-  background-color: #ffffff;
+  background-color: #e9ddcb;
   padding: 120px 0;
 }
 
@@ -1509,7 +1515,7 @@ textarea {
   max-width: 900px;
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 400;
   line-height: 1.05;
 }
@@ -1790,7 +1796,7 @@ textarea {
 ========================================================= */
 
 .finalSalesSection {
-  background-color: #10221f;
+  background-color: #e9ddcb;
   padding: 0;
 }
 
@@ -1962,7 +1968,7 @@ textarea {
 
 .siteFooter {
   position: relative;
-  background-color: #0d1d1b;
+  background-color: #3a241c;
   color: #ffffff;
 }
 
@@ -3109,7 +3115,7 @@ textarea {
 
 .propertyCard {
   min-width: 0;
-  background-color: #ffffff;
+  background-color: #f6f2e9;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
   transition:
     transform 0.35s ease,
@@ -3431,9 +3437,9 @@ textarea {
   max-width: 1050px;
   margin: 0 auto;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(58px, 8vw, 112px);
+  font-size: clamp(37px, 3.6vw, 46px);
   font-weight: 400;
-  line-height: 0.98;
+  line-height: 1.02;
 }
 
 .propertyDetailHeroContent span {
@@ -3658,7 +3664,7 @@ textarea {
 
 .propertyDetailLayoutContent {
   padding: 90px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -3765,8 +3771,8 @@ textarea {
 
 .propertyDetailInquiryActions .propertyDetailPrimaryButton {
   margin-top: 0;
-  background-color: #10221f;
-  border-color: #10221f;
+  background-color: #95694d;
+  border-color: #95694d;
   color: #ffffff;
 }
 
@@ -3929,7 +3935,7 @@ textarea {
 
 .contactPageSection,
 .inquiryPageSection {
-  background-color: #ffffff;
+  background-color: #e9ddcb;
   padding: 120px 40px;
 }
 
@@ -3948,9 +3954,9 @@ textarea {
   max-width: 850px;
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 400;
-  line-height: 1.06;
+  line-height: 1.05;
 }
 
 .contactPageIntroduction > p,
@@ -4170,8 +4176,8 @@ textarea {
   min-height: 56px;
   margin-top: 35px;
   padding: 14px 28px;
-  border: 1px solid #10221f;
-  background-color: #10221f;
+  border: 1px solid #95694d;
+  background-color: #95694d;
   color: #ffffff;
   cursor: pointer;
   font-size: 11px;
@@ -4222,7 +4228,7 @@ textarea {
 
 .contactMapSection {
   padding: 40px;
-  background-color: #10221f;
+  background-color: #95694d;
 }
 
 .contactMapPlaceholder {
@@ -4319,7 +4325,7 @@ textarea {
   width: 17px;
   height: 17px;
   margin-top: 2px;
-  accent-color: #10221f;
+  accent-color: #95694d;
 }
 
 /* =========================================================
@@ -4551,8 +4557,8 @@ textarea {
 }
 
 .oniriaHeaderScrolled .headerInquiryButton {
-  border-color: #10221f;
-  background-color: #10221f;
+  border-color: #95694d;
+  background-color: #95694d;
   color: #ffffff;
 }
 
@@ -4602,8 +4608,8 @@ textarea {
 
 .oniriaHeaderScrolled .headerSearchButton:hover,
 .oniriaHeaderScrolled .headerSearchButton:focus-visible {
-  border-color: #10221f;
-  background-color: #10221f;
+  border-color: #95694d;
+  background-color: #95694d;
   color: #ffffff;
 }
 
@@ -4692,7 +4698,7 @@ textarea {
   max-width: 850px;
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(50px, 7vw, 90px);
+  font-size: clamp(32px, 3vw, 42px);
   font-weight: 400;
   line-height: 1.05;
 }
@@ -4924,7 +4930,7 @@ textarea {
 .inquiryDrawerContact {
   margin-top: 48px;
   padding: 30px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
 }
 
@@ -4951,7 +4957,7 @@ textarea {
   z-index: 490;
   overflow-y: auto;
   padding: 100px 30px 50px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
   opacity: 0;
   pointer-events: none;
@@ -5181,7 +5187,7 @@ textarea {
   padding: 8px 18px 8px 9px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 35px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
   box-shadow: 0 16px 45px rgba(4, 20, 17, 0.26);
   cursor: pointer;
@@ -5286,7 +5292,7 @@ textarea {
 .oniriaAIChatHeader {
   min-height: 78px;
   padding: 15px 18px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -5387,7 +5393,7 @@ textarea {
   height: 29px;
   flex: 0 0 29px;
   border-radius: 50%;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
@@ -5406,7 +5412,7 @@ textarea {
 
 .oniriaAIMessageUser .oniriaAIMessageContent {
   border-radius: 15px 4px 15px 15px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
 }
 
@@ -5568,7 +5574,7 @@ textarea {
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
   cursor: pointer;
   font-size: 19px;
@@ -6591,8 +6597,8 @@ textarea {
   min-height: 54px;
   margin-top: 20px;
   padding: 15px 26px;
-  border: 1px solid #10221f;
-  background-color: #10221f;
+  border: 1px solid #95694d;
+  background-color: #95694d;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
@@ -6751,8 +6757,8 @@ textarea {
 .adminTable a {
   min-height: 42px;
   padding: 11px 16px;
-  border: 1px solid #10221f;
-  background-color: #10221f;
+  border: 1px solid #95694d;
+  background-color: #95694d;
   color: #ffffff;
   cursor: pointer;
   display: inline-flex;
@@ -6777,7 +6783,7 @@ textarea {
 .adminSidebar {
   min-height: 100vh;
   padding: 26px 20px;
-  background-color: #10221f;
+  background-color: #95694d;
   color: #ffffff;
 }
 
@@ -6842,7 +6848,7 @@ textarea {
 .adminMetricCard strong {
   margin-top: 10px;
   display: block;
-  color: #10221f;
+  color: #95694d;
   font-size: 32px;
   line-height: 1;
 }
@@ -8160,7 +8166,7 @@ textarea:focus-visible {
 
   .edenMobileMenu a {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(32px, 9vw, 54px);
+    font-size: clamp(29px, 8vw, 42px);
     line-height: 1.05;
   }
 }
@@ -10965,7 +10971,7 @@ footer *,
 .premiumInquirySubmit:disabled { cursor: wait; opacity: .65; }
 .premiumFormStatus { margin: 0 0 24px; padding: 18px; border: 1px solid; }
 .premiumFormStatus p { margin: 0 0 8px; }
-.premiumFormStatus.isSuccess { background: #e8f0e9; border-color: #2a4933; color: #2a4933; }
+.premiumFormStatus.isSuccess { background: #e8f0e9; border-color: #95694d; color: #95694d; }
 .premiumFormStatus.isError { background: #f8e7e2; border-color: #8d3c2c; color: #8d3c2c; }
 
 @media (max-width: 900px) {
@@ -11670,9 +11676,9 @@ footer *,
 .propertyDetailPage .propertyDetailHeroContent h1 {
   max-width: 880px;
   margin-inline: auto;
-  font-size: clamp(48px, 6.2vw, 82px);
-  line-height: 0.96;
-  letter-spacing: -1.8px;
+  font-size: clamp(37px, 3.6vw, 46px);
+  line-height: 1.02;
+  letter-spacing: -0.6px;
   text-wrap: balance;
 }
 
@@ -11701,9 +11707,9 @@ footer *,
 .propertyDetailPage .propertyDetailOverviewText h2 {
   max-width: 720px;
   color: #95694d !important;
-  font-size: clamp(44px, 5vw, 66px);
-  line-height: 1.02;
-  letter-spacing: -1px;
+  font-size: clamp(32px, 3vw, 42px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -11776,10 +11782,10 @@ footer *,
 
 .propertyDetailPage .propertyDetailFeaturesHeading h2 {
   color: #95694d !important;
-  font-size: clamp(42px, 4.8vw, 64px);
-  line-height: 1.02;
+  font-size: clamp(32px, 3vw, 42px);
+  line-height: 1.05;
   text-transform: uppercase;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -11831,21 +11837,21 @@ footer *,
 
 .propertyDetailPage .propertyDetailLayoutContent {
   padding: clamp(64px, 7vw, 110px);
-  background: #2a4933;
+  background: #f6f2e9;
 }
 
 .propertyDetailPage .propertyDetailLayoutContent h2 {
-  color: #ffffff !important;
-  font-size: clamp(42px, 4.7vw, 64px);
-  line-height: 1.02;
+  color: #95694d !important;
+  font-size: clamp(32px, 3vw, 42px);
+  line-height: 1.05;
   text-transform: uppercase;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 .propertyDetailPage .propertyDetailLayoutContent > p,
 .propertyDetailPage .propertyDetailLayoutContent li {
-  color: rgba(255, 255, 255, 0.88) !important;
+  color: #95694d !important;
 }
 
 .propertyDetailPage .propertyDetailLayoutContent li {
@@ -11901,9 +11907,9 @@ footer *,
 .propertyDetailPage .propertyDetailInquiry h2 {
   max-width: 760px;
   color: #95694d !important;
-  font-size: clamp(42px, 4.8vw, 64px);
-  line-height: 1.02;
-  letter-spacing: -1px;
+  font-size: clamp(32px, 3vw, 42px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -11925,7 +11931,7 @@ footer *,
   }
 
   .propertyDetailPage .propertyDetailHeroContent h1 {
-    font-size: clamp(40px, 12vw, 54px);
+    font-size: clamp(29px, 8vw, 34px);
   }
 
   .propertyDetailPage .propertyDetailOverview,
@@ -12455,134 +12461,6 @@ footer *,
 }
 
 /* =========================================================
-   EDEN-STYLE EDITORIAL SECTION TYPOGRAPHY
-   Matches the attached beige reference sections without
-   changing hero, layout, images, forms, or functionality.
-========================================================= */
-
-.introductionSection .sectionLabel,
-.editorialIntroduction .sectionLabel,
-.propertyCollectionIntroduction .sectionLabel,
-.contactPageIntroduction .sectionLabel,
-.inquiryPageHeading .sectionLabel,
-.vAvenueSectionLabel {
-  color: #95694d !important;
-  font-size: 15px !important;
-  line-height: 1.2 !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.34em !important;
-  text-transform: uppercase !important;
-}
-
-.editorialIntroduction h2,
-.propertyCollectionIntroduction h2,
-.contactPageIntroduction h2,
-.inquiryPageHeading h2,
-.vAvenueIntroduction h2,
-.vAvenueOpportunitiesHeading h2,
-.vAvenueExperienceContent h2 {
-  max-width: 920px !important;
-  margin-right: auto !important;
-  margin-left: auto !important;
-  color: #95694d !important;
-  font-family: Georgia, "Times New Roman", serif !important;
-  font-size: clamp(48px, 4.6vw, 66px) !important;
-  line-height: 1.02 !important;
-  font-weight: 400 !important;
-  letter-spacing: -1px !important;
-  text-align: center !important;
-  text-transform: uppercase !important;
-  text-wrap: balance;
-}
-
-.editorialIntroduction > p:last-child,
-.propertyCollectionIntroduction > p:last-child,
-.contactPageIntroduction > p:last-child,
-.inquiryPageHeading > p:last-child,
-.vAvenueLead,
-.vAvenueExperienceContent > p:not(.vAvenueSectionLabel) {
-  max-width: 780px !important;
-  margin-right: auto !important;
-  margin-left: auto !important;
-  color: #95694d !important;
-  font-size: clamp(20px, 1.45vw, 23px) !important;
-  line-height: 1.48 !important;
-  font-weight: 400 !important;
-  text-align: center !important;
-}
-
-.introductionLink,
-.editorialIntroduction .textLink,
-.propertyCollectionIntroduction .textLink,
-.contactPageIntroduction .textLink,
-.inquiryPageHeading .textLink {
-  color: #95694d !important;
-  border-color: #95694d !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
-}
-
-@media (max-width: 900px) {
-  .homePage .introductionSection h2,
-  .editorialIntroduction h2,
-  .propertyCollectionIntroduction h2,
-  .contactPageIntroduction h2,
-  .inquiryPageHeading h2,
-  .vAvenueIntroduction h2,
-  .vAvenueOpportunitiesHeading h2,
-  .vAvenueExperienceContent h2 {
-    font-size: clamp(42px, 7vw, 56px) !important;
-  }
-
-  .homePage .introductionText,
-  .editorialIntroduction > p:last-child,
-  .propertyCollectionIntroduction > p:last-child,
-  .contactPageIntroduction > p:last-child,
-  .inquiryPageHeading > p:last-child,
-  .vAvenueLead,
-  .vAvenueExperienceContent > p:not(.vAvenueSectionLabel) {
-    font-size: 20px !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .introductionSection .sectionLabel,
-  .editorialIntroduction .sectionLabel,
-  .propertyCollectionIntroduction .sectionLabel,
-  .contactPageIntroduction .sectionLabel,
-  .inquiryPageHeading .sectionLabel,
-  .vAvenueSectionLabel {
-    font-size: 12px !important;
-    letter-spacing: 0.22em !important;
-  }
-
-  .homePage .introductionSection h2,
-  .editorialIntroduction h2,
-  .propertyCollectionIntroduction h2,
-  .contactPageIntroduction h2,
-  .inquiryPageHeading h2,
-  .vAvenueIntroduction h2,
-  .vAvenueOpportunitiesHeading h2,
-  .vAvenueExperienceContent h2 {
-    font-size: clamp(34px, 9vw, 42px) !important;
-    line-height: 1.06 !important;
-    letter-spacing: -0.5px !important;
-  }
-
-  .homePage .introductionText,
-  .editorialIntroduction > p:last-child,
-  .propertyCollectionIntroduction > p:last-child,
-  .contactPageIntroduction > p:last-child,
-  .inquiryPageHeading > p:last-child,
-  .vAvenueLead,
-  .vAvenueExperienceContent > p:not(.vAvenueSectionLabel) {
-    font-size: 17px !important;
-    line-height: 1.55 !important;
-  }
-}
-
-/* =========================================================
    GLOBAL EDEN-INSPIRED CONTENT TYPOGRAPHY SYSTEM
    Reusable restrained scale for non-hero editorial sections.
 ========================================================= */
@@ -12609,14 +12487,20 @@ footer *,
 .premiumInquiryFormAside .sectionLabel,
 .propertyDetailPage .propertyDetailOverviewText .sectionLabel,
 .propertyDetailPage .propertyDetailFeaturesHeading .sectionLabel,
+.propertyDetailPage .propertyDetailLayoutContent .sectionLabel,
 .propertyDetailPage .propertyDetailInquiry .sectionLabel,
+.galleryIntroduction .sectionLabel,
+.journalIntroduction .sectionLabel,
+.faqIntroduction .sectionLabel,
+.legalPageSidebar .sectionLabel,
 .sectionLabel,
 .vAvenueSectionLabel {
   font-family: var(--font-sans) !important;
   font-size: var(--section-eyebrow-size) !important;
   line-height: 1.2 !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.02em !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
 }
 
 .section-title,
@@ -12634,10 +12518,23 @@ footer *,
 .premiumInquiryIntroHeading h2,
 .vAvenueIntroduction h2,
 .vAvenueOpportunitiesHeading h2,
-.vAvenueExperienceContent h2 {
+.vAvenueExperienceContent h2,
+.galleryIntroduction h2,
+.journalIntroduction h2,
+.faqIntroduction h2,
+.faqGroupHeading h2,
+.legalContentSection h2,
+.legalPageContent h2,
+.sitemapSection h2,
+.journalArticleSection h2,
+.propertyDetailPage .propertyDetailOverviewText h2,
+.propertyDetailPage .propertyDetailFeaturesHeading h2,
+.propertyDetailPage .propertyDetailLayoutContent h2,
+.propertyDetailPage .propertyDetailInquiry h2 {
   max-width: var(--section-title-max-width) !important;
   margin-right: auto !important;
   margin-left: auto !important;
+  color: var(--oniria-text) !important;
   font-family: var(--font-display) !important;
   font-size: var(--section-title-size) !important;
   line-height: var(--section-title-line-height) !important;
@@ -12660,10 +12557,22 @@ footer *,
 .inquiryPageHeading > p,
 .premiumInquiryIntroCopy,
 .vAvenueLead,
-.vAvenueExperienceContent > p:not(.vAvenueSectionLabel) {
+.vAvenueExperienceContent > p:not(.vAvenueSectionLabel),
+.galleryIntroduction > p:last-child,
+.journalIntroduction > p:last-child,
+.faqIntroduction > p:last-child,
+.legalContentSection p,
+.legalPageContent p,
+.sitemapSection a,
+.journalArticleSection p,
+.propertyDetailPage .propertyDetailOverviewText > p:last-of-type,
+.propertyDetailPage .propertyDetailFeaturesHeading > p:last-child,
+.propertyDetailPage .propertyDetailLayoutContent > p,
+.propertyDetailInquiryCopy > p:last-child {
   max-width: var(--section-description-max-width) !important;
   margin-right: auto !important;
   margin-left: auto !important;
+  color: var(--oniria-text) !important;
   font-family: var(--font-sans) !important;
   font-size: var(--section-description-size) !important;
   line-height: var(--section-description-line-height) !important;
@@ -12690,19 +12599,19 @@ footer *,
 
 @media (max-width: 1024px) {
   :root {
-    --section-eyebrow-size: 17px;
-    --section-title-size: clamp(48px, 5.2vw, 54px);
-    --section-description-size: clamp(21px, 2.3vw, 22px);
+    --section-eyebrow-size: 11px;
+    --section-title-size: clamp(32px, 4.6vw, 40px);
+    --section-description-size: 16px;
   }
 }
 
 @media (max-width: 700px) {
   :root {
-    --section-eyebrow-size: 15px;
-    --section-title-size: clamp(36px, 10vw, 42px);
-    --section-description-size: 18px;
-    --section-title-line-height: 0.98;
-    --section-description-line-height: 1.45;
+    --section-eyebrow-size: 10px;
+    --section-title-size: clamp(29px, 8vw, 34px);
+    --section-description-size: 15px;
+    --section-title-line-height: 1.06;
+    --section-description-line-height: 1.55;
   }
 
   .introductionSection,
@@ -12728,3 +12637,469 @@ footer *,
     line-height: 0.98 !important;
   }
 }
+
+/* =========================================================
+   FINAL PUBLIC ONIRIA VISUAL SYSTEM
+   Applies the approved public style across all non-admin routes.
+========================================================= */
+
+body,
+main,
+.premiumInquiryPage,
+.propertyDetailPage {
+  background-color: var(--oniria-bg);
+  color: var(--oniria-text);
+}
+
+.publicPageHeroContent h1,
+.propertyDetailPage .propertyDetailHeroContent h1,
+.vAvenueHeroContent h1,
+.premiumInquiryHeroContent h1 {
+  max-width: 720px !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(37px, 3.6vw, 46px) !important;
+  line-height: 1.02 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.6px !important;
+  text-align: center !important;
+  text-wrap: balance;
+}
+
+.publicPageHeroContent > p,
+.publicPageHeroEyebrow,
+.propertyDetailPage .propertyDetailHeroContent > p,
+.premiumInquiryHeroContent > p:first-child {
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+}
+
+.publicPageHeroContent > span,
+.publicPageHeroDescription,
+.propertyDetailPage .propertyDetailHeroContent > span,
+.vAvenueHeroMeta,
+.premiumInquiryHeroContent > p.hero-subtitle {
+  max-width: 620px !important;
+  font-size: clamp(15px, 1.25vw, 17px) !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+}
+
+.publicPageHero *,
+.propertyDetailHero *,
+.premiumInquiryHero *,
+.vAvenueHero * {
+  color: #ffffff !important;
+}
+
+.galleryIntroduction,
+.journalIntroduction,
+.faqIntroduction,
+.editorialIntroduction,
+.propertyCollectionIntroduction,
+.contactPageIntroduction,
+.inquiryPageHeading,
+.premiumInquiryIntro,
+.vAvenueIntroduction,
+.sitemapSection,
+.legalContentSection,
+.legalPageSection,
+.journalArticleSection,
+.propertyDetailPage .propertyDetailOverview,
+.propertyDetailPage .propertyDetailInquiry {
+  background-color: var(--oniria-bg) !important;
+  color: var(--oniria-text) !important;
+}
+
+.editorialSections,
+.propertyListingSection,
+.journalGrid,
+.faqGroups,
+.propertyDetailPage .propertyDetailFeaturesSection,
+.propertyDetailPage .propertyDetailLayoutContent,
+.inquiryForm,
+.contactForm,
+.premiumInquiryForm,
+.legalPageContent,
+.legalPageSidebar,
+.sitemapSection article,
+.journalArticleSection section,
+.journalCard,
+.propertyCard,
+.vAvenueCard,
+.vAvenueCardBody,
+.propertyDetailPage .propertyDetailFacts,
+.propertyDetailPage .propertyDetailFeaturesGrid article {
+  background-color: var(--oniria-cream-panel) !important;
+  color: var(--oniria-text) !important;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent,
+.propertyDetailPage .propertyDetailLayoutContent *,
+.legalPageContent,
+.legalPageContent *,
+.legalPageSidebar,
+.legalPageSidebar *,
+.sitemapSection,
+.sitemapSection *,
+.journalArticleSection,
+.journalArticleSection *,
+.galleryIntroduction,
+.galleryIntroduction *,
+.journalIntroduction,
+.journalIntroduction *,
+.faqIntroduction,
+.faqIntroduction *,
+.faqGroups,
+.faqGroups *,
+.propertyDetailOverview,
+.propertyDetailOverview *,
+.propertyDetailFeaturesSection,
+.propertyDetailFeaturesSection *,
+.propertyDetailInquiry,
+.propertyDetailInquiry * {
+  color: var(--oniria-text) !important;
+}
+
+.galleryGrid,
+.propertyDetailPage .propertyDetailGallery {
+  background-color: var(--oniria-bg) !important;
+}
+
+.journalArticleSection {
+  width: min(980px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: clamp(90px, 10vw, 140px) 0;
+}
+
+.journalArticleSection section + section {
+  margin-top: 34px;
+}
+
+.journalArticleSection section {
+  padding: clamp(34px, 4vw, 54px);
+  border: 1px solid rgba(149, 105, 77, 0.22);
+}
+
+.journalArticleSection span {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+.galleryItemImage *,
+.journalImage *,
+.propertyCardImage *,
+.residenceImage *,
+.collectionImage *,
+.propertyDetailGalleryImage *,
+.lifestylePreviewHeroImage * {
+  color: #ffffff !important;
+}
+
+.textLink,
+.propertyDetailTextLink,
+.collectionCard a,
+.propertyCardFooter a,
+.residenceCardFooter a,
+.journalCardContent .textLink,
+.sitemapSection a,
+.legalPageSidebar a {
+  color: var(--oniria-text) !important;
+  border-color: currentColor !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.propertySearchButton,
+.mobilePropertySearch button,
+.mobileFilterActions button:last-child,
+.masterplanButton,
+.lifestylePreviewButton,
+.propertyDetailPrimaryButton,
+.propertyDetailSecondaryButton,
+.formSubmitButton,
+.premiumInquirySubmit,
+.legalPageButton,
+.finalSalesPrimaryButton,
+.finalSalesSecondaryButton,
+.footerInquiryButton {
+  min-height: 46px;
+  border: 1px solid var(--oniria-cta) !important;
+  border-radius: 0 !important;
+  background-color: var(--oniria-cta) !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+.propertySearchButton:hover,
+.mobilePropertySearch button:hover,
+.mobileFilterActions button:last-child:hover,
+.masterplanButton:hover,
+.lifestylePreviewButton:hover,
+.propertyDetailPrimaryButton:hover,
+.propertyDetailSecondaryButton:hover,
+.formSubmitButton:hover,
+.premiumInquirySubmit:hover,
+.legalPageButton:hover,
+.finalSalesPrimaryButton:hover,
+.finalSalesSecondaryButton:hover,
+.footerInquiryButton:hover {
+  border-color: var(--oniria-cta-hover) !important;
+  background-color: var(--oniria-cta-hover) !important;
+  color: #ffffff !important;
+}
+
+.formField input,
+.formField select,
+.formField textarea,
+.premiumFormGrid input,
+.premiumFormGrid select,
+.premiumInquiryForm input,
+.premiumInquiryForm select,
+.premiumInquiryForm textarea,
+.footerNewsletterForm input {
+  min-height: 48px;
+  border-color: rgba(149, 105, 77, 0.28) !important;
+  border-radius: 0 !important;
+  background-color: #fffdf8 !important;
+  color: var(--oniria-text) !important;
+  font-size: 15px !important;
+}
+
+.formField label,
+.premiumFormGrid > label > span:first-child,
+.premiumDeliveryField legend,
+.formSectionLabel,
+.premiumConsent,
+.consentField {
+  color: var(--oniria-text) !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.formStatus,
+.premiumPrivacyNote,
+.premiumInquiryPrivacyNote,
+.legalNotice {
+  border-color: rgba(149, 105, 77, 0.24) !important;
+  background-color: #fffdf8 !important;
+  color: var(--oniria-text) !important;
+}
+
+.finalSalesSection {
+  background-color: var(--oniria-bg) !important;
+}
+
+.finalSalesSection,
+.finalSalesSection * {
+  color: #ffffff !important;
+}
+
+.finalSalesContent h2 {
+  font-size: clamp(32px, 3vw, 38px) !important;
+  line-height: 1.04 !important;
+}
+
+.finalSalesDescription {
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+
+.oniriaMinimalFooter,
+.vAvenuePage > .oniriaMinimalFooter,
+footer.oniriaMinimalFooter {
+  background-color: var(--oniria-footer-bg) !important;
+  color: #ffffff !important;
+}
+
+.oniriaMinimalFooter *,
+.oniriaMinimalFooter p,
+.oniriaMinimalFooter a,
+.oniriaMinimalFooter span {
+  color: #ffffff !important;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton {
+  width: fit-content !important;
+  min-width: 220px;
+  min-height: 50px;
+  margin-top: 30px;
+  padding: 0 28px !important;
+  border: 1px solid var(--oniria-cta) !important;
+  background-color: var(--oniria-cta) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-align: center;
+  text-transform: uppercase !important;
+  white-space: nowrap;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton,
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton:visited,
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton:hover,
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton:focus-visible {
+  text-decoration: none;
+}
+
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton:hover,
+.propertyDetailPage .propertyDetailLayoutContent .propertyDetailFullDetailsButton:focus-visible {
+  border-color: var(--oniria-cta-hover) !important;
+  background-color: var(--oniria-cta-hover) !important;
+  color: #ffffff !important;
+}
+
+/* =========================================================
+   FINAL PUBLIC SURFACE COLOUR LOCK
+   Beige/cream replaces white on public non-photo content.
+========================================================= */
+
+body > main:not(.adminLoginPage):not(.adminShell),
+body > main:not(.adminLoginPage):not(.adminShell) > section:not(.heroSlider):not(.edenInspiredHero):not(.publicPageHero):not(.premiumInquiryHero):not(.vAvenueHero):not(.propertyDetailHero):not(.contactMapSection):not(.finalSalesSection) {
+  background-color: var(--oniria-bg) !important;
+}
+
+.introductionSection,
+.collectionsSection,
+.masterplanSection,
+.featuredResidencesSection,
+.lifestylePreviewSection,
+.editorialIntroduction,
+.editorialSections,
+.propertyCollectionIntroduction,
+.propertyListingSection,
+.galleryIntroduction,
+.galleryGrid,
+.journalIntroduction,
+.journalGrid,
+.journalArticleSection,
+.faqIntroduction,
+.faqGroups,
+.contactPageSection,
+.inquiryPageSection,
+.premiumInquiryIntro,
+.premiumInquiryHighlights,
+.premiumInquiryFormSection,
+.propertyDetailOverview,
+.propertyDetailFeaturesSection,
+.propertyDetailLayout,
+.propertyDetailInquiry,
+.legalContentSection,
+.legalPageSection,
+.sitemapSection,
+.vAvenueIntroduction,
+.vAvenueExperience,
+.vAvenueOpportunities {
+  background-color: var(--oniria-bg) !important;
+}
+
+.collectionCard,
+.residenceCard,
+.propertyCard,
+.journalCard,
+.faqItem,
+.faqGroup,
+.legalPageContent,
+.legalPageSidebar,
+.legalNotice,
+.sitemapSection article,
+.journalArticleSection section,
+.propertyDetailFacts,
+.propertyDetailFeaturesGrid article,
+.propertyDetailLayoutContent,
+.inquiryForm,
+.contactForm,
+.premiumInquiryForm,
+.premiumInquiryHighlights article,
+.vAvenueCard,
+.vAvenueCardBody,
+.lifestylePreviewCard {
+  background-color: var(--oniria-cream-panel) !important;
+  color: var(--oniria-text) !important;
+}
+
+.formField input,
+.formField select,
+.formField textarea,
+.premiumFormGrid input,
+.premiumFormGrid select,
+.premiumInquiryForm input,
+.premiumInquiryForm select,
+.premiumInquiryForm textarea,
+.contactForm input,
+.contactForm select,
+.contactForm textarea,
+.inquiryForm input,
+.inquiryForm select,
+.inquiryForm textarea {
+  background-color: #efe3d2 !important;
+  color: var(--oniria-text) !important;
+}
+
+.propertyCardImage,
+.residenceImage,
+.collectionImage,
+.galleryItemImage,
+.journalImage,
+.editorialSectionImage,
+.propertyDetailGalleryImage,
+.propertyDetailLayoutImage,
+.lifestylePreviewHeroImage,
+.lifestylePreviewCardImage,
+.masterplanImage,
+.vAvenueCardImage,
+.vAvenueExperienceImage,
+.oniriaMapFrame,
+.contactMapPlaceholder,
+.contactMapSection,
+.oniriaMinimalFooter,
+footer,
+.finalSalesBackground {
+  background-color: initial;
+}
+
+@media (max-width: 900px) {
+  .publicPageHeroContent h1,
+  .propertyDetailPage .propertyDetailHeroContent h1,
+  .vAvenueHeroContent h1,
+  .premiumInquiryHeroContent h1 {
+    font-size: clamp(34px, 5vw, 40px) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .publicPageHeroContent h1,
+  .propertyDetailPage .propertyDetailHeroContent h1,
+  .vAvenueHeroContent h1,
+  .premiumInquiryHeroContent h1 {
+    font-size: clamp(29px, 8vw, 34px) !important;
+    line-height: 1.06 !important;
+  }
+
+  .publicPageHeroContent > span,
+  .publicPageHeroDescription,
+  .propertyDetailPage .propertyDetailHeroContent > span,
+  .vAvenueHeroMeta,
+  .premiumInquiryHeroContent > p.hero-subtitle {
+    font-size: 15px !important;
+  }
+}
+

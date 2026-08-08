@@ -70,8 +70,6 @@ export default function FeaturedResidences() {
               >
                 <div className="residenceImageOverlay" />
 
-                <span className="residenceType">{residence.type}</span>
-
                 <span className="residenceViewLabel">View residence →</span>
               </div>
             </a>
