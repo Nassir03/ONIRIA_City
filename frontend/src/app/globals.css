@@ -13166,3 +13166,10 @@ footer,
   color: #95694d !important;
 }
 
+/* Keep admin login submit text visible on the brown button. */
+.adminLoginForm button[type="submit"] {
+  background-color: #95694d !important;
+  border-color: #95694d !important;
+  color: #ffffff !important;
+}
+
