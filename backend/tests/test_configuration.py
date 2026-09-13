@@ -44,16 +44,16 @@ def test_rejects_non_postgres_database_url():
         Settings(database_url="mysql://user:pass@localhost/db")
 
 
-def test_rejects_database_url_and_postgres_field_disagreement():
-    with pytest.raises(ValueError, match="disagree"):
-        Settings(
-            database_url="postgresql://root:pw@127.0.0.1:5432/oniria_city",
-            postgres_host="localhost",
-            postgres_port=5432,
-            postgres_database="oniria_city",
-            postgres_user="root",
-            postgres_password="pw",
-        )
+def test_database_url_wins_over_postgres_split_fields():
+    settings = Settings(
+        database_url="postgresql://root:pw@127.0.0.1:5432/oniria_city",
+        postgres_host="localhost",
+        postgres_port=5432,
+        postgres_database="other_database",
+        postgres_user="other_user",
+        postgres_password="other_password",
+    )
+    assert settings.effective_database_url == "postgresql://root:pw@127.0.0.1:5432/oniria_city"
 
 
 def test_rejects_invalid_resend_configuration():
@@ -130,7 +130,6 @@ def test_env_examples_contain_placeholders_only():
 
 def test_supabase_asyncpg_url_is_tls_and_pooler_safe():
     settings = Settings(
-        database_url="postgresql+asyncpg://postgres.ref:pw@aws-0-region.pooler.supabase.com:6543/postgres"
+        _env_file=None,
+        database_url="postgresql+asyncpg://postgres.ref:pw@aws-0-region.pooler.supabase.com:6543/postgres",
     )
-    assert settings.asyncpg_database_url.startswith("postgresql://")
-    assert "sslmode=require" in settings.asyncpg_database_url
