@@ -29,6 +29,16 @@ MIGRATIONS = DATABASE_DIR / "migrations"
 SEEDS = DATABASE_DIR / "seed"
 ENV_FILES = (PROJECT_ROOT / ".env", BACKEND_ROOT / ".env")
 POSTGRES_SCHEMES = {"postgres", "postgresql", "postgresql+asyncpg"}
+DATABASE_URL_PLACEHOLDERS = {
+    "YOUR_PRODUCTION_SUPABASE_DATABASE_URL",
+    "<SUPABASE_DATABASE_URL>",
+    "<SUPABASE_SESSION_POOLER_OR_DIRECT_URL>",
+    "<DATABASE_URL>",
+}
+
+
+def is_database_url_placeholder(value: str) -> bool:
+    return value in DATABASE_URL_PLACEHOLDERS or value.startswith("YOUR_")
 
 
 def parse_env_file(path: Path) -> dict[str, str]:
@@ -53,20 +63,55 @@ def parse_env_file(path: Path) -> dict[str, str]:
     return values
 
 
-def env_value(key: str) -> str | None:
+def env_value_with_source(key: str) -> tuple[str | None, str | None]:
     value = os.getenv(key)
     if value is not None and value.strip():
-        return value.strip()
+        value = value.strip()
+        if key != "DATABASE_URL" or not is_database_url_placeholder(value):
+            return value, "current shell environment"
 
     for env_file in reversed(ENV_FILES):
         file_value = parse_env_file(env_file).get(key)
         if file_value and file_value.strip():
-            return file_value.strip()
+            file_value = file_value.strip()
+            if key != "DATABASE_URL" or not is_database_url_placeholder(file_value):
+                return file_value, str(env_file)
 
-    return None
+    return None, None
+
+
+def env_value(key: str) -> str | None:
+    value, _source = env_value_with_source(key)
+    return value
+
+
+def redact_database_url(value: str) -> str:
+    parsed = urlparse(value)
+    if not parsed.scheme or not parsed.netloc:
+        return "<not a URL>"
+
+    username = parsed.username or ""
+    hostname = parsed.hostname or ""
+    port = f":{parsed.port}" if parsed.port else ""
+    path = parsed.path or ""
+    return f"{parsed.scheme}://{username}:***@{hostname}{port}{path}"
 
 
 def normalize_database_url(value: str) -> str:
+    if is_database_url_placeholder(value):
+        raise SystemExit(
+            "DATABASE_URL is still a placeholder. Replace it with the real "
+            "Supabase PostgreSQL connection string from Supabase Dashboard "
+            "> Project Settings > Database > Connection string."
+        )
+
+    if r"\@" in value:
+        raise SystemExit(
+            "DATABASE_URL contains \\@. Backslash does not escape @ in a "
+            "PostgreSQL URL. If your password contains @, replace it with "
+            "%40. Example: password Oniria_2026.@ becomes Oniria_2026.%40"
+        )
+
     parsed = urlparse(value)
     if parsed.scheme not in POSTGRES_SCHEMES:
         raise SystemExit(
@@ -89,7 +134,7 @@ def normalize_database_url(value: str) -> str:
 
 
 def database_url() -> str:
-    configured_database_url = env_value("DATABASE_URL")
+    configured_database_url, _source = env_value_with_source("DATABASE_URL")
     if configured_database_url:
         return normalize_database_url(configured_database_url)
 
@@ -219,7 +264,21 @@ def cli() -> None:
         action="store_true",
         help="also apply the idempotent reference/catalogue seed files",
     )
+    parser.add_argument(
+        "--show-database-source",
+        action="store_true",
+        help="show where DATABASE_URL is being read from without printing the password",
+    )
     args = parser.parse_args()
+
+    if args.show_database_source:
+        value, source = env_value_with_source("DATABASE_URL")
+        if not value:
+            print("DATABASE_URL is not set.")
+        else:
+            print(f"DATABASE_URL source: {source}")
+            print(f"DATABASE_URL value: {redact_database_url(value)}")
+        return
 
     for file_name in POSTGRES_MIGRATION_FILES:
         path = MIGRATIONS / file_name
