@@ -73,7 +73,7 @@ export default function VillasPage() {
       <section
         className="villasPremiumHero"
         style={{
-          backgroundImage: 'url("/media/oniria/villa-pool-rear.png")',
+          backgroundImage: 'url("/media/malua/malua-bedroom-premium.webp")',
         }}
       >
         <div className="villasPremiumHeroOverlay" />

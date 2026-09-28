@@ -125,12 +125,12 @@ export default function VAvenuePage() {
           role="img"
           aria-label="V Avenue mixed-use commercial destination at MALǓA"
           style={{
-            backgroundImage: 'url("/media/oniria/v-avenue-commercial.png")',
+            backgroundImage: 'url("/media/malua/malua-kitchen-premium.webp")',
           }}
         >
           <div className="vAvenuePremiumIntroCaption">
-            <span>MIXED-USE DESTINATION</span>
-            <strong>Designed for day-to-evening life.</strong>
+            <span>DINING · SOCIAL LIFE</span>
+            <strong>Designed for everyday gathering.</strong>
           </div>
         </div>
       </section>
@@ -155,7 +155,7 @@ export default function VAvenuePage() {
       <section className="vAvenuePremiumVisualStory" aria-label="V Avenue visual story">
         <div
           className="vAvenuePremiumVisualLarge"
-          style={{ backgroundImage: 'url("/media/oniria/v-avenue-commercial.png")' }}
+          style={{ backgroundImage: 'url("/media/oniria/residence-aerial-masterplan.png")' }}
         >
           <div>
             <span>RETAIL · DINING · BUSINESS</span>
