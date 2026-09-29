@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import BrandLogo from "./BrandLogo";
-import { buildWhatsAppLink } from "../data/contactDetails";
 import {
   formatSubmissionSuccess,
   getAnonymousSessionId,
@@ -275,14 +274,6 @@ export default function PremiumInquiryPage({ mode }) {
                 ))}
               </div>
 
-              <a
-                className="premiumRequestWhatsApp"
-                href={buildWhatsAppLink("Hello MALǓA, I would like to discuss my request with your sales team.")}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Prefer WhatsApp? Start a private conversation →
-              </a>
             </div>
 
             <form className="premiumInquiryForm premiumRequestForm" onSubmit={handleSubmit}>

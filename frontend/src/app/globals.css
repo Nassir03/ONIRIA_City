@@ -19449,7 +19449,7 @@ main :is(h1, h2, h3, h4, h5, h6),
   box-shadow: 0 22px 48px rgba(74, 49, 34, 0.1);
 }
 
-.vAvenuePremiumCard > a {
+.vAvenuePremiumCardContent {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   min-height: 340px;
@@ -19635,7 +19635,7 @@ main :is(h1, h2, h3, h4, h5, h6),
     grid-template-columns: 1fr;
   }
 
-  .vAvenuePremiumCard > a {
+  .vAvenuePremiumCardContent {
     grid-template-columns: 0.8fr 1.2fr;
   }
 
@@ -19760,7 +19760,7 @@ main :is(h1, h2, h3, h4, h5, h6),
     padding: 52px 0 58px;
   }
 
-  .vAvenuePremiumCard > a {
+  .vAvenuePremiumCardContent {
     grid-template-columns: 1fr;
   }
 
@@ -21062,4 +21062,16 @@ main :is(h1, h2, h3, h4, h5, h6),
 .finalSalesSectionPremium .finalSalesPremiumHeading {
   justify-content: center !important;
   gap: 10px !important;
+}
+
+/* Match “story” to the visual height of the MALǓA wordmark. */
+.finalSalesSectionPremium .finalSalesPremiumHeading > span {
+  font-size: clamp(38px, 3.2vw, 46px) !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 760px) {
+  .finalSalesSectionPremium .finalSalesPremiumHeading > span {
+    font-size: 36px !important;
+  }
 }
